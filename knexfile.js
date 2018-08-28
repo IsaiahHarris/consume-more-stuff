@@ -7,7 +7,7 @@ module.exports = {
     connection: {
       database: 'cms_db',
       user: 'cms_user',
-      password: 'password'
+      password: null
     },
     pool: {
       min: 2,
@@ -24,7 +24,7 @@ module.exports = {
     connection: {
       database: 'my_db',
       user: 'username',
-      password: 'password'
+      password: null
     },
     pool: {
       min: 2,
@@ -40,7 +40,7 @@ module.exports = {
     connection: {
       database: 'my_db',
       user: 'username',
-      password: 'password'
+      password: null
     },
     pool: {
       min: 2,
