@@ -1,9 +1,12 @@
+require('dotenv').config()
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const routes = require('./routes');
-
 const PORT = process.env.PORT || 8080;
+
+// const PORT = process.env.PORT || 8080;
 app.use(bodyParser.json());
 
 //-- send you to all the api routes --//
