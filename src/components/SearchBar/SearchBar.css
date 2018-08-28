@@ -1,0 +1,23 @@
+.search-bar-container{
+  margin-top:10px;
+  width:100%;
+  display: flex;
+  justify-content:center;
+  align-items: center;
+}
+
+.search-term{
+  width: 50%;
+  height: 18px;
+  border:1px solid black;
+}
+
+.search-button{
+  font-size:15px;
+  text-align: center;
+  width:10%;
+  height: 20px;
+  border-right:1px solid black;
+  border-top:1px solid black;
+  border-bottom:1px solid black;
+}

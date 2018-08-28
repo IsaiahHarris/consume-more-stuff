@@ -1,5 +1,6 @@
 import React from 'react';
 import './Header.css';
+import SearchBar from '../SearchBar';
 
 class Header extends React.Component {
   constructor(props) {
@@ -8,9 +9,9 @@ class Header extends React.Component {
 
   render() {
     return (
-      <div className="header">
-        <img src="../assets/ghost_filler_logo.png " alt="" />
+      <div className="header-container">
         <div className="header-title">CMS</div>
+        <img src="https://seeklogo.com/images/K/koenigsegg-ghost-logo-AA4DCF1CD8-seeklogo.com.png" className="logo" alt="" />
       </div>
     )
   }
