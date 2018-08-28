@@ -8,11 +8,11 @@ class SearchBar extends React.Component {
 
   render() {
     return (
-      <div className="wrap">
+      <div className={this.props.classNameLabel} >
         <div className="search-bar-container">
-          <input type="text" className="search-term" placeholder="Search Item" />
+          <input type="text" className="search-term" placeholder="   Search Item" />
           <div type="submit" className="search-button">
-            go
+            <div className="go">Go</div>
           </div>
         </div>
       </div>
@@ -21,3 +21,4 @@ class SearchBar extends React.Component {
 }
 
 export default SearchBar;
+

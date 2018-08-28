@@ -11,6 +11,7 @@ class Header extends React.Component {
     return (
       <div className="header-container">
         <div className="header-title">CMS</div>
+        <SearchBar classNameLabel="wrap" />
         <img src="https://seeklogo.com/images/K/koenigsegg-ghost-logo-AA4DCF1CD8-seeklogo.com.png" className="logo" alt="" />
       </div>
     )
