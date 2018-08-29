@@ -11,12 +11,13 @@ class CardsList extends React.Component {
     this.props.loadCards();
   }
   render() {
+
     return (
       <div className="cards-list-container">
         {
           this.props.cards.map((card, i) => {
             console.log('card', card);
-            return <Card key={i} />
+            return <Card key={i} title={card.title} photo={card.image_url} />
           })
         }
       </div>

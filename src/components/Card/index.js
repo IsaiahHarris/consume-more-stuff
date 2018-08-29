@@ -2,10 +2,12 @@ import React from 'react';
 import './Card.css'
 import { connect } from 'react-redux';
 import { loadCards } from '../../actions'
+
 class Card extends React.Component {
   constructor(props) {
     super(props)
-    console.log('this.props', this.props);
+    console.log('this.propsphoto', this.props.photo);
+
   }
 
   // componentDidMount() {
@@ -13,9 +15,17 @@ class Card extends React.Component {
   // }
 
   render() {
+
+    const styles = {
+      backgroundImage: "url(" + this.props.photo + ")",
+      backgroundSize: '100% 100%',
+      height: '80px',
+      width: '120px',
+    }
+
     return (
       <div className="card-container">
-        <div className="photo"></div>
+        <div style={styles} className="photo"></div>
         <a href="">{this.props.title}</a>
         <div className="price">{this.props.price}</div>
       </div>
