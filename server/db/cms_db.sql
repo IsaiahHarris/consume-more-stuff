@@ -1,6 +1,0 @@
-DROP DATABASE IF EXISTS cms_db;
-DROP USER IF EXISTS cms_user;
-
-CREATE USER cms_user WITH PASSWORD 'password';
-CREATE DATABASE cms_db WITH OWNER cms_user;
-
