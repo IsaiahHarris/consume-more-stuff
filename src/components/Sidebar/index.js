@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 
 import './Sidebar.css';
 import Button from '../Button';
-
+import { connect } from 'react-redux';
+import { loadCategories } from '../../actions';
 class Sidebar extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      categories: ['Vehicles', 'Computers', 'Appliances', 'Furniture'],
       categoriesMobileListCollection: document.getElementsByClassName(
         'Sidebar-categories-mobile-details'
       )
@@ -23,6 +23,9 @@ class Sidebar extends Component {
       : this.state.categoriesMobileListCollection[0].classList.add('hidden');
   }
 
+  componentDidMount() {
+    this.props.loadCategories()
+  }
   render() {
     return (
       <div className="Sidebar">
@@ -35,13 +38,13 @@ class Sidebar extends Component {
         <div className="Sidebar-categories-desktop">
           Categories
           <ul className="Sidebar-categories-desktop-list">
-            {this.state.categories.map((category, index) => {
+            {this.props.categories.map((category, index) => {
               return (
                 <li
                   key={index}
                   className="Sidebar-categories-desktop-list-item"
                 >
-                  {category}
+                  {category.name}
                 </li>
               );
             })}
@@ -65,13 +68,13 @@ class Sidebar extends Component {
             onClick={stopEventPropagation}
           >
             <ul className="Sidebar-categories-mobile-details-inner-list">
-              {this.state.categories.map((category, index) => {
+              {this.props.categories.map((category, index) => {
                 return (
                   <li
                     key={index}
                     className="Sidebar-categories-mobile-details-inner-list-item"
                   >
-                    {category}
+                    {category.name}
                   </li>
                 );
               })}
@@ -88,4 +91,21 @@ function stopEventPropagation(event) {
   event.stopPropagation();
 }
 
-export default Sidebar;
+const mapStateToProps = state => {
+  return {
+    cards: state.cardsList,
+    categories: state.categoriesList
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    loadCategories: () => {
+      dispatch(loadCategories())
+    },
+
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
