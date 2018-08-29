@@ -8,6 +8,7 @@ class Sidebar extends Component {
     super(props);
 
     this.state = {
+      categories: ['Vehicles', 'Computers', 'Appliances', 'Furniture'],
       categoriesMobileListCollection: document.getElementsByClassName(
         'Sidebar-categories-mobile-details'
       )
@@ -30,32 +31,31 @@ class Sidebar extends Component {
           <div className="Sidebar-auth-display-options">Settings</div>
         </div>
 
+        {/* Display for Desktop View: */}
         <div className="Sidebar-categories-desktop">
           Categories
           <ul className="Sidebar-categories-desktop-list">
-            <li className="Sidebar-categories-desktop-list-item">
-              Vehicles
-            </li>
-            <li className="Sidebar-categories-desktop-list-item">
-              Computers
-            </li>
-            <li className="Sidebar-categories-desktop-list-item">
-              Appliances
-            </li>
-            <li className="Sidebar-categories-desktop-list-item">
-              Furniture
-            </li>
+            {this.state.categories.map((category, index) => {
+              return (
+                <li
+                  key={index}
+                  className="Sidebar-categories-desktop-list-item"
+                >
+                  {category}
+                </li>
+              );
+            })}
           </ul>
           <Button label="ALL" />
         </div>
 
+        {/* Display for Mobile View: */}
         <div
           className="Sidebar-categories-mobile"
           onClick={this.toggleCategoriesView}
         >
           Categories
         </div>
-
         <div
           className="Sidebar-categories-mobile-details hidden"
           onClick={this.toggleCategoriesView}
@@ -65,18 +65,16 @@ class Sidebar extends Component {
             onClick={stopEventPropagation}
           >
             <ul className="Sidebar-categories-mobile-details-inner-list">
-              <li className="Sidebar-categories-mobile-details-inner-list-item">
-                Vehicles
-              </li>
-              <li className="Sidebar-categories-mobile-details-inner-list-item">
-                Computers
-              </li>
-              <li className="Sidebar-categories-mobile-details-inner-list-item">
-                Appliances
-              </li>
-              <li className="Sidebar-categories-mobile-details-inner-list-item">
-                Furniture
-              </li>
+              {this.state.categories.map((category, index) => {
+                return (
+                  <li
+                    key={index}
+                    className="Sidebar-categories-mobile-details-inner-list-item"
+                  >
+                    {category}
+                  </li>
+                );
+              })}
             </ul>
             <Button label="ALL" />
           </div>
