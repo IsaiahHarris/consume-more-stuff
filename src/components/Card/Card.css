@@ -1,6 +1,13 @@
 .photo{
 
 }
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 .card-container{
   height: 120px;
   width:120px;
@@ -9,11 +16,17 @@
   justify-content: center;
   align-items: center;
   background-color:rgb(204, 204, 204);
+  margin-top:10%;
+}
 
+.main-card-container{
+  width:50%;
+  display: flex;
+  justify-content: center;
 }
-html {
-  box-sizing: border-box;
-}
-*, *:before, *:after {
-  box-sizing: inherit;
+
+@media(min-width: 768px){
+  .main-card-container{
+    width:120px;
+  }
 }

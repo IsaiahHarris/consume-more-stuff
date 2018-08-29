@@ -23,11 +23,13 @@ class Card extends React.Component {
     }
 
     return (
-      <div className="card-container">
-        <div className="condition">{this.props.condition}</div>
-        <div style={styles} className="photo"></div>
-        <a href="">{this.props.title}</a>
-        <div className="price">{this.props.price}</div>
+      <div className="main-card-container">
+        <div className="card-container">
+          <div className="condition">{this.props.condition}</div>
+          <div style={styles} className="photo"></div>
+          <a href="">{this.props.title}</a>
+          <div className="price">{this.props.price}</div>
+        </div>
       </div>
     )
   }
