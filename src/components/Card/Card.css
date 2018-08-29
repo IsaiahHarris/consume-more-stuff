@@ -25,8 +25,14 @@ html {
   justify-content: center;
 }
 
+.new, .good, .fair, .worn, .used{
+  text-align: left;
+  width: 100%;
+  margin-left:10%;
+}
 .new{
 color:green;
+
 }
 .good{
   color: greenyellow;
