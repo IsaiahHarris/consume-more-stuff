@@ -22,12 +22,13 @@ class CardsList extends React.Component {
       <div className="cards-list-container">
         {
           cardsSortedByTime.slice(0, 4).map((card, i) => {
+            const conditionName = card && card.condition ? card.condition.name : null
             return <Card
               key={i}
               title={card.title}
               photo={card.image_url}
               price={card.price}
-              condition={card.condition_id}
+              condition={conditionName}
             />
           })
         }

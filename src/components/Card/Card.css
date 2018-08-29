@@ -25,6 +25,28 @@ html {
   justify-content: center;
 }
 
+.new, .good, .fair, .worn, .used{
+  text-align: left;
+  width: 100%;
+  margin-left:10%;
+}
+.new{
+color:green;
+
+}
+.good{
+  color: greenyellow;
+}
+.fair{
+  color:yellow
+}
+.worn{
+  color:orange;
+}
+.used{
+  color:red;
+}
+
 @media(min-width: 768px){
   .main-card-container{
     width:120px;
