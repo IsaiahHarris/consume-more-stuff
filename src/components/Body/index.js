@@ -17,10 +17,12 @@ class Body extends Component {
   }
 
   render() {
-    console.log('this.props.categories', this.props.categories);
-    console.log('this.props.cards', this.props.cards);
     return <div className="Body">
-      <Row />
+      {
+        this.props.categories.map((category, i) => {
+          return <Row key={i} label={category.name} />
+        })
+      }
     </div>;
   }
 }
