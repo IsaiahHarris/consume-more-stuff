@@ -1,8 +1,7 @@
 const express = require('express');
+const items = require('./items');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.send('Smoke test at index.js');
-})
+router.use('/items', items);
 
 module.exports = router;
