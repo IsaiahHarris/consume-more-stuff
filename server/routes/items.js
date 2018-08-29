@@ -6,7 +6,7 @@ router.route('/')
   .get((req, res) => { // Fetches all the items
     return Item.fetchAll() // Need to include a where depending on  category
       .then(items => {
-         return res.json(items);
+        return res.json(items);
       })
       .catch(err => {
         return res.json({ 'error': err.message })
