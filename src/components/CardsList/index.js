@@ -1,14 +1,11 @@
 import React from 'react';
-import Card from '../Card';
+import Card from '../Card'
 import './CardsList.css'
 import { connect } from 'react-redux';
 import { loadCards } from '../../actions'
 class CardsList extends React.Component {
   constructor(props) {
     super(props)
-    console.log('this.props', this.props.cards.map(card => {
-      return card
-    });
   }
   componentDidMount() {
     this.props.loadCards();
@@ -18,11 +15,8 @@ class CardsList extends React.Component {
       <div className="cards-list-container">
         {
           this.props.cards.map((card, i) => {
-            return <Card
-              key={i}
-              title={card.title}
-              price={card.price}
-            />
+            console.log('card', card);
+            return <Card key={i} />
           })
         }
       </div>
