@@ -6,19 +6,21 @@
   align-items: center;
   border-bottom:0.5px grey solid;
   font-size:200%;
+  padding:0 10%;
 }
 .logo{
   height: 50px;
   width:50px;
-  margin-right:10%;
+ 
 }
 
-.header-title{
-  margin-left:10%;
+.login-button{
+
 }
 
 @media(min-width:768px){
   .wrap{
-    display: block;
+    display: none;
   }
+
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import './Header.css';
 import SearchBar from '../SearchBar';
-
+import Button from '../Button';
 class Header extends React.Component {
   constructor(props) {
     super(props)
@@ -10,9 +10,9 @@ class Header extends React.Component {
   render() {
     return (
       <div className="header-container">
-        <div className="header-title">CMS</div>
-        <SearchBar classNameLabel="wrap" />
         <img src="https://i.imgur.com/v1Cc25c.png" className="logo" alt="" />
+        <SearchBar classNameLabel="wrap" />
+        <Button label="Login" />
       </div>
     )
   }
