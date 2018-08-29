@@ -1,6 +1,9 @@
+// Main imports
 const express = require('express');
+const knex = require('../db/knex');
 const router = express.Router();
 const Item = require('../db/models/Item');
+// Models I need to import for withRelatd to work
 const User = require('../db/models/User');
 const Category = require('../db/models/Category');
 const Condition = require('../db/models/Condition');
@@ -143,6 +146,7 @@ router.route('/')
           condition_id,
          }, {patch: true})
          .then(response => {
+          console.log('Edited Item', response);
           return response.refresh({withRelated: ['seller', 'category', 'condition', 'itemStatus']})
         })
         .then(item => {
@@ -152,7 +156,25 @@ router.route('/')
           console.log(err.message);
           return res.json({ 'error': err.message })
         });
+    })
+    .delete((req, res) => { // FAKE deleting the specific item
+      const id = req.params.id;
 
+      return new Item()
+        .where({ id })
+        .save({ 
+          deleted_at: knex.fn.now() // Change the status of deleted_at timestamp
+         }, {patch: true})
+         .then(() => {
+          return new Item().where({ id }).refresh()
+        })
+        .then(item => {
+          return res.json(item);
+        })
+        .catch(err => {
+          console.log(err.message);
+          return res.json({ 'error': err.message })
+        });
     })
   
 
