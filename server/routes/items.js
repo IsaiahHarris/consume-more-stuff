@@ -29,7 +29,7 @@ router.route('/')
     const image_url = req.body.image_url.trim();
     //--Foreign Keys--//
     const seller_id = parseInt(req.body.seller_id);
-    const category_id = 1; // Only works for vehicles
+    const category_id = parseInt(req.body.category_id);
     const item_status_id = parseInt(req.body.item_status_id);
     const condition_id = parseInt(req.body.condition_id);
 
@@ -62,9 +62,27 @@ router.route('/')
       });
   })
 
+  // Items search route, let George know if you need search route from category
+  router.route('/search/:term')
+    .get((req, res) => { // Fetches all items in home based on a search term
+      const term = `%${req.params.term}%`;
+
+      return Item
+        .query(qb => {
+          qb.whereRaw(`LOWER(title) LIKE ?`, [term]);
+        })
+        .fetchAll()
+        .then(items => {
+          return res.json(items);
+        })
+       .catch(err => {
+         return res.json({ 'error': err.message })
+       });
+    })
+
   // Items category route
   router.route('/:category')
-    .get((req, res) => {
+    .get((req, res) => { // Fetch all items for different categories
       const category_id = req.params.category;
       console.log('category running: ', category_id);
 
@@ -78,5 +96,7 @@ router.route('/')
           return res.json({ 'error': err.message })
         });
     })
+  
+
 
 module.exports = router;
