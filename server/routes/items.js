@@ -12,7 +12,7 @@ router.route('/')
     return Item
     .fetchAll({withRelated: ['seller', 'category', 'condition', 'itemStatus']})
       .then(items => {
-         return res.json(items);
+        return res.json(items);
       })
       .catch(err => {
         return res.json({ 'error': err.message })

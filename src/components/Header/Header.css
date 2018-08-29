@@ -1,0 +1,26 @@
+.header-container{
+  width:100%;
+  height: 10vh;
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom:0.5px grey solid;
+  font-size:200%;
+  padding:0 10%;
+}
+.logo{
+  height: 50px;
+  width:50px;
+ 
+}
+
+.login-button{
+
+}
+
+@media(min-width:768px){
+  .wrap{
+    display: none;
+  }
+
+}
