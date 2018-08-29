@@ -6,8 +6,9 @@ const Category = require('../db/models/Category');
 const Condition = require('../db/models/Condition');
 const ItemStatus = require('../db/models/ItemStatus');
 
+// items root route
 router.route('/')
-  .get((req, res) => { // Fetches all the items
+  .get((req, res) => { // Fetches all the items for homepage
     return Item
     .fetchAll({withRelated: ['seller', 'category', 'condition', 'itemStatus']})
       .then(items => {
@@ -60,5 +61,22 @@ router.route('/')
         return res.json({ 'error': err.message })
       });
   })
+
+  // Items category route
+  router.route('/:category')
+    .get((req, res) => {
+      const category_id = req.params.category;
+      console.log('category running: ', category_id);
+
+      return Item
+      .where({category_id})
+      .fetchAll({withRelated: ['seller', 'category', 'condition', 'itemStatus']})
+        .then(items => {
+           return res.json(items);
+        })
+        .catch(err => {
+          return res.json({ 'error': err.message })
+        });
+    })
 
 module.exports = router;
