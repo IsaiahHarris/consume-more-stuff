@@ -9,7 +9,10 @@ router.route('/:id')
     const id = req.params.id;
 
     return new Item()
-      .where({ id })
+      .query(qb => {
+        qb.where({ id })
+          .andWhere({deleted_at: null});
+      })
       .fetch()
       .then(item => {
         return res.json(item);

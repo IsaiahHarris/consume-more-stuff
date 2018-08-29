@@ -1,7 +1,6 @@
 // Main imports
 const express = require('express');
 const router = express.Router();
-// const knex = require('../../db/knex');
 const Item = require('../../db/models/Item');
 const itemId = require('./ItemById');
 // Models I need to import for withRelatd to work
@@ -14,6 +13,7 @@ const ItemStatus = require('../../db/models/ItemStatus');
 router.route('/')
   .get((req, res) => { // Fetches all the items for homepage
     return Item
+    .where({deleted_at: null})
     .fetchAll({withRelated: ['seller', 'category', 'condition', 'itemStatus']})
       .then(items => {
         return res.json(items);
@@ -73,7 +73,8 @@ router.route('/search/:term')
 
     return Item
       .query(qb => {
-        qb.whereRaw(`LOWER(title) LIKE ?`, [term]);
+        qb.whereRaw(`LOWER(title) LIKE ?`, [term])
+          .andWhere({deleted_at: null});
       })
       .fetchAll()
       .then(items => {
@@ -91,7 +92,10 @@ router.route('/category/:categoryId')
     console.log('category running: ', category_id);
 
     return Item
-    .where({category_id})
+    .query(qb => {
+      qb.where({category_id})
+        .andWhere({deleted_at: null});
+    })
     .fetchAll({withRelated: ['seller', 'category', 'condition', 'itemStatus']})
       .then(items => {
           return res.json(items);
@@ -101,7 +105,7 @@ router.route('/category/:categoryId')
       });
   })
   
-// Connects to ItemById.js
+//-- Specfic Item Routes at ItemById.js --//
 router.use('/', itemId);
 
 module.exports = router;
