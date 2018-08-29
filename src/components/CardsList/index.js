@@ -11,12 +11,24 @@ class CardsList extends React.Component {
     this.props.loadCards();
   }
   render() {
+
+    const cardsSortedByTime = this.props.cards;
+
+    cardsSortedByTime.sort(function (a, b) {
+      return a.created_at - b.created_at
+    })
+
     return (
       <div className="cards-list-container">
         {
-          this.props.cards.map((card, i) => {
-            console.log('card', card);
-            return <Card key={i} />
+          cardsSortedByTime.slice(0, 4).map((card, i) => {
+            return <Card
+              key={i}
+              title={card.title}
+              photo={card.image_url}
+              price={card.price}
+              condition={card.condition_id}
+            />
           })
         }
       </div>
