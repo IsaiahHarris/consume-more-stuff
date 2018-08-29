@@ -8,9 +8,9 @@ class Card extends React.Component {
     console.log('this.props', this.props);
   }
 
-  componentDidMount() {
-    this.props.loadCards();
-  }
+  // componentDidMount() {
+  //   this.props.loadCards();
+  // }
 
   render() {
     return (
@@ -23,18 +23,18 @@ class Card extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    cards: state.cardsList
-  }
-}
+// const mapStateToProps = state => {
+//   return {
+//     cards: state.cardsList
+//   }
+// }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    loadCards: () => {
-      dispatch(loadCards())
-    }
-  }
-}
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     loadCards: () => {
+//       dispatch(loadCards())
+//     }
+//   }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Card);
+export default Card;
