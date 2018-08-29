@@ -1,10 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const Item = require('../db/models/Item');
+const User = require('../db/models/User');
+const Category = require('../db/models/Category');
+const Condition = require('../db/models/Condition');
+const ItemStatus = require('../db/models/ItemStatus');
 
 router.route('/')
   .get((req, res) => { // Fetches all the items
-    return Item.fetchAll() // Need to include a where depending on  category
+    return Item
+    .fetchAll({withRelated: ['seller', 'category', 'condition', 'itemStatus']})
       .then(items => {
          return res.json(items);
       })
@@ -45,6 +50,9 @@ router.route('/')
     // Save item to db with bookshelf
     return new Item()
       .save(itemInput)
+      .then(() => {
+        return new Item().refresh({withRelated: ['seller', 'category', 'condition', 'itemStatus']})
+      })
       .then(item => {
         return res.json(item);
       })
