@@ -81,9 +81,9 @@ router.route('/')
     })
 
   // Items category route
-  router.route('/:category')
+  router.route('/category/:categoryId')
     .get((req, res) => { // Fetch all items for different categories
-      const category_id = req.params.category;
+      const category_id = req.params.categoryId;
       console.log('category running: ', category_id);
 
       return Item
@@ -95,6 +95,22 @@ router.route('/')
         .catch(err => {
           return res.json({ 'error': err.message })
         });
+    })
+  
+  // Specific item route
+  router.route('/:id')
+    .get((req, res) => { // Get a specifc product info
+      const id = req.params.id;
+
+      return new Item()
+        .where({ id })
+        .fetch()
+        .then(item => {
+          return res.json(item);
+       })
+       .catch(err => {
+         return res.json({ 'error': err.message })
+       });
     })
   
 
