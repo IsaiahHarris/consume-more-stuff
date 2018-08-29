@@ -1,0 +1,11 @@
+.MainContainer {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh);
+}
+
+@media (min-width: 768px) {
+  .MainContainer {
+    flex-direction: row;
+  }
+}
