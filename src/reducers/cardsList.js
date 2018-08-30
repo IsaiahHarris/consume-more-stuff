@@ -25,4 +25,5 @@ const cardsList = (state = initialState, action) => {
   }
 }
 
-export default cardsList
+
+export default cardsList;
