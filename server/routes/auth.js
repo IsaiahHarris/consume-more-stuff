@@ -15,6 +15,7 @@ router.post('/register', (req, res) => {
     if (err) { return res.status(500); }
     bcrypt.hash(req.body.password, salt, (err, hashedPassword) => {
       if (err) { return res.status(500); }
+      // needs username(unique), password, and email(unique) to register
       return new User({
         username: username.toLowerCase(),
         password: hashedPassword,
@@ -27,7 +28,7 @@ router.post('/register', (req, res) => {
         })
         .catch(err => {
           console.log('err.message', err.message);
-          res.json({ message: 'username already exists' })
+          res.json({ message: 'username/email already exists' })
         });
     })
   })
