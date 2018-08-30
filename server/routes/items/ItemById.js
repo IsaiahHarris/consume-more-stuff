@@ -38,7 +38,10 @@ router.route('/:id')
 
     // Edit using bookshelf
     return new Item()
-      .where({ id })
+      .query(qb => {
+        qb.where({ id })
+          .andWhere({deleted_at: null});
+      })
       .save({ 
         title: title ? title : null,
         price: price ? price : null,
@@ -67,7 +70,11 @@ router.route('/:id')
     const id = req.params.id;
 
     return new Item()
-      .where({ id })
+      .query(qb => {
+        qb.where({ id })
+          .andWhere({deleted_at: null});
+      })
+      // .where({ id })
       .save({ 
         deleted_at: knex.fn.now() // Change the status of deleted_at timestamp
         }, {patch: true})
