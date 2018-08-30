@@ -1,6 +1,3 @@
-.photo{
-
-}
 /* html {
   box-sizing: border-box;
 }
@@ -8,48 +5,62 @@
   box-sizing: inherit;
 } */
 
-.card-container{
-  height: 100%;
-  width:120px;
+.main-card-container {
+  display: flex;
+  justify-content: space-evenly;
+  flex: 1 1 50%;
+  margin-top: 15px;
+}
+
+.card-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color:rgb(204, 204, 204);
-  margin-top:10%;
+  width: 66.66%;
+  min-width: 120px;
+  max-width: 210px;
   padding: 5px;
+  background-color: rgb(204, 204, 204);
 }
 
-.main-card-container{
-  width:50%;
-  display: flex;
-  justify-content: center;
+.card-container a {
+  overflow: hidden;
+  height: 37px;
+  margin-bottom: 5px;
 }
 
-.new, .good, .fair, .worn, .used{
+.photo {
+  margin-bottom: 5px;
+}
+
+.new,
+.good,
+.fair,
+.worn,
+.used {
   text-align: left;
   width: 100%;
-  margin-left:10%;
+  margin-bottom: 5px;
 }
-.new{
-color:green;
-
+.new {
+  color: green;
 }
-.good{
+.good {
   color: greenyellow;
 }
-.fair{
-  color:yellow
+.fair {
+  color: yellow;
 }
-.worn{
-  color:orange;
+.worn {
+  color: orange;
 }
-.used{
-  color:red;
+.used {
+  color: red;
 }
 
-@media(min-width: 768px){
-  .main-card-container{
-    width:120px;
+@media (min-width: 768px) {
+  .main-card-container {
+    width: 120px;
   }
 }
