@@ -1,6 +1,5 @@
-.row-container{
-  margin-top:25px;
+.row-container {
   display: flex;
-  justify-content: center;
   flex-direction: column;
+  padding: 25px 0;
 }
