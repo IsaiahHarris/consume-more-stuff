@@ -20,7 +20,7 @@ class Body extends Component {
     return <div className="Body">
       {
         this.props.categories.map((category, i) => {
-          return <Row key={i} label={category.name} />
+          return <Row key={i} cards={this.props.cards} label={category.name} />
         })
       }
     </div>;

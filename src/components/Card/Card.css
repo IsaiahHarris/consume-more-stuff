@@ -1,15 +1,15 @@
 .photo{
 
 }
-html {
+/* html {
   box-sizing: border-box;
 }
 *, *:before, *:after {
   box-sizing: inherit;
-}
+} */
 
 .card-container{
-  height: 120px;
+  height: 100%;
   width:120px;
   display: flex;
   flex-direction: column;
@@ -17,6 +17,7 @@ html {
   align-items: center;
   background-color:rgb(204, 204, 204);
   margin-top:10%;
+  padding: 5px;
 }
 
 .main-card-container{

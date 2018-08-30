@@ -68,7 +68,7 @@
 
 @media (min-width: 768px) {
   .Sidebar {
-    width: 240px;
+    width: 20%;
     height: 100%;
     border-right: 1px solid black;
     border-bottom: 0;
