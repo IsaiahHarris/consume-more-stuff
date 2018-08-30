@@ -1,6 +1,9 @@
 import React from 'react';
 import CardsList from '../CardsList';
+import { Route, Switch } from 'react-router-dom';
+
 import './Row.css'
+import ItemDetail from '../ItemDetail';
 const Row = props => {
   let filterFunc = filterCards(props.label, props.cards);
   return (

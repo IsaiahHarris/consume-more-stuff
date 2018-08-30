@@ -1,4 +1,4 @@
-import { LOAD_CARDS } from '../actions';
+import { LOAD_CARDS, LOAD_CARD } from '../actions';
 
 const initialState = [
   {
@@ -20,6 +20,8 @@ const cardsList = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_CARDS:
       return [...action.cards]
+    case LOAD_CARD:
+      return [...action.card]
     default:
       return state;
   }

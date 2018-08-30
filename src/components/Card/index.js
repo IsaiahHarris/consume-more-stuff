@@ -2,6 +2,7 @@ import React from 'react';
 import './Card.css';
 import { connect } from 'react-redux';
 import { loadCards } from '../../actions';
+
 import { Link } from 'react-router-dom';
 class Card extends React.Component {
   constructor(props) {
@@ -25,10 +26,12 @@ class Card extends React.Component {
     return (
       <div className="main-card-container">
         <div className="card-container">
-          <li><Link to='/items/{this.props.title}'>login</Link></li>
           <div className={this.props.condition}>{this.props.condition}</div>
           <div style={styles} className="photo" />
-          <a href="">{truncateText(this.props.title, 32)}</a>
+          <Link
+            to={`/items/${this.props.id}`
+            }>{truncateText(this.props.title, 32)}
+          </Link>
           <div className="price">{this.props.price}</div>
         </div>
       </div>
