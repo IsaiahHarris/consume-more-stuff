@@ -4,15 +4,16 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './MainContainer.css';
 import Sidebar from '../Sidebar';
 import Body from '../Body';
-
+import ItemDetail from '../ItemDetail';
 const MainContainer = () => {
   return (
     <div className="MainContainer">
       <Sidebar />
       <Router>
         <Switch>
-{/* NOTE: Change "Body" to something more descriptive, e.g., Home Page */}
+          {/* NOTE: Change "Body" to something more descriptive, e.g., Home Page */}
           <Route exact path="/" component={Body} />
+          <Route exact path="item/:id" component={ItemDetail} />
           <Route
             path="/login"
             render={() => {

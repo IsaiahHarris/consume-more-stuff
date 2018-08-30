@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { loadCards, loadCategories } from '../../actions';
-
+import { Link } from 'react-router-dom';
 import './Body.css';
 import Row from '../Row';
 
@@ -18,9 +18,11 @@ class Body extends Component {
 
   render() {
     return <div className="Body">
+      <li><Link to='/login'>login</Link></li>
       {
         this.props.categories.map((category, i) => {
           return <Row key={i} cards={this.props.cards} label={category.name} />
+
         })
       }
     </div>;
