@@ -3,7 +3,7 @@ const express = require('express');
 const Category = require('../db/models/Category');
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', (req, res) => { // Returns all the category names
   return Category
     .fetchAll()
     .then(categories => {
