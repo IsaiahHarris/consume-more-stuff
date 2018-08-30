@@ -1,13 +1,10 @@
-.cards-list-container{
+.cards-list-container {
   display: flex;
-  justify-content: space-around;
-  flex-wrap:wrap;
-  margin-top:20px;
+  flex-wrap: wrap;
 }
 
-@media(min-width: 768px){
-  .cards-list-container{
-    flex-wrap:nowrap;
-
+@media (min-width: 768px) {
+  .cards-list-container {
+    flex-wrap: nowrap;
   }
 }

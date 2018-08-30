@@ -1,25 +1,23 @@
-.header-container{
+.header-container {
   height: 10vh;
-  display:flex;
+  display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom:0.5px grey solid;
-  font-size:200%;
-  padding:0 10%;
+  font-size: 200%;
+  padding: 0 10%;
+  border-bottom: 1px solid #000;
 }
-.logo{
+
+.logo {
   height: 50px;
-  width:50px;
- 
+  min-width: 50px;
 }
 
-.login-button{
-
+.login-button {
 }
 
-@media(min-width:768px){
-  .wrap{
+@media (min-width: 768px) {
+  .wrap {
     display: none;
   }
-
 }
