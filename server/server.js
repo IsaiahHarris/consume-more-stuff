@@ -6,22 +6,22 @@ const app = express();
 const routes = require('./routes');
 const PORT = process.env.PORT || 8080;
 
-
 //auth imports
 const session = require('express-session');
 const Redis = require('connect-redis')(session);
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
-const saltedRounds = 12;
 const bcrypt = require('bcrypt');
 const User = require('./db/models/User');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 
+app.use('/api', routes);
+
 app.use(session({
   store: new Redis(),
-  secret: 'keyboard cat',
+  secret: process.env.PASSPORT_SECRET,
   resave: false,
   saveUninitialized: true
 }))
@@ -51,7 +51,7 @@ passport.deserializeUser((user, done) => {
       }
     })
     .catch(err => {
-      console.log('err.message', err.message);
+      console.log('err.messagejhjh', err.message);
       return done(err)
     })
 })
@@ -77,60 +77,7 @@ passport.use(new LocalStrategy(function (username, password, done) {
     });
 }));
 
-app.post('/api/login', (req, res, next) => {
-  req.body.username = req.body.username
-  passport.authenticate('local', (err, user, info) => {
-    if (err) {
-      return res.json({ message: 'username or password invalid' })
-    }
-    req.login(user, (err) => {
-      if (err) { return next(err); }
-      else {
-        res.json({ username: user.username })
-      }
-    });
-  })(req, res, next);
-});
-
-app.post('/api/register', (req, res) => {
-  let {
-    username,
-    email
-  } = req.body;
-  const user_status_id = 1
-  bcrypt.genSalt(saltedRounds, (err, salt) => {
-    if (err) { return res.status(500); }
-    bcrypt.hash(req.body.password, salt, (err, hashedPassword) => {
-      if (err) { return res.status(500); }
-      return new User({
-        username: username.toLowerCase(),
-        password: hashedPassword,
-        email,
-        user_status_id
-      })
-        .save()
-        .then((result) => {
-          res.json(result.attributes.username);
-        })
-        .catch(err => {
-          console.log('err.message', err.message);
-          res.json({ message: 'username already exists' })
-        });
-    })
-  })
-});
-
-app.get('/api/logout', (req, res) => {
-  req.logout();
-  res.json({ success: true })
-});
-
-// const PORT = process.env.PORT || 8080;
-
-
 //-- send you to all the api routes --//
-app.use('/api', routes);
-
 
 
 //-- 404 --//
@@ -140,7 +87,7 @@ app.get('*', (req, res) => {
 
 //-- Catch all system errors --//
 app.use(function (err, req, res, next) {
-  console.log(err.stack);
+  console.log(err.message);
   res.status(500).send('Something broke on the server side');
 });
 
