@@ -15,7 +15,7 @@ class Card extends React.Component {
   // }
 
   render() {
-    console.log('this.props', this.props);
+
     const styles = {
       backgroundImage: 'url(' + this.props.photo + ')',
       backgroundSize: 'cover',
@@ -31,7 +31,11 @@ class Card extends React.Component {
           <div className={this.props.condition}>{this.props.condition}</div>
           <div style={styles} className="photo" />
           <Link
-            to={`/items/${this.props.id}`}
+            to={{
+              pathname: `/items/${this.props.id}`, state: {
+                id: this.props.title
+              }
+            }}
             onClick={() => { this.props.loadCard(this.props.id) }}
             id={this.props.id}
           >
