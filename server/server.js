@@ -17,10 +17,6 @@ const User = require('./db/models/User');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// Send you to all the api routes
-app.use('/api', routes);
-
-
 //-- PASSPORT configs start --//
 app.use(session({
   store: new Redis(),
@@ -80,6 +76,9 @@ passport.use(new LocalStrategy(function (username, password, done) {
     });
 }));
 //-- PASSPORT configs end --//
+
+// Send you to all the api routes
+app.use('/api', routes);
 
 //-- 404 --//
 app.get('*', (req, res) => {
