@@ -29,37 +29,17 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser((user, done) => {
+  console.log('serialized user ', user);
+  console.log('serialize done', done);
+
   return done(null, {
     id: user.id,
     username: user.username
   })
 })
 
-// passport.deserializeUser((user, done) => {
-//   debugger;
-//   new User({ id: user.id })
-//     .fetch()
-//     .then(response => {
-//       console.log('deserialize user: ', response);
-//       if (!response) {
-//         return done(null, false)
-//       } else {
-//         fetchedUser = response.toJSON();
-//         return done(null, {
-//           id: fetchedUser.id,
-//           username: fetchedUser.username
-//         })
-//       }
-//     })
-//     .catch(err => {
-//       console.log('err.messagejhjh', err.message);
-//       return done(err)
-//     })
-// })
-
-//--Temp Injection --//
 passport.deserializeUser((user, done) => {
-  console.log('deserializing');
+  console.log('deserializing user: ', user);
   new User({ id: user.id}).fetch()
   .then(user => {
     user = user.toJSON();
@@ -74,45 +54,23 @@ passport.deserializeUser((user, done) => {
   })
 })
 
-// passport.use(new LocalStrategy(function (username, password, done) {
-//   return new User({ username: username }).fetch()
-//     .then(user => {
-//       if(!user) {
-//         return done(null, false, { message: 'bad username or password' });
-//       } else {
-//         user = user.toJSON();
-//         console.log('user @LocalStrategy: ', user);
-
-//         bcrypt.compare(password, user.password)
-//           .then(samePassword => {
-//             if (samePassword) { return done(null, user); }
-//             else {
-//               return done(null, false, { message: 'bad username or password' });
-//             }
-//           })
-//       }
-//     })
-//     .catch(err => {
-//       return done(err);
-//     });
-// }));
-
-//--Temp Injection --//
 passport.use(new LocalStrategy(function(username, password, done) {
   return new User({username: username}).fetch()
   .then( user => {
     console.log(user)
-    if (user === null) {
-      return done(null, false, {message: 'bad username or password'});
+    if (!user) {
+      console.log('user null not working?');
+      return done({message: 'Wrong Username'});
     }
     else {
+      console.log('else not working?');
       user = user.toJSON();
       console.log(password, user.pasword);
       bcrypt.compare(password, user.password)
       .then((samePassword) => {
         if (samePassword) { return done(null, user); }
         else {
-          return done(null, false, {message: 'bad username or password'});
+          return done({message: 'Wrong Password'});
         }
       })
 
