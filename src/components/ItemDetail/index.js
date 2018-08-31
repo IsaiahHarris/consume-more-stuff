@@ -12,6 +12,7 @@ class ItemDetail extends React.Component {
   //   console.log('this.props.after', this.props);
   // }
   render() {
+    console.log('this.props item DETAIL', this.props);
     const {
       title,
       price,
