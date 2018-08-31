@@ -1,6 +1,9 @@
 import React from 'react';
 import CardsList from '../CardsList';
+
+
 import './Row.css'
+
 const Row = props => {
   let filterFunc = filterCards(props.label, props.cards);
   return (

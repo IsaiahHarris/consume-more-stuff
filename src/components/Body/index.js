@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { loadCards, loadCategories } from '../../actions';
-
 import './Body.css';
 import Row from '../Row';
+import { Route, Switch } from 'react-router-dom';
+import ItemDetail from '../ItemDetail';
 
 class Body extends Component {
   constructor(props) {
@@ -15,15 +16,16 @@ class Body extends Component {
     this.props.loadCards();
     this.props.loadCategories();
   }
-
   render() {
-    return <div className="Body">
-      {
-        this.props.categories.map((category, i) => {
-          return <Row key={i} cards={this.props.cards} label={category.name} />
-        })
-      }
-    </div>;
+    return (
+      <div className="Body">
+        {
+          this.props.categories.map((category, i) => {
+            return <Row key={i} cards={this.props.cards} label={category.name} />
+          })
+        }
+      </div>
+    )
   }
 }
 

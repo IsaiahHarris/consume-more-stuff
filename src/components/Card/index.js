@@ -1,21 +1,24 @@
 import React from 'react';
 import './Card.css';
+import { loadCard } from '../../actions';
+import ItemDetail from '../ItemDetail'
 import { connect } from 'react-redux';
-import { loadCards } from '../../actions';
-
+import { Link } from 'react-router-dom';
 class Card extends React.Component {
   constructor(props) {
     super(props);
   }
 
   // componentDidMount() {
-  //   this.props.loadCards();
+  //   this.props.loadCard(2)
+  //   console.log('this.props.after', this.props);
   // }
 
   render() {
+
     const styles = {
       backgroundImage: 'url(' + this.props.photo + ')',
-      backgroundSize: 'cover',
+      backgroundSize: 'contain',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center center',
       height: '100px',
@@ -27,7 +30,27 @@ class Card extends React.Component {
         <div className="card-container">
           <div className={this.props.condition}>{this.props.condition}</div>
           <div style={styles} className="photo" />
-          <a href="">{truncateText(this.props.title, 32)}</a>
+          <Link
+            to={{
+              pathname: `/items/${this.props.id}`, state: {
+                title: this.props.title,
+                photo: this.props.photo,
+                price: this.props.price,
+                condition: this.props.condition,
+                manufacturer: this.props.manufacturer,
+                dimensions: this.props.dimensions,
+                details: this.props.details,
+                seller: this.props.seller,
+                category: this.props.category,
+                status: this.props.status,
+              }
+            }}
+            onClick={() => { this.props.loadCard(this.props.id) }}
+            id={this.props.id}
+          >
+            {truncateText(this.props.title, 32)
+            }
+          </Link>
           <div className="price">{this.props.price}</div>
         </div>
       </div>
@@ -43,17 +66,17 @@ function truncateText(str, maxLength) {
 }
 
 // const mapStateToProps = state => {
+//   console.log('state', state);
 //   return {
-//     cards: state.cardsList
+//     card: state.cardsList,
 //   }
 // }
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     loadCards: () => {
-//       dispatch(loadCards())
-//     }
-//   }
-// }
-
-export default Card;
+const mapDispatchToProps = dispatch => {
+  return {
+    loadCard: card => {
+      dispatch(loadCard(card))
+    }
+  }
+}
+export default connect(null, mapDispatchToProps)(Card);

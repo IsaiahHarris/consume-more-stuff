@@ -10,7 +10,7 @@ class Header extends React.Component {
   render() {
     return (
       <div className="header-container">
-        <img src="https://i.imgur.com/v1Cc25c.png" className="logo" alt="" />
+        <img src="https://i.imgur.com/34axnfY.png" className="logo" alt="" />
         <SearchBar classNameLabel="wrap" />
         <Button label="Login" />
       </div>
