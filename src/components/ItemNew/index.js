@@ -19,8 +19,64 @@ class ItemNew extends React.Component {
       itemStatusInput: '',
       conditionInput: ''
     }
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
+  handleInputChange(event) {
+    switch (event.target.value) {
+      case 'title':
+        this.setState({ titleInput: event.target.value })
+        break;
+      case 'price':
+        this.setState({ priceInput: event.target.value })
+        break;
+      case 'manufacturer':
+        this.setState({ manufacturerInput: event.target.value })
+        break;
+      case 'model':
+        this.setState({ modelInput: event.target.value })
+        break;
+      case 'dimensions':
+        this.setState({ dimensionsInput: event.target.value })
+        break;
+      case 'details':
+        this.setState({ detailsInput: event.target.value })
+        break;
+      case 'image':
+        this.setState({ imageInput: event.target.value })
+        break;
+      case 'seller':
+        this.setState({ sellerInput: event.target.value })
+        break;
+      case 'category':
+        this.setState({ categoryInput: event.target.value })
+        break;
+      case 'itemStatus':
+        this.setState({ itemStatusInput: event.target.value })
+        break;
+      case 'condition':
+        this.setState({ conditionInput: event.target.value })
+        break;
+      default:
+        break;
+    }
+  }
+
+  addNewCard(event) {
+    const data = {}
+    data.title = this.state.titleInput
+    data.price = this.state.priceInput
+    data.manufacturer = this.state.manufacturerInput
+    data.model = this.state.modelInput
+    data.dimensions = this.state.dimensionsInput
+    data.details = this.state.detailsInput
+    data.image = this.state.imageInput
+    data.seller = this.state.sellerInput
+    data.category = this.state.categoryInput
+    data.itemStatus = this.state.itemStatusInput
+    data.condition = this.state.conditionInput
+
+  }
   render() {
     const styles = {
       backgroundImage: 'url("https://i.imgur.com/34axnfY.png")',
