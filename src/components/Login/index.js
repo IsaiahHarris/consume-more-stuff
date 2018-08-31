@@ -4,8 +4,11 @@ import './Login.css';
 class Login extends Component {
   render() {
     return (
-      <div> 
-        <h1>Login Page(Gchu Style)</h1>
+      <div className='login-container'>
+      <h1>Login Page</h1>
+        <input type='text' name='username' placeholder='username' />
+        <input type='text' name='password' placeholder='password' />
+        <button className='btn'>Login</button>
       </div>
     );
   }
