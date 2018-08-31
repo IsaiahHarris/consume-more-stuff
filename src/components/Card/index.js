@@ -18,7 +18,7 @@ class Card extends React.Component {
 
     const styles = {
       backgroundImage: 'url(' + this.props.photo + ')',
-      backgroundSize: 'cover',
+      backgroundSize: 'contain',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center center',
       height: '100px',
