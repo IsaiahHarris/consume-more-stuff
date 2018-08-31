@@ -1,6 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { loadCard } from '../../actions';
 import Button from '../Button';
 import './itemDetail.css';
 class ItemDetail extends React.Component {
