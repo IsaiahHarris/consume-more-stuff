@@ -6,7 +6,19 @@ import Button from '../Button';
 class ItemNew extends React.Component {
   constructor(props) {
     super(props)
-
+    this.state = {
+      titleInput: '',
+      priceInput: '',
+      manufacturerInput: '',
+      modelInput: '',
+      dimensionsInput: '',
+      detailsInput: '',
+      imageInput: '',
+      sellerInput: '',
+      categoryInput: '',
+      itemStatusInput: '',
+      conditionInput: ''
+    }
   }
 
   render() {
