@@ -1,8 +1,7 @@
 import React from 'react';
 import Card from '../Card'
 import './CardsList.css'
-import { connect } from 'react-redux';
-import { loadCards } from '../../actions'
+
 const CardsList = props => {
 
   // constructor(props) {
@@ -23,13 +22,25 @@ const CardsList = props => {
     <div className="cards-list-container">
       {
         cardsSortedByTime.slice(0, 4).map((card, i) => {
+          console.log('card', card);
           const conditionName = card && card.condition ? card.condition.name : null
+          const sellerName = card && card.seller ? card.seller.username : null
+          const categoryName = card && card.category ? card.category.name : null
+          const itemStatusName = card && card.itemStatus ? card.itemStatus.name : null
           return <Card
             key={i}
             title={card.title}
             photo={card.image_url}
             price={card.price}
             condition={conditionName}
+            manufacturer={card.manufacturer}
+            dimensions={card.dimensions}
+            details={card.details}
+            seller={sellerName}
+            category={categoryName}
+            status={itemStatusName}
+            id={card.id}
+            card={card}
           />
         })
       }
