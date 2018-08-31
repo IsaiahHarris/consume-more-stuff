@@ -36,6 +36,7 @@ passport.serializeUser((user, done) => {
 })
 
 passport.deserializeUser((user, done) => {
+  debugger;
   new User({ id: user.id })
     .fetch()
     .then(user => {
@@ -58,10 +59,13 @@ passport.deserializeUser((user, done) => {
 passport.use(new LocalStrategy(function (username, password, done) {
   return new User({ username: username }).fetch()
     .then(user => {
-      if (user === null) {
+      user = user.toJSON();
+      console.log('user @LocalStrategy: ', user);
+
+      if (!user.username) {
+        console.log('Null use is triggered');
         return done(null, false, { message: 'bad username or password' });
       } else {
-        user = user.toJSON();
         bcrypt.compare(password, user.password)
           .then(samePassword => {
             if (samePassword) { return done(null, user); }

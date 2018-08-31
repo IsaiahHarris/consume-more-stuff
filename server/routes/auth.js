@@ -34,23 +34,27 @@ router.post('/register', (req, res) => {
   })
 });
 
+// Log in with username and password
 router.post('/login', (req, res, next) => {
-  console.log('login in user', req.body.username);
-
-  passport.authenticate('local', (err, user, info) => {
-    if (err) {
-      return res.send('login failed');
-    }
-    req.login(user, (err) => {
-      if (err) { return next(err); }
-      else {
-        res.json({ username: user.username })
+  if(req.user) { // if user is logged in tell them to log out first
+    res.json({message: `${req.user.username} is already logged in`});
+  } else {
+    passport.authenticate('local', (err, user, info) => {
+      if (err) {
+        return res.send('login failed');
       }
-    });
-  })(req, res, next);
+      req.login(user, (err) => {
+        if (err) { return next(err); }
+        else {
+          res.json({ username: user.username })
+        }
+      })
+    })(req, res, next);
+  }
 });
 
 router.get('/logout', (req, res) => {
+  console.log('login in user', req.user);
   req.logout();
   res.json({ success: true })
 });
