@@ -1,17 +1,19 @@
 import React from 'react';
-import Button from '../Button';
+import { connect } from 'react-redux';
+import { loadCard } from '../../actions';
+
 import './itemDetail.css';
+import Button from '../Button';
+
 class ItemDetail extends React.Component {
   constructor(props) {
-    super(props)
-
+    super(props);
   }
   // componentDidMount() {
   //   this.props.loadCard(4)
   //   console.log('this.props.after', this.props);
   // }
   render() {
-
     const {
       title,
       price,
@@ -24,36 +26,49 @@ class ItemDetail extends React.Component {
       category,
       status,
       condition
-    } = this.props.location.state
+    } = this.props.location.state;
+
     const styles = {
-      backgroundImage: 'url(' + photo + ')',
-      backgroundSize: 'contain',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center center',
-      height: '20vh',
-      width: '150px',
-      paddingTop: '3%'
+      backgroundImage: 'url(' + photo + ')'
     };
+
     return (
-      <div className="item-detail-view-container">
-        <div style={styles} className="item-photo"></div>
-        <div className="item-header">
-          <div className="item-title">{title}</div>
-          <div className="seller">{seller}</div>
+      <div className="item-container">
+        <h3>{title}</h3>
+        <div style={styles} className="item-photo" />
+        <div className="item-info">
+          <div className="item-info-condition">
+            Condition: <strong>{condition}</strong>
+          </div>
+          {/* Only render the following info if a value is given: */}
+          {price && (
+            <div className="item-info-price">
+              Price: <strong>{price}</strong>
+            </div>
+          )}
+          {manufacturer && (
+            <div className="item-info-manufacturer">
+              Make: <strong>{manufacturer}</strong>
+            </div>
+          )}
+          {model && (
+            <div className="item-info-model">
+              Model: <strong>{model}</strong>
+            </div>
+          )}
+          {dimensions && (
+            <div className="item-info-dimensions">
+              Dimensions: <strong>{dimensions}</strong>
+            </div>
+          )}
+          {details && <div className="item-info-note">Note: {details}</div>}
         </div>
-        <div className="add-button-container">
-          <Button label='Add Photo' />
-        </div>
-        <div className="item-details-container">
-          <div className="item-price">Price: {price}</div>
-          <div className="item-condition">Condition: {condition}</div>
-          <div className="item-manufacturer">Make: {manufacturer}</div>
-          <div className="item-model">Model: {model}</div>
-          <div className="item-dimensions">dimensions: {dimensions}</div>
-          <div className="item-note">Note: {details}</div>
+        <div className="item-buttons">
+          <Button label="Reply" />
+          <Button label="Back" />
         </div>
       </div>
-    )
+    );
   }
 }
 
