@@ -5,32 +5,35 @@ import { loadCard } from '../../actions';
 class ItemDetail extends React.Component {
   constructor(props) {
     super(props)
-    console.log('this.propsbefore', this.props);
+
   }
-  componentDidMount() {
-    this.props.loadCard()
-  }
+  // componentDidMount() {
+  //   this.props.loadCard(4)
+  //   console.log('this.props.after', this.props);
+  // }
   render() {
-    console.log('this.propsafter', this.props);
+    console.log('this.propsitemdetail', this.props);
     return (
       <div className="item-detail-view">
-        <div className="hi">hiiii</div>
+        <div className="hi">hi</div>
       </div>
     )
   }
 }
-const mapStateToProps = state => {
-  return {
-    card: state.cardsList,
-  }
-}
 
-const mapDispatchToProps = dispatch => {
-  return {
-    loadCard: card => {
-      dispatch(loadCard(1))
-    }
-  }
-}
+// const mapStateToProps = state => {
+//   console.log('state', state);
+//   return {
+//     card: state.cardsList,
+//   }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ItemDetail);
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     loadCard: card => {
+//       dispatch(loadCard(card))
+//     }
+//   }
+// }
+
+export default ItemDetail;

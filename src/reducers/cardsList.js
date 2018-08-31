@@ -21,7 +21,7 @@ const cardsList = (state = initialState, action) => {
     case LOAD_CARDS:
       return [...action.cards]
     case LOAD_CARD:
-      return [...action.card]
+      return [action.card]
     default:
       return state;
   }
