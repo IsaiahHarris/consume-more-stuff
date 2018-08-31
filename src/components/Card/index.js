@@ -9,7 +9,7 @@ class Card extends React.Component {
   }
 
   // componentDidMount() {
-  //   this.props.loadCards();
+  //   const { handle } = this.props.match.params;
   // }
 
   render() {
@@ -28,8 +28,11 @@ class Card extends React.Component {
           <div className={this.props.condition}>{this.props.condition}</div>
           <div style={styles} className="photo" />
           <Link
-            to={`/items/${this.props.id}`
-            }>{truncateText(this.props.title, 32)
+            to={`${this.props.id}`
+            }
+            card={this.props.card}
+          >
+            {truncateText(this.props.title, 32)
             }
           </Link>
           <div className="price">{this.props.price}</div>

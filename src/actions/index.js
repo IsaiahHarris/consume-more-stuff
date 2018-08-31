@@ -29,7 +29,7 @@ export const loadCategories = () => {
 
 export const loadCard = (card) => {
   return dispatch => {
-    return axios.get(`api/items/${card}`)
+    return axios.get(`/api/items/${card}`)
       .then(response => {
         dispatch({
           type: LOAD_CARD,

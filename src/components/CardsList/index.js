@@ -30,6 +30,7 @@ const CardsList = props => {
             price={card.price}
             condition={conditionName}
             id={card.id}
+            card={card}
           />
         })
       }
