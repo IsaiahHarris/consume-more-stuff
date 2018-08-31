@@ -17,8 +17,7 @@ const User = require('./db/models/User');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 
-
-
+//-- PASSPORT configs start --//
 app.use(session({
   store: new Redis(),
   secret: process.env.PASSPORT_SECRET,
@@ -30,6 +29,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser((user, done) => {
+  console.log('serialized user ', user);
+  console.log('serialize done', done);
+
   return done(null, {
     id: user.id,
     username: user.username
@@ -37,48 +39,51 @@ passport.serializeUser((user, done) => {
 })
 
 passport.deserializeUser((user, done) => {
-  new User({ id: user.id })
-    .fetch()
-    .then(user => {
-      if (!user) {
-        return done(null, false)
-      } else {
-        user = user.toJSON();
-        return done(null, {
-          id: user.id,
-          username: user.username
-        })
-      }
+  console.log('deserializing user: ', user);
+  new User({ id: user.id}).fetch()
+  .then(user => {
+    user = user.toJSON();
+    return done(null, { // You can get more stuff from db
+      id: user.id,
+      username: user.username
     })
-    .catch(err => {
-      console.log('err.messagejhjh', err.message);
-      return done(err)
-    })
+  })
+  .catch((err) => {
+    console.log(err);
+    return done(err);
+  })
 })
 
-passport.use(new LocalStrategy(function (username, password, done) {
-  return new User({ username: username }).fetch()
-    .then(user => {
-      if (user === null) {
-        return done(null, false, { message: 'bad username or password' });
-      } else {
-        user = user.toJSON();
-        bcrypt.compare(password, user.password)
-          .then(samePassword => {
-            if (samePassword) { return done(null, user); }
-            else {
-              return done(null, false, { message: 'bad username or password' });
-            }
-          })
-      }
-    })
-    .catch(err => {
-      console.log('err', err);
-      return done(err);
-    });
-}));
+passport.use(new LocalStrategy(function(username, password, done) {
+  return new User({username: username}).fetch()
+  .then( user => {
+    console.log(user)
+    if (!user) {
+      console.log('user null not working?');
+      return done({message: 'Wrong Username'});
+    }
+    else {
+      console.log('else not working?');
+      user = user.toJSON();
+      console.log(password, user.pasword);
+      bcrypt.compare(password, user.password)
+      .then((samePassword) => {
+        if (samePassword) { return done(null, user); }
+        else {
+          return done({message: 'Wrong Password'});
+        }
+      })
 
-//-- send you to all the api routes --//
+    }
+  })
+  .catch( err => {
+    console.log('error: ', err);
+    return done(err);
+  })
+}))
+//-- PASSPORT configs end --//
+
+// Send you to all the api routes
 app.use('/api', routes);
 
 //-- 404 --//

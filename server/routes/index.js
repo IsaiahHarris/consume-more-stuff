@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.use('/categories', categories);
 router.use('/items', items);
-router.use('/', auth)
+router.use('/', auth);
 
 module.exports = router;

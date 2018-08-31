@@ -15,6 +15,7 @@ router.post('/register', (req, res) => {
     if (err) { return res.status(500); }
     bcrypt.hash(req.body.password, salt, (err, hashedPassword) => {
       if (err) { return res.status(500); }
+      // needs username(unique), password, and email(unique) to register
       return new User({
         username: username.toLowerCase(),
         password: hashedPassword,
@@ -27,28 +28,35 @@ router.post('/register', (req, res) => {
         })
         .catch(err => {
           console.log('err.message', err.message);
-          res.json({ message: 'username already exists' })
+          res.json({ message: 'username/email already exists' })
         });
     })
   })
 });
 
+// Log in with username and password
 router.post('/login', (req, res, next) => {
-  req.body.username = req.body.username
-  passport.authenticate('local', (err, user, info) => {
-    if (err) {
-      return res.send(err.message);
-    }
-    req.login(user, (err) => {
-      if (err) { return next(err); }
-      else {
-        res.json({ username: user.username })
+  console.log('login in', req.body);
+  if(req.user) { // if user is logged in tell them to log out first
+    res.json({message: `${req.user.username} is already logged in`});
+  } else {
+    passport.authenticate('local', (err, user) => {
+      if (err) {
+        return res.json({message: err.message});
+      } else {
+        req.login(user, (err) => {
+          if (err) { return next(err); }
+          else {
+            res.json({ username: user.username })
+          }
+        })
       }
-    });
-  })(req, res, next);
+    })(req, res, next);
+  }
 });
 
 router.get('/logout', (req, res) => {
+  console.log('login in user', req.user);
   req.logout();
   res.json({ success: true })
 });
