@@ -39,16 +39,17 @@ router.post('/login', (req, res, next) => {
   if(req.user) { // if user is logged in tell them to log out first
     res.json({message: `${req.user.username} is already logged in`});
   } else {
-    passport.authenticate('local', (err, user, info) => {
+    passport.authenticate('local', (err, user) => {
       if (err) {
-        return res.send('login failed');
+        return res.json({message: err.message});
+      } else {
+        req.login(user, (err) => {
+          if (err) { return next(err); }
+          else {
+            res.json({ username: user.username })
+          }
+        })
       }
-      req.login(user, (err) => {
-        if (err) { return next(err); }
-        else {
-          res.json({ username: user.username })
-        }
-      })
     })(req, res, next);
   }
 });

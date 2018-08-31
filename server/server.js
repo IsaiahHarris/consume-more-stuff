@@ -35,50 +35,94 @@ passport.serializeUser((user, done) => {
   })
 })
 
+// passport.deserializeUser((user, done) => {
+//   debugger;
+//   new User({ id: user.id })
+//     .fetch()
+//     .then(response => {
+//       console.log('deserialize user: ', response);
+//       if (!response) {
+//         return done(null, false)
+//       } else {
+//         fetchedUser = response.toJSON();
+//         return done(null, {
+//           id: fetchedUser.id,
+//           username: fetchedUser.username
+//         })
+//       }
+//     })
+//     .catch(err => {
+//       console.log('err.messagejhjh', err.message);
+//       return done(err)
+//     })
+// })
+
+//--Temp Injection --//
 passport.deserializeUser((user, done) => {
-  debugger;
-  new User({ id: user.id })
-    .fetch()
-    .then(user => {
-      if (!user) {
-        return done(null, false)
-      } else {
-        user = user.toJSON();
-        return done(null, {
-          id: user.id,
-          username: user.username
-        })
-      }
+  console.log('deserializing');
+  new User({ id: user.id}).fetch()
+  .then(user => {
+    user = user.toJSON();
+    return done(null, { // You can get more stuff from db
+      id: user.id,
+      username: user.username
     })
-    .catch(err => {
-      console.log('err.messagejhjh', err.message);
-      return done(err)
-    })
+  })
+  .catch((err) => {
+    console.log(err);
+    return done(err);
+  })
 })
 
-passport.use(new LocalStrategy(function (username, password, done) {
-  return new User({ username: username }).fetch()
-    .then(user => {
-      user = user.toJSON();
-      console.log('user @LocalStrategy: ', user);
+// passport.use(new LocalStrategy(function (username, password, done) {
+//   return new User({ username: username }).fetch()
+//     .then(user => {
+//       if(!user) {
+//         return done(null, false, { message: 'bad username or password' });
+//       } else {
+//         user = user.toJSON();
+//         console.log('user @LocalStrategy: ', user);
 
-      if (!user.username) {
-        console.log('Null use is triggered');
-        return done(null, false, { message: 'bad username or password' });
-      } else {
-        bcrypt.compare(password, user.password)
-          .then(samePassword => {
-            if (samePassword) { return done(null, user); }
-            else {
-              return done(null, false, { message: 'bad username or password' });
-            }
-          })
-      }
-    })
-    .catch(err => {
-      return done(err);
-    });
-}));
+//         bcrypt.compare(password, user.password)
+//           .then(samePassword => {
+//             if (samePassword) { return done(null, user); }
+//             else {
+//               return done(null, false, { message: 'bad username or password' });
+//             }
+//           })
+//       }
+//     })
+//     .catch(err => {
+//       return done(err);
+//     });
+// }));
+
+//--Temp Injection --//
+passport.use(new LocalStrategy(function(username, password, done) {
+  return new User({username: username}).fetch()
+  .then( user => {
+    console.log(user)
+    if (user === null) {
+      return done(null, false, {message: 'bad username or password'});
+    }
+    else {
+      user = user.toJSON();
+      console.log(password, user.pasword);
+      bcrypt.compare(password, user.password)
+      .then((samePassword) => {
+        if (samePassword) { return done(null, user); }
+        else {
+          return done(null, false, {message: 'bad username or password'});
+        }
+      })
+
+    }
+  })
+  .catch( err => {
+    console.log('error: ', err);
+    return done(err);
+  })
+}))
 //-- PASSPORT configs end --//
 
 // Send you to all the api routes
