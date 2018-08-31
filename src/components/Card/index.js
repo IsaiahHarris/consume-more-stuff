@@ -1,7 +1,6 @@
 import React from 'react';
 import './Card.css';
-import { connect } from 'react-redux';
-import { loadCards } from '../../actions';
+
 
 import { Link } from 'react-router-dom';
 class Card extends React.Component {
@@ -30,7 +29,8 @@ class Card extends React.Component {
           <div style={styles} className="photo" />
           <Link
             to={`/items/${this.props.id}`
-            }>{truncateText(this.props.title, 32)}
+            }>{truncateText(this.props.title, 32)
+            }
           </Link>
           <div className="price">{this.props.price}</div>
         </div>

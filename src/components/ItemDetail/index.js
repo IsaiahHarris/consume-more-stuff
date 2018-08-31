@@ -1,15 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux'
 
-class ItemDetail extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-  render() {
-    return (
+
+const ItemDetail = props => {
+  return (
+    <div className="item-detail-view">
       <div className="hello">hiiii</div>
-    )
-  }
+    </div>
+  )
 }
 
 export default ItemDetail;
