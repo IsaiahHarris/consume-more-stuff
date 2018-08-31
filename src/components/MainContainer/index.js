@@ -5,6 +5,8 @@ import './MainContainer.css';
 import Sidebar from '../Sidebar';
 import Body from '../Body';
 import ItemDetail from '../ItemDetail';
+import Login from '../Login';
+
 const MainContainer = () => {
 
   return (
@@ -20,11 +22,15 @@ const MainContainer = () => {
           exact path="/items/:id"
           component={ItemDetail}
         />
-        <Route
+        {/* <Route
           exact path="/login"
           render={() => {
             return <h1>LOGIN</h1>;
           }}
+        /> */}
+        <Route 
+          exact path="/login"
+          component={Login}
         />
       </div>
     </Switch>
