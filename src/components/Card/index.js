@@ -33,7 +33,17 @@ class Card extends React.Component {
           <Link
             to={{
               pathname: `/items/${this.props.id}`, state: {
-                id: this.props.title
+                title: this.props.title,
+                photo: this.props.photo,
+                price: this.props.price,
+                condition: this.props.conditionName,
+                manufacturer: this.props.manufacturer,
+                model: this.props.model,
+                dimensions: this.props.dimensions,
+                details: this.props.details,
+                seller: this.props.seller,
+                category: this.props.category,
+                status: this.props.itemStatusName,
               }
             }}
             onClick={() => { this.props.loadCard(this.props.id) }}

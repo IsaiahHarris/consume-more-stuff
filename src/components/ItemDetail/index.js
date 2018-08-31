@@ -12,12 +12,22 @@ class ItemDetail extends React.Component {
   //   console.log('this.props.after', this.props);
   // }
   render() {
-    const { foo } = this.props.location.state
-
-    console.log('this.propsitemdetail', foo);
+    const {
+      title,
+      price,
+      manufacturer,
+      model,
+      dimensions,
+      details,
+      photo,
+      seller,
+      category,
+      status,
+      condition
+    } = this.props.location.state
     return (
       <div className="item-detail-view">
-        <div className="hi">hi</div>
+        <div className="hi">{title}</div>
       </div>
     )
   }

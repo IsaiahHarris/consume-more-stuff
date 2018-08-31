@@ -25,7 +25,9 @@ const CardsList = props => {
           console.log('card', card);
           const conditionName = card && card.condition ? card.condition.name : null
           const sellerName = card && card.seller ? card.seller.username : null
-
+          const categoryName = card && card.category ? card.seller.name : null
+          const itemStatusName = card && card.itemStatus ? card.itemStatus.name : null
+          console.log('itemStatusName', itemStatusName);
           return <Card
             key={i}
             title={card.title}
@@ -37,6 +39,8 @@ const CardsList = props => {
             dimensions={card.dimensions}
             details={card.details}
             seller={sellerName}
+            category={categoryName}
+            itemStatusName={itemStatusName}
             id={card.id}
             card={card}
           />
