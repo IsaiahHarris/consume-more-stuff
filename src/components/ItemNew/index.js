@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 
 import './ItemNew.css';
 import Button from '../Button';
-import React from 'react';
-import './itemDetail.css';
+
 class ItemNew extends React.Component {
   constructor(props) {
     super(props)
@@ -11,22 +10,8 @@ class ItemNew extends React.Component {
   }
 
   render() {
-
-    const {
-      title,
-      price,
-      manufacturer,
-      model,
-      dimensions,
-      details,
-      photo,
-      seller,
-      category,
-      status,
-      condition
-    } = this.props.location.state
     const styles = {
-      backgroundImage: 'url(' + photo + ')',
+      backgroundImage: 'url("https://i.imgur.com/34axnfY.png")',
       backgroundSize: 'contain',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center center',
@@ -38,19 +23,19 @@ class ItemNew extends React.Component {
       <div className="item-detail-view-container">
         <div style={styles} className="item-photo"></div>
         <div className="item-header">
-          <div className="item-title">{title}</div>
-          <div className="seller">{seller}</div>
+          <div className="item-title"></div>
+          <div className="seller"></div>
         </div>
         <div className="add-button-container">
           <Button label='Add Photo' />
         </div>
         <div className="item-details-container">
-          <div className="item-price">Price: {price}</div>
-          <div className="item-condition">Condition: {condition}</div>
-          <div className="item-manufacturer">Make: {manufacturer}</div>
-          <div className="item-model">Model: {model}</div>
-          <div className="item-dimensions">dimensions: {dimensions}</div>
-          <div className="item-note">Note: {details}</div>
+          <div className="item-price">Price: </div>
+          <div className="item-condition">Condition: </div>
+          <div className="item-manufacturer">Make: </div>
+          <div className="item-model">Model: </div>
+          <div className="item-dimensions">dimensions: </div>
+          <div className="item-note">Note: </div>
         </div>
       </div>
     )
