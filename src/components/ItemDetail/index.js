@@ -1,26 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { loadCard } from '../../actions';
-
+import axios from 'axios';
 import './itemDetail.css';
 import Button from '../Button';
+
+let realCard = '';
 
 class ItemDetail extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      card: axios.get(`/api/items/${this.props.match.params.id}`)
+        .then(response => {
+          console.log('response.data[0]', response.data[0]);
+          realCard = response.data[0]
+        })
+    };
   }
 
-  componentDidMount() {
-    this.props.loadCard(this.props.match.params.id)
+  componentWillMount() {
+    let item;
+    this.props.loadCard(this.props.match.params.id);
+    this.setState({ item });
   }
 
   render() {
-    const card = this.props.card[0]
-    console.log('card', card);
-    const photo = card.image_url;
+    const photo = realCard.image_url
+    console.log('realCard', realCard);
     const styles = {
-      backgroundImage: 'url(' + photo + ')'
+      backgroundImage: "url(" + photo + ")"
     };
+    const conditionName = realCard && realCard.condition ? realCard.condition.name : null
 
     return (
       <div className="item-container">
@@ -28,7 +39,7 @@ class ItemDetail extends React.Component {
         <div style={styles} className="item-photo" />
         <div className="item-info">
           <div className="item-info-condition">
-            Condition: <strong>{card.condition}</strong>
+            Condition: <strong>{conditionName}</strong>
           </div>
           {/* Only render the following info if a value is given: */}
 
@@ -63,7 +74,6 @@ class ItemDetail extends React.Component {
 }
 
 const mapStateToProps = state => {
-  console.log('state', state);
   return {
     card: state.cardsList,
   }
@@ -77,4 +87,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, { loadCard })(ItemDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(ItemDetail);
