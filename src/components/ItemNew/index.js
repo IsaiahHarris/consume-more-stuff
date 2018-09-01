@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { addCard, loadCategories, loadConditions } from '../../actions';
 import './ItemNew.css';
 import Button from '../Button';
+import AddNewButton from '../../AddNewButton';
+
 
 class ItemNew extends React.Component {
   constructor(props) {
@@ -51,6 +53,12 @@ class ItemNew extends React.Component {
       case 'image':
         this.setState({ imageInput: event.target.value })
         break;
+      case 'seller':
+        this.setState({ sellerInput: event.target.value })
+        break;
+      case 'itemStatus':
+        this.setState({ itemStatusInput: event.target.value })
+        break;
       case 'category':
         this.setState({ categoryInput: event.target.value })
         break;
@@ -70,9 +78,12 @@ class ItemNew extends React.Component {
     data.model = this.state.modelInput
     data.dimensions = this.state.dimensionsInput
     data.details = this.state.detailsInput
-    data.image = this.state.imageInput
-    data.category = this.state.categoryInput
-    data.condition = this.state.conditionInput
+    data.image_url = this.state.imageInput
+    data.category_id = this.state.categoryInput
+    data.condition_id = this.state.conditionInput
+    data.item_status_id = 1;
+    data.seller_id = 1;
+    console.log('this.state', this.state);
     this.props.addCard(data)
   }
 
@@ -128,7 +139,7 @@ class ItemNew extends React.Component {
             <option value="">--Condition--</option>
             {this.props.conditions.map(condition => {
               return (
-                <option>{condition.name}</option>
+                <option value={condition.id}>{condition.name}</option>
               )
             })}
           </select>
@@ -167,7 +178,7 @@ class ItemNew extends React.Component {
             <option value="">--Category--</option>
             {this.props.categories.map(category => {
               return (
-                <option>{category.name}</option>
+                <option value={category.id} >{category.name}</option>
               )
             })}
           </select>
@@ -179,9 +190,22 @@ class ItemNew extends React.Component {
             value={this.state.detailsInput}
             onChange={this.handleInputChange}
           />
-
+          <label htmlFor="seller">Seller: </label>
+          <input type="text"
+            name="seller"
+            id="seller"
+            value={this.state.sellerInput}
+            onChange={this.handleInputChange}
+          />
+          <label htmlFor="itemStatus">ItemStatus: </label>
+          <input type="text"
+            name="itemStatus"
+            id="itemStatus"
+            value={this.state.itemStatusInput}
+            onChange={this.handleInputChange}
+          />
         </div>
-        <Button label="Add" onClick={this.addNewCard} />
+        <AddNewButton label="Add" clickHandler={this.addNewCard} />
       </div>
     )
   }
