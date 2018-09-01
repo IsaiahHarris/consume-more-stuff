@@ -90,15 +90,29 @@ class ItemNew extends React.Component {
       <div className="item-detail-view-container">
         <div style={styles} className="item-photo"></div>
         <div className="item-header">
-          <div className="item-title"></div>
-          <div className="seller"></div>
+          <label htmlFor="title">Title: </label>
+          <input
+            type="text"
+            name="title"
+            id="title"
+            value={this.state.conditionInput}
+            onChange={this.handleInputChange} />
         </div>
+
         <div className="add-button-container">
           <Button label='Add Photo' />
         </div>
+
         <div className="item-details-container">
-          <div className="item-price">Price: </div>
+          <label htmlFor="price">Price: </label>
+          <input
+            type="text"
+            name="price"
+            id="price"
+            value={this.state.conditionInput}
+            onChange={this.handleInputChange} />
           <div className="item-condition">Condition: </div>
+
           <div className="item-manufacturer">Make: </div>
           <div className="item-model">Model: </div>
           <label htmlFor="dimensions">Dimensions: </label>
