@@ -13,8 +13,8 @@ const ItemStatus = require('../../db/models/ItemStatus');
 router.route('/')
   .get((req, res) => { // Fetches all the items for homepage
     return Item
-    .where({deleted_at: null})
-    .fetchAll({withRelated: ['seller', 'category', 'condition', 'itemStatus']})
+      .where({ deleted_at: null })
+      .fetchAll({ withRelated: ['seller', 'category', 'condition', 'itemStatus'] })
       .then(items => {
         return res.json(items);
       })
@@ -25,6 +25,9 @@ router.route('/')
   .post((req, res) => { // Posts one new item
     //--Primary Keys--// 
     const title = req.body.title.trim();
+
+    req.body.price ? req.body.price.trim() : req.body.price
+
     const price = req.body.price.trim();
     const manufacturer = req.body.manufacturer.trim();
     const model = req.body.model.trim();
@@ -55,8 +58,8 @@ router.route('/')
     // Save item to db with bookshelf
     return new Item()
       .save(itemInput)
-      .then( response => {
-        return response.refresh({withRelated: ['seller', 'category', 'condition', 'itemStatus']})
+      .then(response => {
+        return response.refresh({ withRelated: ['seller', 'category', 'condition', 'itemStatus'] })
       })
       .then(item => {
         return res.json(item);
@@ -74,7 +77,7 @@ router.route('/search/:term')
     return Item
       .query(qb => {
         qb.whereRaw(`LOWER(title) LIKE ?`, [term])
-          .andWhere({deleted_at: null});
+          .andWhere({ deleted_at: null });
       })
       .fetchAll()
       .then(items => {
@@ -92,19 +95,19 @@ router.route('/category/:categoryId')
     console.log('category running: ', category_id);
 
     return Item
-    .query(qb => {
-      qb.where({category_id})
-        .andWhere({deleted_at: null});
-    })
-    .fetchAll({withRelated: ['seller', 'category', 'condition', 'itemStatus']})
+      .query(qb => {
+        qb.where({ category_id })
+          .andWhere({ deleted_at: null });
+      })
+      .fetchAll({ withRelated: ['seller', 'category', 'condition', 'itemStatus'] })
       .then(items => {
-          return res.json(items);
+        return res.json(items);
       })
       .catch(err => {
         return res.json({ 'error': err.message })
       });
   })
-  
+
 //-- Specfic Item Routes at ItemById.js --//
 router.use('/', itemId);
 

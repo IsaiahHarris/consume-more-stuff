@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addCard, loadCategories } from '../../actions';
+import { addCard, loadCategories, loadConditions } from '../../actions';
 import './ItemNew.css';
 import Button from '../Button';
 
@@ -25,10 +25,11 @@ class ItemNew extends React.Component {
   }
 
   componentDidMount() {
-    this.props.loadCategories()
+    this.props.loadCategories();
+    this.props.loadConditions();
   }
   handleInputChange(event) {
-    switch (event.target.value) {
+    switch (event.target.id) {
       case 'title':
         this.setState({ titleInput: event.target.value })
         break;
@@ -88,15 +89,19 @@ class ItemNew extends React.Component {
     };
     return (
       <div className="item-detail-view-container">
+
         <div style={styles} className="item-photo"></div>
+
         <div className="item-header">
+
           <label htmlFor="title">Title: </label>
           <input
             type="text"
             name="title"
             id="title"
-            value={this.state.conditionInput}
+            value={this.state.titleInput}
             onChange={this.handleInputChange} />
+
         </div>
 
         <div className="add-button-container">
@@ -104,23 +109,52 @@ class ItemNew extends React.Component {
         </div>
 
         <div className="item-details-container">
+
           <label htmlFor="price">Price: </label>
           <input
             type="text"
             name="price"
             id="price"
-            value={this.state.conditionInput}
+            value={this.state.priceInput}
             onChange={this.handleInputChange} />
-          <div className="item-condition">Condition: </div>
 
-          <div className="item-manufacturer">Make: </div>
-          <div className="item-model">Model: </div>
+          <label htmlFor="condition">Condition: </label>
+          <select
+            name="condition"
+            id="condition"
+            value={this.state.conditionInput}
+            onChange={this.handleInputChange}
+          >
+            <option value="">--Condition--</option>
+            {this.props.conditions.map(condition => {
+              return (
+                <option>{condition.name}</option>
+              )
+            })}
+          </select>
+
+          <label htmlFor="manufacturer">Manufacturer: </label>
+          <input
+            type="text"
+            name="manufacturer"
+            id="manufacturer"
+            value={this.state.manufacturerInput}
+            onChange={this.handleInputChange} />
+
+          <label htmlFor="model">Model: </label>
+          <input
+            type="text"
+            name="model"
+            id="model"
+            value={this.state.modelInput}
+            onChange={this.handleInputChange} />
+
           <label htmlFor="dimensions">Dimensions: </label>
           <input
             type="text"
             name="dimensions"
             id="dimensions"
-            value={this.state.conditionInput}
+            value={this.state.dimensionsInput}
             onChange={this.handleInputChange} />
 
           <label htmlFor="category">Category: </label>
@@ -160,12 +194,16 @@ const mapDispatchToProps = dispatch => {
     },
     loadCategories: () => {
       dispatch(loadCategories())
+    },
+    loadConditions: () => {
+      dispatch(loadConditions())
     }
   }
 }
 const mapStateToProps = state => {
   return {
-    categories: state.categoriesList
+    categories: state.categoriesList,
+    conditions: state.conditionsList
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ItemNew);
