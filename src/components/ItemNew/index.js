@@ -4,7 +4,7 @@ import { addCard, loadCategories, loadConditions } from '../../actions';
 import './ItemNew.css';
 import Button from '../Button';
 import AddNewButton from '../../AddNewButton';
-
+import { Link } from 'react-router-dom';
 
 class ItemNew extends React.Component {
   constructor(props) {
