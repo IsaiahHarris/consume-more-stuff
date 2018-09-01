@@ -51,6 +51,6 @@ export const addUser = (user) => {
           user: response.data
         })
       })
-      .catch(err => console.log('caught response error: ', err.response));
+      .catch(err => console.log('Login Error! ', err.response));
   }
 }
