@@ -45,7 +45,6 @@ class Card extends React.Component {
                 status: this.props.status,
               }
             }}
-            onClick={() => { this.props.loadCard(this.props.id) }}
             id={this.props.id}
           >
             {truncateText(this.props.title, 32)

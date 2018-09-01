@@ -12,17 +12,13 @@ const CardsList = props => {
   // }
   // render() {
 
-  const cardsSortedByTime = props.cards;
 
-  cardsSortedByTime.sort(function (a, b) {
-    return a.created_at - b.created_at
-  })
+
 
   return (
     <div className="cards-list-container">
       {
-        cardsSortedByTime.slice(0, 4).map((card, i) => {
-          console.log('card', card);
+        props.cards.slice(0, 4).map((card, i) => {
           const conditionName = card && card.condition ? card.condition.name : null
           const sellerName = card && card.seller ? card.seller.username : null
           const categoryName = card && card.category ? card.category.name : null

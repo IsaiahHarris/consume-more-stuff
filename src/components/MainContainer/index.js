@@ -6,6 +6,7 @@ import './MainContainer.css';
 import Sidebar from '../Sidebar';
 import Body from '../Body';
 import ItemDetail from '../ItemDetail';
+import ItemNew from '../ItemNew';
 import Login from '../Login';
 
 class MainContainer extends Component {
@@ -15,32 +16,30 @@ class MainContainer extends Component {
 
   render() {
     console.log('This is current logged in user', this.props.user);
-    
+
     return (
-      <Switch>
-        <div className="MainContainer">
-          <Sidebar />
+      <div className="MainContainer">
+        <Sidebar />
+        <Switch>
           {/* NOTE: Change "Body" to something more descriptive, e.g., Home Page */}
           <Route
             exact path="/"
             component={Body}
           />
           <Route
+            exact path="/items/new"
+            component={ItemNew}
+          />
+          <Route
             exact path="/items/:id"
             component={ItemDetail}
           />
-          {/* <Route
-            exact path="/login"
-            render={() => {
-              return <h1>LOGIN</h1>;
-            }}
-          /> */}
-          <Route 
+          <Route
             exact path="/login"
             component={Login}
           />
-        </div>
-      </Switch>
+        </Switch>
+      </div>
     );
   }
 }

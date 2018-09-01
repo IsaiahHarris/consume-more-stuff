@@ -1,77 +1,103 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { loadCard } from '../../actions';
-import Button from '../Button';
 import './itemDetail.css';
-class ItemDetail extends React.Component {
-  constructor(props) {
-    super(props)
+import Button from '../Button';
+import { Redirect } from 'react-router-dom';
 
-  }
-  // componentDidMount() {
-  //   this.props.loadCard(4)
-  //   console.log('this.props.after', this.props);
-  // }
-  render() {
-
-    const {
-      title,
-      price,
-      manufacturer,
-      model,
-      dimensions,
-      details,
-      photo,
-      seller,
-      category,
-      status,
-      condition
-    } = this.props.location.state
-    const styles = {
-      backgroundImage: 'url(' + photo + ')',
-      backgroundSize: 'contain',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center center',
-      height: '20vh',
-      width: '150px',
-      paddingTop: '3%'
-    };
-    return (
-      <div className="item-detail-view-container">
-        <div style={styles} className="item-photo"></div>
-        <div className="item-header">
-          <div className="item-title">{title}</div>
-          <div className="seller">{seller}</div>
-        </div>
-        <div className="add-button-container">
-          <Button label='Add Photo' />
-        </div>
-        <div className="item-details-container">
-          <div className="item-price">Price: {price}</div>
-          <div className="item-condition">Condition: {condition}</div>
-          <div className="item-manufacturer">Make: {manufacturer}</div>
-          <div className="item-model">Model: {model}</div>
-          <div className="item-dimensions">dimensions: {dimensions}</div>
-          <div className="item-note">Note: {details}</div>
-        </div>
-      </div>
-    )
+function switchCardVariable(card, location) {
+  if (card) {
+    return card[0]
+  } else if (location) {
+    return location
+  } else {
+    return '404'
   }
 }
 
-// const mapStateToProps = state => {
-//   console.log('state', state);
-//   return {
-//     card: state.cardsList,
-//   }
-// }
+class ItemDetail extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     loadCard: card => {
-//       dispatch(loadCard(card))
-//     }
-//   }
-// }
+  componentDidMount() {
+    this.props.loadCard(this.props.match.params.id);
+  }
 
-export default ItemDetail;
+  render() {
+    let card = switchCardVariable(this.props.card[0], this.props.location.state)
+    if (card === '404') {
+      return (
+        ''
+      )
+    } else if (!card) {
+      console.log('no card');
+      return (
+        ''
+      )
+    } else {
+      const photo = card.image_url
+      const styles = {
+        backgroundImage: "url( " + photo + ")"
+      };
+      const conditionName = card && card.condition ? card.condition.name : null
+      return (
+        <div className="item-container">
+          <h3></h3>
+          <div style={styles} className="item-photo" />
+          <div className="item-info">
+            <div className="item-info-condition">
+              Condition: <strong>{conditionName}</strong>
+            </div>
+            {/* Only render the following info if a value is given: */}
+
+            {card.price && <div className="item-info-price">
+              Price: <strong>{card.price}</strong>
+            </div>
+            }
+
+
+            {card.manufacturer && <div className="item-info-manufacturer">
+              Make: <strong>{card.manufacturer}</strong>
+            </div>
+            }
+
+
+            {card.model && <div className="item-info-model">
+              Model: <strong>{card.model}</strong>
+            </div>
+            }
+            {card.dimensions && < div className="item-info-dimensions">
+              Dimensions: <strong>{card.dimensions}</strong>
+            </div>
+            }
+
+            {card.details &&
+              <div className="item-info-note">Note: {card.details} </div>
+            }
+          </div>
+          <div className="item-buttons">
+            <Button label="Reply" />
+            <Button label="Back" />
+          </div>
+        </div >
+      );
+    }
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    card: state.cardsList,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    loadCard: card => {
+      dispatch(loadCard(card))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ItemDetail);
