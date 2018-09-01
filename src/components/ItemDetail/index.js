@@ -31,7 +31,6 @@ class ItemDetail extends React.Component {
         ''
       )
     } else if (!card) {
-      console.log('no card');
       return (
         ''
       )
