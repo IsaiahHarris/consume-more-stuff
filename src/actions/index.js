@@ -45,6 +45,7 @@ export const loadCard = (card) => {
   return dispatch => {
     return axios.get(`/api/items/${card}`)
       .then(response => {
+        console.log('response', response);
         dispatch({
           type: LOAD_CARD,
           card: response.data
@@ -61,6 +62,7 @@ export const addCard = (data) => {
           type: ADD_CARD,
           card: response.data
         })
+        window.location.href = `/items/${response.data.id}`
       })
   }
 }

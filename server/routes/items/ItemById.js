@@ -24,13 +24,15 @@ router.route('/:id')
   .put((req, res) => { // Edit a specfic item info
     //--Primary Keys--//
     const id = req.params.id;
-    const title = req.body.title.trim();
-    const price = req.body.price.trim();
-    const manufacturer = req.body.manufacturer.trim();
-    const model = req.body.model.trim();
-    const dimensions = req.body.dimensions.trim();
-    const details = req.body.details.trim();
-    const image_url = req.body.image_url.trim();
+
+
+    const title = req.body.title ? req.body.title.trim() : null;
+    const price = req.body.price ? req.body.price.trim() : null;
+    const manufacturer = req.body.manufacturer ? req.body.manufacturer.trim() : null;
+    const model = req.body.model ? req.body.model.trim() : null;
+    const dimensions = req.body.dimensions ? req.body.dimensions.trim() : null;
+    const details = req.body.details ? req.body.details.trim() : null;
+    const image_url = req.body.image_url ? req.body.image_url.trim() : null;
     //--Foreign Keys--//
     const category_id = parseInt(req.body.category_id);
     const item_status_id = parseInt(req.body.item_status_id);
