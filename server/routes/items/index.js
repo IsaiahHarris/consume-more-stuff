@@ -12,7 +12,9 @@ const ItemStatus = require('../../db/models/ItemStatus');
 // items root route
 router.route('/')
   .get((req, res) => { // Fetches all the items for homepage
-    return Item
+    return Item.query(function (qb) {
+      qb.orderBy('created_at', 'DESC')
+    })
       .where({ deleted_at: null })
       .fetchAll({ withRelated: ['seller', 'category', 'condition', 'itemStatus'] })
       .then(items => {
@@ -26,14 +28,12 @@ router.route('/')
     //--Primary Keys--// 
     const title = req.body.title.trim();
 
-    req.body.price ? req.body.price.trim() : req.body.price
-
-    const price = req.body.price.trim();
-    const manufacturer = req.body.manufacturer.trim();
-    const model = req.body.model.trim();
-    const dimensions = req.body.dimensions.trim();
-    const details = req.body.details.trim();
-    const image_url = req.body.image_url.trim();
+    const price = req.body.price ? req.body.price.trim() : req.body.price;
+    const manufacturer = req.body.manufacturer ? req.body.manufacturer.trim() : req.body.manufacturer;
+    const model = req.body.model ? req.body.model.trim() : req.body.model;
+    const dimensions = req.body.dimensions ? req.body.dimensions.trim() : req.body.dimensions;
+    const details = req.body.details ? req.body.details.trim() : req.body.details;
+    const image_url = req.body.image_url ? req.body.image_url.trim() : req.body.image_url;
     //--Foreign Keys--//
     const seller_id = parseInt(req.body.seller_id);
     const category_id = parseInt(req.body.category_id);
