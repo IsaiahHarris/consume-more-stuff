@@ -4,7 +4,8 @@ import { addCard, loadCategories, loadConditions } from '../../actions';
 import './ItemNew.css';
 import Button from '../Button';
 import AddNewButton from '../../AddNewButton';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+
 
 class ItemNew extends React.Component {
   constructor(props) {
@@ -29,6 +30,7 @@ class ItemNew extends React.Component {
   componentDidMount() {
     this.props.loadCategories();
     this.props.loadConditions();
+    this.props.addCard()
   }
   handleInputChange(event) {
     switch (event.target.id) {
@@ -83,12 +85,12 @@ class ItemNew extends React.Component {
     data.condition_id = this.state.conditionInput
     data.item_status_id = 1;
     data.seller_id = 1;
-    console.log('this.state', this.state);
     this.props.addCard(data)
+
   }
 
   render() {
-    console.log('this.props addnew', this.props);
+
     const styles = {
       backgroundImage: 'url("https://i.imgur.com/34axnfY.png")',
       backgroundSize: 'contain',
@@ -227,7 +229,8 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
   return {
     categories: state.categoriesList,
-    conditions: state.conditionsList
+    conditions: state.conditionsList,
+    card: state.cardsList
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ItemNew);

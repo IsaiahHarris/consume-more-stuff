@@ -27,8 +27,9 @@ class ItemDetail extends React.Component {
   render() {
     let card = switchCardVariable(this.props.card[0], this.props.location.state)
     if (card === '404') {
-      console.log('card 404', card);
-      return <Redirect to='/' />
+      return (
+        ''
+      )
     } else if (!card) {
       console.log('no card');
       return (
