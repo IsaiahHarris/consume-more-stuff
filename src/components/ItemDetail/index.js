@@ -9,82 +9,72 @@ class ItemDetail extends React.Component {
   constructor(props) {
     super(props);
   }
-  // componentDidMount() {
-  //   this.props.loadCard(4)
-  //   console.log('this.props.after', this.props);
-  // }
-  render() {
-    const {
-      title,
-      price,
-      manufacturer,
-      model,
-      dimensions,
-      details,
-      photo,
-      seller,
-      category,
-      status,
-      condition
-    } = this.props.location.state;
 
+  componentDidMount() {
+    this.props.loadCard(this.props.match.params.id)
+  }
+
+  render() {
+    const card = this.props.card[0]
+    console.log('card', card);
+    const photo = card.image_url;
     const styles = {
       backgroundImage: 'url(' + photo + ')'
     };
 
     return (
       <div className="item-container">
-        <h3>{title}</h3>
+        <h3></h3>
         <div style={styles} className="item-photo" />
         <div className="item-info">
           <div className="item-info-condition">
-            Condition: <strong>{condition}</strong>
+            Condition: <strong>{card.condition}</strong>
           </div>
           {/* Only render the following info if a value is given: */}
-          {price && (
-            <div className="item-info-price">
-              Price: <strong>{price}</strong>
-            </div>
-          )}
-          {manufacturer && (
-            <div className="item-info-manufacturer">
-              Make: <strong>{manufacturer}</strong>
-            </div>
-          )}
-          {model && (
-            <div className="item-info-model">
-              Model: <strong>{model}</strong>
-            </div>
-          )}
-          {dimensions && (
-            <div className="item-info-dimensions">
-              Dimensions: <strong>{dimensions}</strong>
-            </div>
-          )}
-          {details && <div className="item-info-note">Note: {details}</div>}
+
+          <div className="item-info-price">
+            Price: <strong></strong>
+          </div>
+
+
+          <div className="item-info-manufacturer">
+            Make: <strong></strong>
+          </div>
+
+
+          <div className="item-info-model">
+            Model: <strong></strong>
+          </div>
+
+          <div className="item-info-dimensions">
+            Dimensions: <strong></strong>
+          </div>
+
+          <div className="item-info-note">Note: </div>
         </div>
         <div className="item-buttons">
           <Button label="Reply" />
           <Button label="Back" />
+
         </div>
       </div>
     );
   }
 }
 
-// const mapStateToProps = state => {
-//   console.log('state', state);
-//   return {
-//     card: state.cardsList,
-//   }
-// }
+const mapStateToProps = state => {
+  console.log('state', state);
+  return {
+    card: state.cardsList,
+  }
+}
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     loadCard: card => {
-//       dispatch(loadCard(card))
-//     }
-//   }
-// }
+const mapDispatchToProps = dispatch => {
+  return {
+    loadCard: card => {
+      dispatch(loadCard(card))
+    }
+  }
+}
 
-export default ItemDetail;
+export default connect(mapStateToProps, { loadCard })(ItemDetail);
