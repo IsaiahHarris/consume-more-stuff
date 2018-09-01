@@ -38,11 +38,11 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res, next) => {
   console.log('login in', req.body);
   if(req.user) { // if user is logged in tell them to log out first
-    res.json({message: `${req.user.username} is already logged in`});
+    res.status(400).json({message: `${req.user.username} is already logged in`});
   } else {
     passport.authenticate('local', (err, user) => {
       if (err) {
-        return res.json({message: err.message});
+        return res.status(400).json({message: err.message});
       } else {
         req.login(user, (err) => {
           if (err) { return next(err); }

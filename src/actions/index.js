@@ -45,10 +45,12 @@ export const addUser = (user) => {
   return dispatch => {
     return axios.post('/api/login', user)
       .then(response => {
+        console.log('Login Success! ', response);
         dispatch({
           type: ADD_USER,
           user: response.data
         })
       })
+      .catch(err => console.log('caught response error: ', err.response));
   }
 }
