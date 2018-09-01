@@ -109,11 +109,19 @@ class ItemNew extends React.Component {
           <div className="item-condition">Condition: </div>
           <div className="item-manufacturer">Make: </div>
           <div className="item-model">Model: </div>
-          <div className="item-dimensions">dimensions: </div>
-          <select
-            name="condition"
-            id="condition"
+          <label htmlFor="dimensions">Dimensions: </label>
+          <input
+            type="text"
+            name="dimensions"
+            id="dimensions"
             value={this.state.conditionInput}
+            onChange={this.handleInputChange} />
+
+          <label htmlFor="category">Category: </label>
+          <select
+            name="category"
+            id="category"
+            value={this.state.categoryInput}
             onChange={this.handleInputChange}
           >
             <option value="">--Category--</option>
@@ -123,9 +131,17 @@ class ItemNew extends React.Component {
               )
             })}
           </select>
-          <div className="item-note">Note: </div>
+
+          <label htmlFor="details">Note: </label>
+          <input type="text"
+            name="details"
+            id="details"
+            value={this.state.detailsInput}
+            onChange={this.handleInputChange}
+          />
+
         </div>
-        <Button label="Add" clickHandler={this.addNewCard} />
+        <Button label="Add" onClick={this.addNewCard} />
       </div>
     )
   }
