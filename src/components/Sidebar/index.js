@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-
 import './Sidebar.css';
 import Button from '../Button';
 import { connect } from 'react-redux';
 import { loadCategories } from '../../actions';
+
 class Sidebar extends Component {
   constructor(props) {
     super(props);
@@ -32,6 +32,7 @@ class Sidebar extends Component {
         <div className="Sidebar-auth-display">
           <div className="Sidebar-auth-display-options">Messages</div>
           <div className="Sidebar-auth-display-options">Settings</div>
+          <Button label="Add" />
         </div>
 
         {/* Display for Desktop View: */}
