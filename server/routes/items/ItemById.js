@@ -11,9 +11,9 @@ router.route('/:id')
     return new Item()
       .query(qb => {
         qb.where({ id })
-          .andWhere({deleted_at: null});
+          .andWhere({ deleted_at: null });
       })
-      .fetch()
+      .fetchAll({ withRelated: ['seller', 'category', 'condition', 'itemStatus'] })
       .then(item => {
         return res.json(item);
       })
@@ -23,7 +23,7 @@ router.route('/:id')
   })
   .put((req, res) => { // Edit a specfic item info
     //--Primary Keys--//
-    const id = req.params.id; 
+    const id = req.params.id;
     const title = req.body.title.trim();
     const price = req.body.price.trim();
     const manufacturer = req.body.manufacturer.trim();
@@ -40,9 +40,9 @@ router.route('/:id')
     return new Item()
       .query(qb => {
         qb.where({ id })
-          .andWhere({deleted_at: null});
+          .andWhere({ deleted_at: null });
       })
-      .save({ 
+      .save({
         title: title ? title : null,
         price: price ? price : null,
         manufacturer: manufacturer ? manufacturer : null,
@@ -53,10 +53,10 @@ router.route('/:id')
         category_id,
         item_status_id,
         condition_id,
-        }, {patch: true})
-        .then(response => {
+      }, { patch: true })
+      .then(response => {
         console.log('Edited Item', response);
-        return response.refresh({withRelated: ['seller', 'category', 'condition', 'itemStatus']})
+        return response.refresh({ withRelated: ['seller', 'category', 'condition', 'itemStatus'] })
       })
       .then(item => {
         return res.json(item);
@@ -72,13 +72,13 @@ router.route('/:id')
     return new Item()
       .query(qb => {
         qb.where({ id })
-          .andWhere({deleted_at: null});
+          .andWhere({ deleted_at: null });
       })
       // .where({ id })
-      .save({ 
+      .save({
         deleted_at: knex.fn.now() // Change the status of deleted_at timestamp
-        }, {patch: true})
-        .then(() => {
+      }, { patch: true })
+      .then(() => {
         return new Item().where({ id }).refresh()
       })
       .then(item => {
@@ -90,4 +90,4 @@ router.route('/:id')
       });
   })
 
-  module.exports = router;
+module.exports = router;
