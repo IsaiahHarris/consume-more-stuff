@@ -31,8 +31,6 @@ class Login extends Component {
   }
 
   loginUser() {
-    console.log('user logged in', this.state.username);
-    console.log('with password: ', this.state.password);
     const user = {
       username: this.state.username,
       password: this.state.password

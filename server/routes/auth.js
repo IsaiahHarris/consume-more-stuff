@@ -36,7 +36,7 @@ router.post('/register', (req, res) => {
 
 // Log in with username and password
 router.post('/login', (req, res, next) => {
-  console.log('login in', req.body);
+  console.log('Login Route Backend', req.body);
   if(req.user) { // if user is logged in tell them to log out first
     res.status(400).json({message: `${req.user.username} is already logged in`});
   } else {
