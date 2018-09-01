@@ -3,16 +3,18 @@ import { connect } from 'react-redux';
 import { loadCard } from '../../actions';
 import './itemDetail.css';
 import Button from '../Button';
+import { Redirect } from 'react-router-dom';
 
 function switchCardVariable(card, location) {
-
-  if (card && location) {
+  if (card) {
     return card[0]
-  } else {
+  } else if (location) {
     return location
+  } else {
+    return '404'
   }
-
 }
+
 class ItemDetail extends React.Component {
   constructor(props) {
     super(props);
@@ -24,8 +26,11 @@ class ItemDetail extends React.Component {
 
   render() {
     let card = switchCardVariable(this.props.card[0], this.props.location.state)
-    console.log('card', card);
-    if (!card) {
+    if (card === '404') {
+      console.log('card 404', card);
+      return <Redirect to='/' />
+    } else if (!card) {
+      console.log('no card');
       return (
         ''
       )
