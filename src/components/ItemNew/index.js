@@ -50,14 +50,8 @@ class ItemNew extends React.Component {
       case 'image':
         this.setState({ imageInput: event.target.value })
         break;
-      case 'seller':
-        this.setState({ sellerInput: event.target.value })
-        break;
       case 'category':
         this.setState({ categoryInput: event.target.value })
-        break;
-      case 'itemStatus':
-        this.setState({ itemStatusInput: event.target.value })
         break;
       case 'condition':
         this.setState({ conditionInput: event.target.value })
@@ -76,9 +70,7 @@ class ItemNew extends React.Component {
     data.dimensions = this.state.dimensionsInput
     data.details = this.state.detailsInput
     data.image = this.state.imageInput
-    data.seller = this.state.sellerInput
     data.category = this.state.categoryInput
-    data.itemStatus = this.state.itemStatusInput
     data.condition = this.state.conditionInput
     this.props.addCard(data)
   }
