@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux';
+import { addCard, loadCategories } from '../../actions';
 import './ItemNew.css';
 import Button from '../Button';
 
@@ -20,8 +21,12 @@ class ItemNew extends React.Component {
       conditionInput: ''
     }
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.addNewCard = this.addNewCard.bind(this);
   }
 
+  componentDidMount() {
+    this.props.loadCategories()
+  }
   handleInputChange(event) {
     switch (event.target.value) {
       case 'title':
@@ -75,9 +80,11 @@ class ItemNew extends React.Component {
     data.category = this.state.categoryInput
     data.itemStatus = this.state.itemStatusInput
     data.condition = this.state.conditionInput
-
+    this.props.addCard(data)
   }
+
   render() {
+    console.log('this.props addnew', this.props);
     const styles = {
       backgroundImage: 'url("https://i.imgur.com/34axnfY.png")',
       backgroundSize: 'contain',
@@ -103,11 +110,40 @@ class ItemNew extends React.Component {
           <div className="item-manufacturer">Make: </div>
           <div className="item-model">Model: </div>
           <div className="item-dimensions">dimensions: </div>
+          <select
+            name="condition"
+            id="condition"
+            value={this.state.conditionInput}
+            onChange={this.handleInputChange}
+          >
+            <option value="">--Category--</option>
+            {this.props.categories.map(category => {
+              return (
+                <option>{category.name}</option>
+              )
+            })}
+          </select>
           <div className="item-note">Note: </div>
         </div>
+        <Button label="Add" clickHandler={this.addNewCard} />
       </div>
     )
   }
 }
 
-export default ItemNew;
+const mapDispatchToProps = dispatch => {
+  return {
+    addCard: card => {
+      dispatch(addCard(card))
+    },
+    loadCategories: () => {
+      dispatch(loadCategories())
+    }
+  }
+}
+const mapStateToProps = state => {
+  return {
+    categories: state.categoriesList
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ItemNew);
