@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { addUser } from '../../actions';
+
 import './Login.css';
 
 class Login extends Component {
@@ -30,6 +33,12 @@ class Login extends Component {
   loginUser() {
     console.log('user logged in', this.state.username);
     console.log('with password: ', this.state.password);
+    const user = {
+      username: this.state.username,
+      password: this.state.password
+    }
+
+    this.props.addUser(user);
   }
 
   render() {
@@ -52,4 +61,13 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = dispatch => {
+  console.log('mapDispatchToProps ACTIVATED');
+  return {
+    addUser: user => {
+      dispatch(addUser(user));
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Login);

@@ -2,6 +2,7 @@ import axios from 'axios';
 export const LOAD_CARDS = 'LOAD_CARDS';
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
 export const LOAD_CARD = 'LOAD_CARD';
+export const  ADD_USER ='ADD_USER';
 
 export const loadCards = () => {
   return dispatch => {
@@ -34,6 +35,19 @@ export const loadCard = (card) => {
         dispatch({
           type: LOAD_CARD,
           card: response.data
+        })
+      })
+  }
+}
+
+export const addUser = (user) => {
+  console.log('ACTION user!')
+  return dispatch => {
+    return axios.post('/api/login', user)
+      .then(response => {
+        dispatch({
+          type: ADD_USER,
+          user: response.data
         })
       })
   }
