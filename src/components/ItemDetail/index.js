@@ -5,7 +5,7 @@ import axios from 'axios';
 import './itemDetail.css';
 import Button from '../Button';
 
-let realCard = '';
+let card = '';
 
 class ItemDetail extends React.Component {
   constructor(props) {
@@ -14,7 +14,7 @@ class ItemDetail extends React.Component {
       card: axios.get(`/api/items/${this.props.match.params.id}`)
         .then(response => {
           console.log('response.data[0]', response.data[0]);
-          realCard = response.data[0]
+          card = response.data[0]
         })
     };
   }
@@ -26,12 +26,12 @@ class ItemDetail extends React.Component {
   }
 
   render() {
-    const photo = realCard.image_url
-    console.log('realCard', realCard);
+    const photo = card.image_url
+    console.log('card', card);
     const styles = {
       backgroundImage: "url(" + photo + ")"
     };
-    const conditionName = realCard && realCard.condition ? realCard.condition.name : null
+    const conditionName = card && card.condition ? card.condition.name : null
 
     return (
       <div className="item-container">
@@ -43,32 +43,36 @@ class ItemDetail extends React.Component {
           </div>
           {/* Only render the following info if a value is given: */}
 
-          <div className="item-info-price">
-            Price: <strong></strong>
+          {card.price && <div className="item-info-price">
+            Price: <strong>{card.price}</strong>
           </div>
+          }
 
 
-          <div className="item-info-manufacturer">
-            Make: <strong></strong>
+          {card.manufacturer && <div className="item-info-manufacturer">
+            Make: <strong>{card.manufacturer}</strong>
           </div>
+          }
 
 
-          <div className="item-info-model">
-            Model: <strong></strong>
+          {card.model && <div className="item-info-model">
+            Model: <strong>{card.model}</strong>
           </div>
-
-          <div className="item-info-dimensions">
-            Dimensions: <strong></strong>
+          }
+          {card.dimensions && < div className="item-info-dimensions">
+            Dimensions: <strong>{card.dimensions}</strong>
           </div>
+          }
 
-          <div className="item-info-note">Note: </div>
+          {card.details &&
+            <div className="item-info-note">Note: {card.details} </div>
+          }
         </div>
         <div className="item-buttons">
           <Button label="Reply" />
           <Button label="Back" />
-
         </div>
-      </div>
+      </div >
     );
   }
 }
