@@ -1,90 +1,102 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { loadCard } from '../../actions';
-
 import './itemDetail.css';
 import Button from '../Button';
+import { Redirect } from 'react-router-dom';
+
+function switchCardVariable(card, location) {
+  if (card) {
+    return card[0]
+  } else if (location) {
+    return location
+  } else {
+    return '404'
+  }
+}
 
 class ItemDetail extends React.Component {
   constructor(props) {
     super(props);
   }
-  // componentDidMount() {
-  //   this.props.loadCard(4)
-  //   console.log('this.props.after', this.props);
-  // }
+
+  componentDidMount() {
+    this.props.loadCard(this.props.match.params.id);
+  }
+
   render() {
-    const {
-      title,
-      price,
-      manufacturer,
-      model,
-      dimensions,
-      details,
-      photo,
-      seller,
-      category,
-      status,
-      condition
-    } = this.props.location.state;
+    let card = switchCardVariable(this.props.card[0], this.props.location.state)
+    if (card === '404') {
+      console.log('card 404', card);
+      return <Redirect to='/' />
+    } else if (!card) {
+      console.log('no card');
+      return (
+        ''
+      )
+    } else {
+      const photo = card.image_url
+      const styles = {
+        backgroundImage: "url( " + photo + ")"
+      };
+      const conditionName = card && card.condition ? card.condition.name : null
+      return (
+        <div className="item-container">
+          <h3></h3>
+          <div style={styles} className="item-photo" />
+          <div className="item-info">
+            <div className="item-info-condition">
+              Condition: <strong>{conditionName}</strong>
+            </div>
+            {/* Only render the following info if a value is given: */}
 
-    const styles = {
-      backgroundImage: 'url(' + photo + ')'
-    };
+            {card.price && <div className="item-info-price">
+              Price: <strong>{card.price}</strong>
+            </div>
+            }
 
-    return (
-      <div className="item-container">
-        <h3>{title}</h3>
-        <div style={styles} className="item-photo" />
-        <div className="item-info">
-          <div className="item-info-condition">
-            Condition: <strong>{condition}</strong>
+
+            {card.manufacturer && <div className="item-info-manufacturer">
+              Make: <strong>{card.manufacturer}</strong>
+            </div>
+            }
+
+
+            {card.model && <div className="item-info-model">
+              Model: <strong>{card.model}</strong>
+            </div>
+            }
+            {card.dimensions && < div className="item-info-dimensions">
+              Dimensions: <strong>{card.dimensions}</strong>
+            </div>
+            }
+
+            {card.details &&
+              <div className="item-info-note">Note: {card.details} </div>
+            }
           </div>
-          {/* Only render the following info if a value is given: */}
-          {price && (
-            <div className="item-info-price">
-              Price: <strong>{price}</strong>
-            </div>
-          )}
-          {manufacturer && (
-            <div className="item-info-manufacturer">
-              Make: <strong>{manufacturer}</strong>
-            </div>
-          )}
-          {model && (
-            <div className="item-info-model">
-              Model: <strong>{model}</strong>
-            </div>
-          )}
-          {dimensions && (
-            <div className="item-info-dimensions">
-              Dimensions: <strong>{dimensions}</strong>
-            </div>
-          )}
-          {details && <div className="item-info-note">Note: {details}</div>}
-        </div>
-        <div className="item-buttons">
-          <Button label="Reply" />
-          <Button label="Back" />
-        </div>
-      </div>
-    );
+          <div className="item-buttons">
+            <Button label="Reply" />
+            <Button label="Back" />
+          </div>
+        </div >
+      );
+    }
   }
 }
 
-// const mapStateToProps = state => {
-//   console.log('state', state);
-//   return {
-//     card: state.cardsList,
-//   }
-// }
+const mapStateToProps = state => {
+  return {
+    card: state.cardsList,
+  }
+}
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     loadCard: card => {
-//       dispatch(loadCard(card))
-//     }
-//   }
-// }
+const mapDispatchToProps = dispatch => {
+  return {
+    loadCard: card => {
+      dispatch(loadCard(card))
+    }
+  }
+}
 
-export default ItemDetail;
+export default connect(mapStateToProps, mapDispatchToProps)(ItemDetail);
