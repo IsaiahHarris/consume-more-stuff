@@ -12,9 +12,11 @@ const ItemStatus = require('../../db/models/ItemStatus');
 // items root route
 router.route('/')
   .get((req, res) => { // Fetches all the items for homepage
-    return Item
-    .where({deleted_at: null})
-    .fetchAll({withRelated: ['seller', 'category', 'condition', 'itemStatus']})
+    return Item.query(function (qb) {
+      qb.orderBy('created_at', 'DESC')
+    })
+      .where({ deleted_at: null })
+      .fetchAll({ withRelated: ['seller', 'category', 'condition', 'itemStatus'] })
       .then(items => {
         return res.json(items);
       })
@@ -25,12 +27,13 @@ router.route('/')
   .post((req, res) => { // Posts one new item
     //--Primary Keys--// 
     const title = req.body.title.trim();
-    const price = req.body.price.trim();
-    const manufacturer = req.body.manufacturer.trim();
-    const model = req.body.model.trim();
-    const dimensions = req.body.dimensions.trim();
-    const details = req.body.details.trim();
-    const image_url = req.body.image_url.trim();
+
+    const price = req.body.price ? req.body.price.trim() : req.body.price;
+    const manufacturer = req.body.manufacturer ? req.body.manufacturer.trim() : req.body.manufacturer;
+    const model = req.body.model ? req.body.model.trim() : req.body.model;
+    const dimensions = req.body.dimensions ? req.body.dimensions.trim() : req.body.dimensions;
+    const details = req.body.details ? req.body.details.trim() : req.body.details;
+    const image_url = req.body.image_url ? req.body.image_url.trim() : req.body.image_url;
     //--Foreign Keys--//
     const seller_id = parseInt(req.body.seller_id);
     const category_id = parseInt(req.body.category_id);
@@ -55,8 +58,8 @@ router.route('/')
     // Save item to db with bookshelf
     return new Item()
       .save(itemInput)
-      .then( response => {
-        return response.refresh({withRelated: ['seller', 'category', 'condition', 'itemStatus']})
+      .then(response => {
+        return response.refresh({ withRelated: ['seller', 'category', 'condition', 'itemStatus'] })
       })
       .then(item => {
         return res.json(item);
@@ -74,7 +77,7 @@ router.route('/search/:term')
     return Item
       .query(qb => {
         qb.whereRaw(`LOWER(title) LIKE ?`, [term])
-          .andWhere({deleted_at: null});
+          .andWhere({ deleted_at: null });
       })
       .fetchAll()
       .then(items => {
@@ -92,19 +95,19 @@ router.route('/category/:categoryId')
     console.log('category running: ', category_id);
 
     return Item
-    .query(qb => {
-      qb.where({category_id})
-        .andWhere({deleted_at: null});
-    })
-    .fetchAll({withRelated: ['seller', 'category', 'condition', 'itemStatus']})
+      .query(qb => {
+        qb.where({ category_id })
+          .andWhere({ deleted_at: null });
+      })
+      .fetchAll({ withRelated: ['seller', 'category', 'condition', 'itemStatus'] })
       .then(items => {
-          return res.json(items);
+        return res.json(items);
       })
       .catch(err => {
         return res.json({ 'error': err.message })
       });
   })
-  
+
 //-- Specfic Item Routes at ItemById.js --//
 router.use('/', itemId);
 
