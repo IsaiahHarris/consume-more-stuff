@@ -13,12 +13,22 @@
   border-bottom: 1px solid #000;
 }
 
-.Sidebar-categories-mobile {
+.Sidebar-auth-display-options {
+  font-weight: bold;
+}
+
+.Sidebar-main-mobile {
+  display: flex;
+  justify-content: space-evenly;
   list-style-type: none;
   padding: 15px 0;
 }
 
-.Sidebar-categories-mobile-details {
+.Sidebar-main-mobile span {
+  font-weight: bold;
+}
+
+.Sidebar-main-mobile-details {
   position: absolute;
   z-index: 1;
   top: 0;
@@ -30,14 +40,14 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.Sidebar-categories-mobile-details-inner {
+.Sidebar-main-mobile-details-inner {
   display: flex;
   flex-direction: column;
   padding: 15px;
   background-color: #fff;
 }
 
-.Sidebar-categories-mobile-details-inner-list {
+.Sidebar-main-mobile-details-inner-list {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -47,17 +57,17 @@
   margin: 0 0 15px;
 }
 
-.Sidebar-categories-mobile-details-inner-list-item {
+.Sidebar-main-mobile-details-inner-list-item {
   padding: 7.5px 0;
 }
-.Sidebar-categories-mobile-details-inner-list-item:first-of-type {
+.Sidebar-main-mobile-details-inner-list-item:first-of-type {
   padding: 0 0 7.5px;
 }
-.Sidebar-categories-mobile-details-inner-list-item:last-of-type {
+.Sidebar-main-mobile-details-inner-list-item:last-of-type {
   padding: 7.5px 0 0;
 }
 
-.Sidebar-categories-desktop {
+.Sidebar-main-desktop {
   display: none;
 }
 
@@ -74,17 +84,25 @@
 
   .Sidebar-auth-display {
     flex-direction: column;
-    height: 80px;
+    height: 150px;
   }
 
-  .Sidebar-categories-desktop {
+  .Sidebar-main-desktop {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 30px 0;
   }
 
-  .Sidebar-categories-desktop-list {
+  .Sidebar-main-desktop-home {
+    display: flex;
+  }
+
+  .Sidebar-main-desktop-home span {
+    font-weight: bold;
+  }
+
+  .Sidebar-main-desktop-list {
     display: flex;
     flex-direction: column;
     list-style-type: none;
@@ -92,21 +110,26 @@
     padding: 0;
   }
 
-  .Sidebar-categories-desktop-list-item {
+  .Sidebar-main-desktop-list span {
+    font-weight: bold;
+    padding-bottom: 15px;
+  }
+
+  .Sidebar-main-desktop-list-item {
     padding: 7.5px 0;
   }
-  .Sidebar-categories-desktop-list-item:first-of-type {
+  .Sidebar-main-desktop-list-item:first-of-type {
     padding: 0 0 7.5px;
   }
-  .Sidebar-categories-desktop-list-item:last-of-type {
+  .Sidebar-main-desktop-list-item:last-of-type {
     padding: 7.5px 0 0;
   }
 
-  .Sidebar-categories-mobile {
+  .Sidebar-main-mobile {
     display: none;
   }
 
-  .Sidebar-categories-mobile-details {
+  .Sidebar-main-mobile-details {
     display: none;
   }
 }
