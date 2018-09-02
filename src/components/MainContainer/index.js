@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 
 import './MainContainer.css';
 import Sidebar from '../Sidebar';
@@ -16,6 +16,7 @@ class MainContainer extends Component {
 
   render() {
     console.log('This is current logged in user', this.props.user);
+    const loggedIn = true;
 
     return (
       <div className="MainContainer">
@@ -34,9 +35,19 @@ class MainContainer extends Component {
             exact path="/items/:id"
             component={ItemDetail}
           />
-          <Route
+          {/* <Route
             exact path="/login"
             component={Login}
+          /> */}
+          <Route
+            exact path="/login"
+            render={() => (
+              loggedIn ? (
+                <Redirect to="/" />
+              ) : (
+                <Login />
+              )
+            )}
           />
         </Switch>
       </div>
