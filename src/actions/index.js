@@ -92,7 +92,7 @@ export const addUser = (user) => {
           type: ADD_USER,
           user: response.data
         })
-        localStorage.setItem('user', response.data.username)
+        window.localStorage.setItem('user', response.data.username)
       })
       .catch(err => console.log('Login Error! ', err.response));
 
@@ -107,7 +107,8 @@ export const logoutUser = () => {
         dispatch({
           type: LOGOUT
         })
-        localStorage.clear();
+        window.localStorage.removeItem('user')
+
       })
       .catch(err => console.log('Logout Failed! ', err.response));
   }
