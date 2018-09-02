@@ -3,6 +3,7 @@ import './CardsByCategory.css';
 import { connect } from 'react-redux';
 import { loadCardsByCategory } from '../../actions';
 import CardsList from '../CardsList';
+
 class CardsByCategory extends React.Component {
   constructor(props) {
     super(props)
@@ -15,7 +16,9 @@ class CardsByCategory extends React.Component {
   render() {
     if (this.props.cardsByCategory.length !== 0) {
       return (
-        <CardsList categoryId={this.props.match.params.categoryId} cardsByCategory={this.props.cardsByCategory} />
+        <div className="cards-by-category">
+          <CardsList categoryId={this.props.match.params.categoryId} cardsByCategory={this.props.cardsByCategory} />
+        </div>
       )
     } else {
       return (
