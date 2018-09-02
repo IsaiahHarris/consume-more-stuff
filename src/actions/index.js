@@ -2,6 +2,7 @@ import axios from 'axios';
 export const LOAD_CARDS = 'LOAD_CARDS';
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
 export const LOAD_CARD = 'LOAD_CARD';
+export const ADD_USER = 'ADD_USER';
 export const ADD_CARD = 'ADD_CARD';
 export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const EDIT_CARD = 'EDIT_CARD';
@@ -26,6 +27,19 @@ export const loadCards = () => {
           type: LOAD_CARDS,
           cards: response.data
         })
+      })
+  }
+}
+
+export const addCard = (data) => {
+  return dispatch => {
+    axios.post('/api/items', data)
+      .then(response => {
+        dispatch({
+          type: ADD_CARD,
+          card: response.data
+        })
+        window.location.href = `/items/${response.data.id}`
       })
   }
 }
@@ -55,16 +69,18 @@ export const loadCard = (card) => {
   }
 }
 
-export const addCard = (data) => {
+export const addUser = (user) => {
+  console.log('ACTION user!')
   return dispatch => {
-    axios.post('/api/items', data)
+    return axios.post('/api/login', user)
       .then(response => {
+        console.log('Login Success! ', response);
         dispatch({
-          type: ADD_CARD,
-          card: response.data
+          type: ADD_USER,
+          user: response.data
         })
-        window.location.href = `/items/${response.data.id}`
       })
+      .catch(err => console.log('Login Error! ', err.response));
   }
 }
 
