@@ -12,6 +12,12 @@
   border: 1px solid #000;
 }
 
+.item-new-photo{
+  display: flex;
+  align-items:center ;
+  flex-direction: column;
+}
+
 .item-new-details {
   display: flex;
   flex-direction: column;
@@ -77,6 +83,13 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 100%;
+}
+
+.button-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100px;
 }
 
 @media (min-width: 768px) {
