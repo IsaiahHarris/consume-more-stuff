@@ -70,6 +70,7 @@ class ItemEdit extends React.Component {
   }
 
   editThisCard() {
+    console.log('this.props', this.props);
     const data = {}
     data.title = this.state.titleInput
     data.price = this.state.priceInput
@@ -81,8 +82,8 @@ class ItemEdit extends React.Component {
     data.category_id = this.state.categoryInput
     data.condition_id = this.state.conditionInput
     data.item_status_id = 1;
+    data.id = this.props.match.params.id
     data.seller_id = 1;
-    data.id = 1;
     console.log('this.props', this.props);
     this.props.editCard(data)
   }

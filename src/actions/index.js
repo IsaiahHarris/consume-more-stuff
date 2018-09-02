@@ -77,7 +77,8 @@ export const editCard = (card) => {
           type: EDIT_CARD,
           editCard: response.data
         })
-        window.location.href = `/items/${response.data.id}`
+        console.log('response.data', response.data);
+        // window.location.href = `/items/${response.data.id}`
       })
   }
 }
