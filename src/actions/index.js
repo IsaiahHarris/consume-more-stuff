@@ -6,6 +6,7 @@ export const ADD_USER = 'ADD_USER';
 export const ADD_CARD = 'ADD_CARD';
 export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const EDIT_CARD = 'EDIT_CARD';
+export const LOAD_CARDS_BY_CATEGORY = 'LOAD_CARDS_BY_CATEGORY';
 
 export const loadConditions = () => {
   return dispatch => {
@@ -56,6 +57,18 @@ export const loadCategories = () => {
   }
 }
 
+export const loadCardsByCategory = (category) => {
+  return dispatch => {
+    return axios.get(`/api/items/category/${category}`)
+      .then(response => {
+        dispatch({
+          type: LOAD_CARDS_BY_CATEGORY,
+          cardsByCategory: response.data
+        })
+      })
+  }
+}
+
 export const loadCard = (card) => {
   return dispatch => {
     return axios.get(`/api/items/${card}`)
@@ -70,11 +83,9 @@ export const loadCard = (card) => {
 }
 
 export const addUser = (user) => {
-  console.log('ACTION user!')
   return dispatch => {
     return axios.post('/api/login', user)
       .then(response => {
-        console.log('Login Success! ', response);
         dispatch({
           type: ADD_USER,
           user: response.data
@@ -85,7 +96,6 @@ export const addUser = (user) => {
 }
 
 export const editCard = (card) => {
-  console.log('card', card);
   return dispatch => {
     return axios.put(`/api/items/${card.id}`, card)
       .then(response => {
@@ -93,7 +103,6 @@ export const editCard = (card) => {
           type: EDIT_CARD,
           editCard: response.data
         })
-        console.log('response.data', response.data);
         window.location.href = `/items/${card.id}`
       })
   }
