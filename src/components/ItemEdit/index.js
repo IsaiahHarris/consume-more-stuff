@@ -33,8 +33,7 @@ class ItemEdit extends React.Component {
   }
 
   handleInputChange(event) {
-    console.log('event.target.value', event.target.value)
-    console.log('event.target.id', event.target.id);
+
 
     switch (event.target.id) {
       case 'title':
@@ -94,7 +93,7 @@ class ItemEdit extends React.Component {
     this.props.editCard(data)
   }
   static getDerivedStateFromProps(props, state) {
-    console.log('state');
+
     let realCard = props.card[0]
     if (realCard) {
       return {
@@ -118,7 +117,6 @@ class ItemEdit extends React.Component {
 
   render() {
     if (this.props.card[0]) {
-      console.log('this.state', this.state);
 
       let propsCard = this.props.card[0]
       let realCard = propsCard[0]
