@@ -31,12 +31,12 @@ function uploadToS3(userId, file) {
 }
 
 router.post('/s3Upload', (req, res) => {
-  console.log('FILES', req.files);
+  console.log('BODY', req.body);
 
   const busboy = new Busboy({ headers: req.headers });
 
   busboy.on('finish', () => {
-    const userId = req.query.userId;
+    const userId = req.body.userId;
     const file = req.files.fileUpload;
 
     uploadToS3(userId, file);
