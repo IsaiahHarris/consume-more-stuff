@@ -3,11 +3,13 @@ import './Header.css';
 import SearchBar from '../SearchBar';
 import Logout from '../Logout';
 import { NavLink } from 'react-router-dom';
+const user = localStorage.getItem('user') ? localStorage.getItem('user') : null
 
 class Header extends React.Component {
   constructor(props) {
     super(props)
   }
+
 
   render() {
     return (
@@ -18,6 +20,9 @@ class Header extends React.Component {
           <NavLink exact to='/login'>Login</NavLink>
         </nav>
         <Logout />
+        {user}
+
+
       </div>
     )
   }

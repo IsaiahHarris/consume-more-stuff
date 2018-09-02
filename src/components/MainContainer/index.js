@@ -27,6 +27,7 @@ class MainContainer extends Component {
   }
 
   render() {
+    console.log('localStorage', localStorage);
     this.checkLoggedIn();
 
     return (

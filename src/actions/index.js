@@ -87,12 +87,15 @@ export const addUser = (user) => {
   return dispatch => {
     return axios.post('/api/login', user)
       .then(response => {
+        console.log('response', response.data);
         dispatch({
           type: ADD_USER,
           user: response.data
         })
+        localStorage.setItem('user', response.data.username)
       })
       .catch(err => console.log('Login Error! ', err.response));
+
   }
 }
 
@@ -104,6 +107,7 @@ export const logoutUser = () => {
         dispatch({
           type: LOGOUT
         })
+        localStorage.clear();
       })
       .catch(err => console.log('Logout Failed! ', err.response));
   }
