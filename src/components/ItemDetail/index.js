@@ -4,7 +4,7 @@ import { loadCard } from '../../actions';
 import './itemDetail.css';
 import Button from '../Button';
 import { Redirect } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 function switchCardVariable(card, location) {
   if (card) {
     return card[0]
@@ -77,7 +77,12 @@ class ItemDetail extends React.Component {
           </div>
           <div className="item-buttons">
             <Button label="Reply" />
-            <Button label="Back" />
+            <Link to={`/items/${this.props.match.params.id}/edit`}>
+              <Button label="Edit" />
+            </Link>
+            <Link to={'/'}>
+              <Button label="Back" />
+            </Link>
           </div>
         </div >
       );

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import { addCard, loadCategories, loadConditions } from '../../actions';
-
 import './ItemNew.css';
 import Button from '../Button';
 import AddNewButton from '../AddNewButton';
+import { Link } from 'react-router-dom';
 
 class ItemNew extends Component {
   constructor(props) {
@@ -99,14 +98,23 @@ class ItemNew extends Component {
 
     return (
       <div className="item-new-container">
+
         <div className="item-new-photo">
+          <Link to={'/'}>
+            <Button label="Back" />
+          </Link>
           <div style={styles} className="item-new-photo-img" />
-          <div className="item-new-photo-btn">
-            <Button label="Add Photo" />
+          <div className="button-container">
+            <div className="item-new-photo-btn">
+              <Button label="Add Photo" />
+            </div>
+
           </div>
         </div>
 
         <div className="item-new-details">
+          <div className="header-button">
+          </div>
           <div className="item-new-details-input">
             <label htmlFor="title">Title: </label>
             <input

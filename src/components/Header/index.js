@@ -16,7 +16,7 @@ class Header extends React.Component {
         <SearchBar classNameLabel="wrap" />
         {/* <Button label="Login" /> */}
         <nav>
-        <NavLink exact to='/login'>Login</NavLink>
+          <NavLink exact to='/login'>Login</NavLink>
         </nav>
       </div>
     )

@@ -4,7 +4,7 @@ import Button from '../Button';
 import './ItemEdit.css'
 import { editCard, loadCategories, loadConditions, loadCard } from '../../actions';
 import EditCardButton from '../EditCardButton';
-
+import { Link } from 'react-router-dom';
 class ItemEdit extends React.Component {
   constructor(props) {
     super(props)
@@ -134,7 +134,9 @@ class ItemEdit extends React.Component {
         <div className="item-detail-view-container">
 
           <div style={styles} className="item-photo"></div>
-
+          <Link to={`/items/${this.props.match.params.id}`}>
+            <Button label="Back" />
+          </Link>
           <div className="item-header">
 
             <label htmlFor="title">Title: </label>
