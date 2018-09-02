@@ -134,7 +134,7 @@ class ItemEdit extends React.Component {
         <div className="item-detail-view-container">
 
           <div style={styles} className="item-photo"></div>
-          <Link to={'/'}>
+          <Link to={`/items/${this.props.match.params.id}`}>
             <Button label="Back" />
           </Link>
           <div className="item-header">
