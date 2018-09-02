@@ -41,6 +41,7 @@ router.post('/s3Upload', (req, res) => {
 
     uploadToS3(userId, file);
 
+    res.json({ test: 'test' });
     console.log('Upload Complete:', file);
   });
 

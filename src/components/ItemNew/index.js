@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import {
-  uploadToS3,
-  addCard,
-  loadCategories,
-  loadConditions
-} from '../../actions';
+import { addCard, loadCategories, loadConditions } from '../../actions';
 
 import './ItemNew.css';
-import Button from '../Button';
 import AddNewButton from '../AddNewButton';
+
+const TEMP_SELLER_ID = 800913;
 
 class ItemNew extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       titleInput: '',
       priceInput: '',
@@ -28,7 +25,11 @@ class ItemNew extends Component {
       itemStatusInput: '',
       conditionInput: ''
     };
+
+    this.imageUrl = '';
+
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleImageSubmit = this.handleImageSubmit.bind(this);
     this.addNewCard = this.addNewCard.bind(this);
   }
 
@@ -78,19 +79,28 @@ class ItemNew extends Component {
     }
   }
 
-  addNewCard(event) {
+  handleImageSubmit() {
+    const file = document.getElementById('item-new-photo-form')[1]['files'][0]
+    console.log('FILE', file);
+
+    this.imageUrl = `https://cms-2018.s3.amazonaws.com/${TEMP_SELLER_ID}/${file.name}`;
+  }
+
+  addNewCard() {
     const data = {};
+
     data.title = this.state.titleInput;
     data.price = this.state.priceInput;
     data.manufacturer = this.state.manufacturerInput;
     data.model = this.state.modelInput;
     data.dimensions = this.state.dimensionsInput;
     data.details = this.state.detailsInput;
-    data.image_url = 'https://i.imgur.com/34axnfY.png';
+    data.image_url = this.imageUrl ? this.imageUrl : 'https://i.imgur.com/34axnfY.png';
     data.category_id = this.state.categoryInput;
     data.condition_id = this.state.conditionInput;
     data.item_status_id = 1;
-    data.seller_id = 1;
+    data.seller_id = TEMP_SELLER_ID;
+
     this.props.addCard(data);
   }
 
@@ -102,16 +112,30 @@ class ItemNew extends Component {
       backgroundPosition: 'center center'
     };
 
+    const iframeStyles = {
+      position: 'absolute',
+      top: '-1px',
+      left: '-1px',
+      width: '1px',
+      height: '1px'
+    };
+
     return (
       <div className="item-new-container">
         <div className="item-new-photo">
           <div style={styles} className="item-new-photo-img" />
+
+          <iframe name="hiddenFrame" style={iframeStyles} />
+
           <form
+            id="item-new-photo-form"
             action="/api/s3Upload"
             method="POST"
             encType="multipart/form-data"
+            onSubmit={this.handleImageSubmit}
+            target="hiddenFrame"
           >
-            <input type="text" name="userId" value={800913} hidden/>
+            <input type="text" name="userId" value={TEMP_SELLER_ID} hidden />
             <input type="file" name="fileUpload" />
             <div className="item-new-photo-btn">
               <input type="submit" />
@@ -141,7 +165,9 @@ class ItemNew extends Component {
             >
               <option value="">--Category--</option>
               {this.props.categories.map(category => {
-                return <option value={category.id}>{category.name}</option>;
+                return (
+                  <option value={category.id}>{category.name}</option>
+                );
               })}
             </select>
           </div>
@@ -156,7 +182,9 @@ class ItemNew extends Component {
             >
               <option value="">--Condition--</option>
               {this.props.conditions.map(condition => {
-                return <option value={condition.id}>{condition.name}</option>;
+                return (
+                  <option value={condition.id}>{condition.name}</option>
+                );
               })}
             </select>
           </div>
