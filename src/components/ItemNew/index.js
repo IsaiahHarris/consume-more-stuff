@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import { addCard, loadCategories, loadConditions } from '../../actions';
-
 import './ItemNew.css';
+import Button from '../Button';
 import AddNewButton from '../AddNewButton';
+import { Link } from 'react-router-dom';
 
 const TEMP_SELLER_ID = 800913;
 
@@ -122,7 +122,11 @@ class ItemNew extends Component {
 
     return (
       <div className="item-new-container">
+
         <div className="item-new-photo">
+          <Link to={'/'}>
+            <Button label="Back" />
+          </Link>
           <div style={styles} className="item-new-photo-img" />
 
           <iframe name="hiddenFrame" style={iframeStyles} />
@@ -144,6 +148,8 @@ class ItemNew extends Component {
         </div>
 
         <div className="item-new-details">
+          <div className="header-button">
+          </div>
           <div className="item-new-details-input">
             <label htmlFor="title">Title: </label>
             <input

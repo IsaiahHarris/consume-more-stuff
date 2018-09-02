@@ -3,9 +3,12 @@ import axios from 'axios';
 export const LOAD_CARDS = 'LOAD_CARDS';
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
 export const LOAD_CARD = 'LOAD_CARD';
+export const ADD_USER = 'ADD_USER';
+export const LOGOUT = 'LOGOUT'
 export const ADD_CARD = 'ADD_CARD';
 export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const EDIT_CARD = 'EDIT_CARD';
+export const LOAD_CARDS_BY_CATEGORY = 'LOAD_CARDS_BY_CATEGORY';
 
 export const uploadToS3 = formData => {
   return axios({
@@ -44,6 +47,19 @@ export const loadCards = () => {
   };
 };
 
+export const addCard = (data) => {
+  return dispatch => {
+    axios.post('/api/items', data)
+      .then(response => {
+        dispatch({
+          type: ADD_CARD,
+          card: response.data
+        })
+        window.location.href = `/items/${response.data.id}`
+      })
+  }
+}
+
 export const loadCategories = () => {
   return dispatch => {
     return axios.get('/api/categories').then(response => {
@@ -55,7 +71,19 @@ export const loadCategories = () => {
   };
 };
 
-export const loadCard = card => {
+export const loadCardsByCategory = (category) => {
+  return dispatch => {
+    return axios.get(`/api/items/category/${category}`)
+      .then(response => {
+        dispatch({
+          type: LOAD_CARDS_BY_CATEGORY,
+          cardsByCategory: response.data
+        })
+      })
+  }
+}
+
+export const loadCard = (card) => {
   return dispatch => {
     return axios.get(`/api/items/${card}`).then(response => {
       dispatch({
@@ -66,28 +94,41 @@ export const loadCard = card => {
   };
 };
 
-export const addCard = data => {
+export const addUser = (user) => {
   return dispatch => {
-    axios.post('/api/items', data).then(response => {
-      dispatch({
-        type: ADD_CARD,
-        card: response.data
-      });
-      window.location.href = `/items/${response.data.id}`;
-    });
-  };
-};
+    return axios.post('/api/login', user)
+      .then(response => {
+        dispatch({
+          type: ADD_USER,
+          user: response.data
+        })
+      })
+      .catch(err => console.log('Login Error! ', err.response));
+  }
+}
 
-export const editCard = card => {
-  console.log('card', card);
+export const logoutUser = () => {
   return dispatch => {
-    return axios.put(`/api/items/${card.id}`, card).then(response => {
-      dispatch({
-        type: EDIT_CARD,
-        editCard: response.data
-      });
-      console.log('response.data', response.data);
-      window.location.href = `/items/${card.id}`;
-    });
-  };
-};
+    return axios.get('/api/logout')
+      .then(response => {
+        console.log('Logout success!', response);
+        dispatch({
+          type: LOGOUT
+        })
+      })
+      .catch(err => console.log('Logout Failed! ', err.response));
+  }
+}
+
+export const editCard = (card) => {
+  return dispatch => {
+    return axios.put(`/api/items/${card.id}`, card)
+      .then(response => {
+        dispatch({
+          type: EDIT_CARD,
+          editCard: response.data
+        })
+        window.location.href = `/items/${card.id}`
+      })
+  }
+}

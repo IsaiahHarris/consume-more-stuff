@@ -3,6 +3,7 @@ import './Sidebar.css';
 import Button from '../Button';
 import { connect } from 'react-redux';
 import { loadCategories } from '../../actions';
+import { Link } from 'react-router-dom';
 
 class Sidebar extends Component {
   constructor(props) {
@@ -32,13 +33,18 @@ class Sidebar extends Component {
         <div className="Sidebar-auth-display">
           <div className="Sidebar-auth-display-options">Messages</div>
           <div className="Sidebar-auth-display-options">Settings</div>
-          <Button label="ADD" />
+          <Link to={'/items/new'}>
+            <Button label="ADD" />
+          </Link>
+
         </div>
 
         {/* Display for Desktop View: */}
         <div className="Sidebar-main-desktop">
           <div className="Sidebar-main-desktop-home">
-            <span>Home</span>
+            <Link to={'/'}>
+              <span>Home</span>
+            </Link>
           </div>
           <ul className="Sidebar-main-desktop-list">
             <span>Categories</span>
@@ -48,7 +54,11 @@ class Sidebar extends Component {
                   key={index}
                   className="Sidebar-main-desktop-list-item"
                 >
-                  {category.name}
+                  <Link
+                    to={`/items/category/${category.id}`}
+                  >
+                    {category.name}
+                  </Link>
                 </li>
               );
             })}
@@ -79,7 +89,12 @@ class Sidebar extends Component {
                     key={index}
                     className="Sidebar-main-mobile-details-inner-list-item"
                   >
-                    {category.name}
+                    <Link
+                      to={`/items/category/${category.id}`}
+                    >
+                      {category.name}
+                    </Link>
+
                   </li>
                 );
               })}

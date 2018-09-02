@@ -107,23 +107,22 @@ router.route('/search/:term').get((req, res) => {
 });
 
 // Items category route
-router.route('/category/:categoryId').get((req, res) => {
-  // Fetch all items for different categories
-  const category_id = req.params.categoryId;
-  console.log('category running: ', category_id);
-
-  return Item.query(qb => {
-    qb.where({ category_id }).andWhere({ deleted_at: null });
-  })
-    .fetchAll({
-      withRelated: ['seller', 'category', 'condition', 'itemStatus']
-    })
-    .then(items => {
-      return res.json(items);
-    })
-    .catch(err => {
-      return res.json({ error: err.message });
-    });
+router.route('/category/:categoryId')
+  .get((req, res) => { // Fetch all items for different categories
+    const category_id = req.params.categoryId;
+    console.log('category running: ', category_id);
+    return Item
+      .query(qb => {
+        qb.where({ category_id })
+          .andWhere({ deleted_at: null });
+      })
+      .fetchAll({ withRelated: ['seller', 'category', 'condition', 'itemStatus'] })
+      .then(items => {
+        return res.json(items);
+      })
+      .catch(err => {
+        return res.json({ 'error': err.message })
+      });
 });
 
 //-- Specfic Item Routes at ItemById.js --//
