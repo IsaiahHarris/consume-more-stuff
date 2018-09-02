@@ -12,12 +12,23 @@ import Login from '../Login';
 class MainContainer extends Component {
   constructor(props) {
     super(props);
+
+    this.loggedIn = false;
+    this.checkLoggedIn = this.checkLoggedIn.bind(this);
+  }
+
+  checkLoggedIn() {
+    console.log('This is current logged in user', this.props.user);
+    if(this.props.user.length > 0) {
+      this.loggedIn = true;
+    } else {
+      this.loggedIn = false;
+    }
   }
 
   render() {
-    console.log('This is current logged in user', this.props.user);
-    const loggedIn = true;
-
+    this.checkLoggedIn();
+    
     return (
       <div className="MainContainer">
         <Sidebar />
@@ -35,14 +46,10 @@ class MainContainer extends Component {
             exact path="/items/:id"
             component={ItemDetail}
           />
-          {/* <Route
-            exact path="/login"
-            component={Login}
-          /> */}
           <Route
             exact path="/login"
             render={() => (
-              loggedIn ? (
+              this.loggedIn ? (
                 <Redirect to="/" />
               ) : (
                 <Login />
