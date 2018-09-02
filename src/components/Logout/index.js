@@ -11,7 +11,7 @@ class Logout extends Component {
   }
   
   clickEvent() {
-    console.log('log out smoke test');
+    this.props.logoutUser();
   }
 
   render() {
