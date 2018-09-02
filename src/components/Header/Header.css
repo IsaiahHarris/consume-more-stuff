@@ -13,9 +13,6 @@
   min-width: 50px;
 }
 
-.login-button {
-}
-
 @media (min-width: 768px) {
   .wrap {
     display: none;
