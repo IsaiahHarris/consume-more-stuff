@@ -93,7 +93,6 @@ router.route('/category/:categoryId')
   .get((req, res) => { // Fetch all items for different categories
     const category_id = req.params.categoryId;
     console.log('category running: ', category_id);
-
     return Item
       .query(qb => {
         qb.where({ category_id })

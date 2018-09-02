@@ -11,13 +11,11 @@ let styles = {
 
 const AddCardButton = props => {
   return (
-    <Link to="/">
-      <button
-        style={styles}
-        onClick={props.clickHandler}
-      >{props.label || 'Click Me'}
-      </button>
-    </Link>
+    <button
+      style={styles}
+      onClick={props.clickHandler}
+    >{props.label || 'Click Me'}
+    </button>
   )
 }
 
