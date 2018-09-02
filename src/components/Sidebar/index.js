@@ -42,7 +42,9 @@ class Sidebar extends Component {
         {/* Display for Desktop View: */}
         <div className="Sidebar-main-desktop">
           <div className="Sidebar-main-desktop-home">
-            <span>Home</span>
+            <Link to={'/'}>
+              <span>Home</span>
+            </Link>
           </div>
           <ul className="Sidebar-main-desktop-list">
             <span>Categories</span>
