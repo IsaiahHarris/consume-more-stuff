@@ -4,9 +4,8 @@ let styles = {
   fontSize: '1.5rem',
   backgroundColor: 'green',
   padding: '15px',
-  borderRadius: '50%',
+  border: '1px solid #000',
   color: 'white',
-  border: 0,
   marginLeft: '15px'
 }
 
