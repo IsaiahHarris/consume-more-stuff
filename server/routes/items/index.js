@@ -10,30 +10,48 @@ const Condition = require('../../db/models/Condition');
 const ItemStatus = require('../../db/models/ItemStatus');
 
 // items root route
-router.route('/')
-  .get((req, res) => { // Fetches all the items for homepage
-    return Item.query(function (qb) {
-      qb.orderBy('created_at', 'DESC')
+router
+  .route('/')
+  .get((req, res) => {
+    // Fetches all the items for homepage
+    return Item.query(function(qb) {
+      qb.orderBy('created_at', 'DESC');
     })
       .where({ deleted_at: null })
-      .fetchAll({ withRelated: ['seller', 'category', 'condition', 'itemStatus'] })
+      .fetchAll({
+        withRelated: ['seller', 'category', 'condition', 'itemStatus']
+      })
       .then(items => {
         return res.json(items);
       })
       .catch(err => {
-        return res.json({ 'error': err.message })
+        return res.json({ error: err.message });
       });
   })
-  .post((req, res) => { // Posts one new item
-    //--Primary Keys--// 
-    const title = req.body.title.trim();
+  .post((req, res) => {
+    // Posts one new item
 
-    const price = req.body.price ? req.body.price.trim() : req.body.price;
-    const manufacturer = req.body.manufacturer ? req.body.manufacturer.trim() : req.body.manufacturer;
-    const model = req.body.model ? req.body.model.trim() : req.body.model;
-    const dimensions = req.body.dimensions ? req.body.dimensions.trim() : req.body.dimensions;
-    const details = req.body.details ? req.body.details.trim() : req.body.details;
-    const image_url = req.body.image_url ? req.body.image_url.trim() : req.body.image_url;
+    //--Primary Keys--//
+    const title = req.body.title.trim();
+    const price = req.body.price
+      ? req.body.price.trim()
+      : req.body.price;
+    const manufacturer = req.body.manufacturer
+      ? req.body.manufacturer.trim()
+      : req.body.manufacturer;
+    const model = req.body.model
+      ? req.body.model.trim()
+      : req.body.model;
+    const dimensions = req.body.dimensions
+      ? req.body.dimensions.trim()
+      : req.body.dimensions;
+    const details = req.body.details
+      ? req.body.details.trim()
+      : req.body.details;
+    const image_url = req.body.image_url
+      ? req.body.image_url.trim()
+      : req.body.image_url;
+
     //--Foreign Keys--//
     const seller_id = parseInt(req.body.seller_id);
     const category_id = parseInt(req.body.category_id);
@@ -52,61 +70,61 @@ router.route('/')
       seller_id,
       category_id,
       item_status_id,
-      condition_id,
-    }
+      condition_id
+    };
 
     // Save item to db with bookshelf
     return new Item()
       .save(itemInput)
       .then(response => {
-        return response.refresh({ withRelated: ['seller', 'category', 'condition', 'itemStatus'] })
+        return response.refresh({
+          withRelated: ['seller', 'category', 'condition', 'itemStatus']
+        });
       })
       .then(item => {
         return res.json(item);
       })
       .catch(err => {
-        return res.json({ 'error': err.message })
+        return res.json({ error: err.message });
       });
-  })
+  });
 
 // Items search route, let George know if you need search route from category
-router.route('/search/:term')
-  .get((req, res) => { // Fetches all items in home based on a search term
-    const term = `%${req.params.term}%`;
+router.route('/search/:term').get((req, res) => {
+  // Fetches all items in home based on a search term
+  const term = `%${req.params.term}%`;
 
-    return Item
-      .query(qb => {
-        qb.whereRaw(`LOWER(title) LIKE ?`, [term])
-          .andWhere({ deleted_at: null });
-      })
-      .fetchAll()
-      .then(items => {
-        return res.json(items);
-      })
-      .catch(err => {
-        return res.json({ 'error': err.message })
-      });
+  return Item.query(qb => {
+    qb.whereRaw(`LOWER(title) LIKE ?`, [term]).andWhere({ deleted_at: null });
   })
+    .fetchAll()
+    .then(items => {
+      return res.json(items);
+    })
+    .catch(err => {
+      return res.json({ error: err.message });
+    });
+});
 
 // Items category route
-router.route('/category/:categoryId')
-  .get((req, res) => { // Fetch all items for different categories
-    const category_id = req.params.categoryId;
-    console.log('category running: ', category_id);
+router.route('/category/:categoryId').get((req, res) => {
+  // Fetch all items for different categories
+  const category_id = req.params.categoryId;
+  console.log('category running: ', category_id);
 
-    return Item
-      .query(qb => {
-        qb.where({ category_id })
-          .andWhere({ deleted_at: null });
-      })
-      .fetchAll({ withRelated: ['seller', 'category', 'condition', 'itemStatus'] })
-      .then(items => {
-        return res.json(items);
-      })
-      .catch(err => {
-        return res.json({ 'error': err.message })
-      });
+  return Item.query(qb => {
+    qb.where({ category_id }).andWhere({ deleted_at: null });
   })
+    .fetchAll({
+      withRelated: ['seller', 'category', 'condition', 'itemStatus']
+    })
+    .then(items => {
+      return res.json(items);
+    })
+    .catch(err => {
+      return res.json({ error: err.message });
+    });
+});
 
 //-- Specfic Item Routes at ItemById.js --//
 router.use('/', itemId);
