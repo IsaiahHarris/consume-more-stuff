@@ -2,6 +2,8 @@ import React from 'react';
 import './Header.css';
 import SearchBar from '../SearchBar';
 import Button from '../Button';
+import { NavLink } from 'react-router-dom';
+
 class Header extends React.Component {
   constructor(props) {
     super(props)
@@ -12,7 +14,10 @@ class Header extends React.Component {
       <div className="header-container">
         <img src="https://i.imgur.com/34axnfY.png" className="logo" alt="" />
         <SearchBar classNameLabel="wrap" />
-        <Button label="Login" />
+        {/* <Button label="Login" /> */}
+        <nav>
+        <NavLink exact to='/login'>Login</NavLink>
+        </nav>
       </div>
     )
   }
