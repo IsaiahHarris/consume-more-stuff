@@ -55,7 +55,7 @@ class Sidebar extends Component {
                   className="Sidebar-main-desktop-list-item"
                 >
                   <Link
-                    to={`/items/${category.id}/category/`}
+                    to={`/items/category/${category.id}`}
                   >
                     {category.name}
                   </Link>
@@ -90,7 +90,7 @@ class Sidebar extends Component {
                     className="Sidebar-main-mobile-details-inner-list-item"
                   >
                     <Link
-                      to={`/items/${category.id}/category/`}
+                      to={`/items/category/${category.id}`}
                     >
                       {category.name}
                     </Link>
