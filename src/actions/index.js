@@ -90,6 +90,9 @@ export const logoutUser = () => {
     return axios.get('/api/logout')
       .then(response => {
         console.log('Logout success!', response);
+        dispatch({
+          type: LOGOUT
+        })
       })
       .catch(err => console.log('Logout Failed! ', err.response));
   }
