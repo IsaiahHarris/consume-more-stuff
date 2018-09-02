@@ -8,6 +8,7 @@ import Body from '../Body';
 import ItemDetail from '../ItemDetail';
 import ItemNew from '../ItemNew';
 import Login from '../Login';
+import Register from '../Register';
 import ItemEdit from '../ItemEdit';
 
 class MainContainer extends Component {
@@ -60,6 +61,10 @@ class MainContainer extends Component {
                   <Login />
                 )
             )}
+          />
+          <Route
+            exact path="/Register"
+            component={Register}
           />
         </Switch>
       </div>
