@@ -3,6 +3,7 @@ export const LOAD_CARDS = 'LOAD_CARDS';
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
 export const LOAD_CARD = 'LOAD_CARD';
 export const ADD_USER = 'ADD_USER';
+export const LOGOUT = 'LOGOUT'
 export const ADD_CARD = 'ADD_CARD';
 export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const EDIT_CARD = 'EDIT_CARD';
@@ -81,6 +82,16 @@ export const addUser = (user) => {
         })
       })
       .catch(err => console.log('Login Error! ', err.response));
+  }
+}
+
+export const logoutUser = () => {
+  return dispatch => {
+    return axios.get('/api/logout')
+      .then(response => {
+        console.log('Logout success!', response);
+      })
+      .catch(err => console.log('Logout Failed! ', err.response));
   }
 }
 
