@@ -1,10 +1,22 @@
 import axios from 'axios';
+
 export const LOAD_CARDS = 'LOAD_CARDS';
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
 export const LOAD_CARD = 'LOAD_CARD';
 export const ADD_CARD = 'ADD_CARD';
 export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const EDIT_CARD = 'EDIT_CARD';
+
+export const uploadToS3 = (userId, file) => {
+  return axios.post('/api/s3Upload', file, {
+    params: {
+      userId: userId
+    }
+  })
+  .then(response => {
+    // *** RESUME HERE ***
+  })
+}
 
 export const loadConditions = () => {
   return dispatch => {
