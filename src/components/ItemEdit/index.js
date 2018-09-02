@@ -1,13 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { addCard, loadCategories, loadConditions } from '../../actions';
-import './ItemNew.css';
 import Button from '../Button';
-import AddNewButton from '../../AddNewButton';
-import { Link, Redirect } from 'react-router-dom';
+import './ItemEdit.css'
+import { editCard, loadCategories, loadConditions } from '../../actions';
+import EditCardButton from '../EditCardButton';
 
-
-class ItemNew extends React.Component {
+class ItemEdit extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -23,14 +21,13 @@ class ItemNew extends React.Component {
       itemStatusInput: '',
       conditionInput: ''
     }
+    this.editThisCard = this.editThisCard.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.addNewCard = this.addNewCard.bind(this);
   }
-
   componentDidMount() {
     this.props.loadCategories();
     this.props.loadConditions();
-    this.props.addCard()
+
   }
   handleInputChange(event) {
     switch (event.target.id) {
@@ -72,7 +69,8 @@ class ItemNew extends React.Component {
     }
   }
 
-  addNewCard(event) {
+  editThisCard() {
+    console.log('this.props', this.props);
     const data = {}
     data.title = this.state.titleInput
     data.price = this.state.priceInput
@@ -80,16 +78,17 @@ class ItemNew extends React.Component {
     data.model = this.state.modelInput
     data.dimensions = this.state.dimensionsInput
     data.details = this.state.detailsInput
-    data.image_url = this.state.imageInput
+    data.image_url = 'https://i.imgur.com/34axnfY.png'
     data.category_id = this.state.categoryInput
     data.condition_id = this.state.conditionInput
     data.item_status_id = 1;
+    data.id = this.props.match.params.id
     data.seller_id = 1;
-    this.props.addCard(data)
+    console.log('this.props', this.props);
+    this.props.editCard(data)
   }
 
   render() {
-
     const styles = {
       backgroundImage: 'url("https://i.imgur.com/34axnfY.png")',
       backgroundSize: 'contain',
@@ -99,6 +98,7 @@ class ItemNew extends React.Component {
       width: '150px',
       paddingTop: '3%'
     };
+
     return (
       <div className="item-detail-view-container">
 
@@ -206,7 +206,7 @@ class ItemNew extends React.Component {
             onChange={this.handleInputChange}
           />
         </div>
-        <AddNewButton label="Add" clickHandler={this.addNewCard} />
+        <EditCardButton label="Add" clickHandler={this.editThisCard} />
       </div>
     )
   }
@@ -214,8 +214,8 @@ class ItemNew extends React.Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addCard: card => {
-      dispatch(addCard(card))
+    editCard: card => {
+      dispatch(editCard(card))
     },
     loadCategories: () => {
       dispatch(loadCategories())
@@ -233,4 +233,5 @@ const mapStateToProps = state => {
     card: state.cardsList
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(ItemNew);
+
+export default connect(mapStateToProps, mapDispatchToProps)(ItemEdit);

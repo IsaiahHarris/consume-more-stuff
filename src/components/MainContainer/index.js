@@ -6,6 +6,7 @@ import Sidebar from '../Sidebar';
 import Body from '../Body';
 import ItemDetail from '../ItemDetail';
 import ItemNew from '../ItemNew';
+import ItemEdit from '../ItemEdit';
 const MainContainer = () => {
 
   return (
@@ -17,6 +18,10 @@ const MainContainer = () => {
         <Route
           exact path="/"
           component={Body}
+        />
+        <Route
+          exact path="/items/edit/:id"
+          component={ItemEdit}
         />
         <Route
           exact path="/items/new"
