@@ -89,7 +89,6 @@ class ItemNew extends React.Component {
   }
 
   render() {
-
     const styles = {
       backgroundImage: 'url("https://i.imgur.com/34axnfY.png")',
       backgroundSize: 'contain',

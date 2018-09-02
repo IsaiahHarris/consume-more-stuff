@@ -42,7 +42,7 @@ class ItemDetail extends React.Component {
       const conditionName = card && card.condition ? card.condition.name : null
       return (
         <div className="item-container">
-          <h3></h3>
+          <h3>{card.title}</h3>
           <div style={styles} className="item-photo" />
           <div className="item-info">
             <div className="item-info-condition">
