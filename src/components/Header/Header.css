@@ -13,7 +13,17 @@
   min-width: 50px;
 }
 
-.login-button {
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items:center;
+  padding-bottom:15px;
+  width:260px;
+}
+
+.header-button{
+  height: 30px;
+  padding:5px;
 }
 
 @media (min-width: 768px) {
