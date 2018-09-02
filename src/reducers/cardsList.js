@@ -1,4 +1,4 @@
-import { LOAD_CARDS, LOAD_CARD, ADD_CARD } from '../actions';
+import { LOAD_CARDS, LOAD_CARD, ADD_CARD, EDIT_CARD } from '../actions';
 
 const initialState = [
   // {
@@ -24,6 +24,14 @@ const cardsList = (state = initialState, action) => {
       return [action.card]
     case ADD_CARD:
       return [...state, action.card]
+    case EDIT_CARD:
+      state.map(card => {
+        if (card.id === Number(action.editCard.id)) {
+          state.splice(state.indexOf(card), 1)
+          state.push(action.editCard);
+        }
+      })
+      return [...state]
     default:
       return state;
   }

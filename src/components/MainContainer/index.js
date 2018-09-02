@@ -8,6 +8,7 @@ import Body from '../Body';
 import ItemDetail from '../ItemDetail';
 import ItemNew from '../ItemNew';
 import Login from '../Login';
+import ItemEdit from '../ItemEdit';
 
 class MainContainer extends Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class MainContainer extends Component {
 
   checkLoggedIn() {
     console.log('This is current logged in user', this.props.user);
-    if(this.props.user.length > 0) {
+    if (this.props.user.length > 0) {
       this.loggedIn = true;
     } else {
       this.loggedIn = false;
@@ -28,7 +29,7 @@ class MainContainer extends Component {
 
   render() {
     this.checkLoggedIn();
-    
+
     return (
       <div className="MainContainer">
         <Sidebar />
@@ -37,6 +38,10 @@ class MainContainer extends Component {
           <Route
             exact path="/"
             component={Body}
+          />
+          <Route
+            exact path="/items/:id/edit"
+            component={ItemEdit}
           />
           <Route
             exact path="/items/new"
@@ -52,8 +57,8 @@ class MainContainer extends Component {
               this.loggedIn ? (
                 <Redirect to="/" />
               ) : (
-                <Login />
-              )
+                  <Login />
+                )
             )}
           />
         </Switch>
