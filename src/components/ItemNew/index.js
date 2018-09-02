@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { addCard, loadCategories, loadConditions } from '../../actions';
+import {
+  uploadToS3,
+  addCard,
+  loadCategories,
+  loadConditions
+} from '../../actions';
 
 import './ItemNew.css';
 import Button from '../Button';
@@ -101,9 +106,17 @@ class ItemNew extends Component {
       <div className="item-new-container">
         <div className="item-new-photo">
           <div style={styles} className="item-new-photo-img" />
-          <div className="item-new-photo-btn">
-            <Button label="Add Photo" />
-          </div>
+          <form
+            action="/api/s3Upload"
+            method="POST"
+            encType="multipart/form-data"
+          >
+            <input type="text" name="userId" value={800913} hidden/>
+            <input type="file" name="fileUpload" />
+            <div className="item-new-photo-btn">
+              <input type="submit" />
+            </div>
+          </form>
         </div>
 
         <div className="item-new-details">
@@ -128,9 +141,7 @@ class ItemNew extends Component {
             >
               <option value="">--Category--</option>
               {this.props.categories.map(category => {
-                return (
-                  <option value={category.id}>{category.name}</option>
-                );
+                return <option value={category.id}>{category.name}</option>;
               })}
             </select>
           </div>
@@ -145,9 +156,7 @@ class ItemNew extends Component {
             >
               <option value="">--Condition--</option>
               {this.props.conditions.map(condition => {
-                return (
-                  <option value={condition.id}>{condition.name}</option>
-                );
+                return <option value={condition.id}>{condition.name}</option>;
               })}
             </select>
           </div>

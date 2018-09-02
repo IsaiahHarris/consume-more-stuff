@@ -25,11 +25,14 @@ function uploadToS3(userId, file) {
         console.log(err);
       }
       console.log('Success:', data);
+      return data;
     });
   });
 }
 
 router.post('/s3Upload', (req, res) => {
+  console.log('FILES', req.files);
+
   const busboy = new Busboy({ headers: req.headers });
 
   busboy.on('finish', () => {
