@@ -3,6 +3,7 @@ import './Sidebar.css';
 import Button from '../Button';
 import { connect } from 'react-redux';
 import { loadCategories } from '../../actions';
+import { Link } from 'react-router-dom';
 
 class Sidebar extends Component {
   constructor(props) {
@@ -32,7 +33,10 @@ class Sidebar extends Component {
         <div className="Sidebar-auth-display">
           <div className="Sidebar-auth-display-options">Messages</div>
           <div className="Sidebar-auth-display-options">Settings</div>
-          <Button label="ADD" />
+          <Link to={'/items/new'}>
+            <Button label="ADD" />
+          </Link>
+
         </div>
 
         {/* Display for Desktop View: */}
