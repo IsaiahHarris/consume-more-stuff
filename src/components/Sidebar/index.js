@@ -54,7 +54,11 @@ class Sidebar extends Component {
                   key={index}
                   className="Sidebar-main-desktop-list-item"
                 >
-                  {category.name}
+                  <Link
+                    to={`/items/${category.id}/category/`}
+                  >
+                    {category.name}
+                  </Link>
                 </li>
               );
             })}
@@ -85,7 +89,12 @@ class Sidebar extends Component {
                     key={index}
                     className="Sidebar-main-mobile-details-inner-list-item"
                   >
-                    {category.name}
+                    <Link
+                      to={`/items/${category.id}/category/`}
+                    >
+                      {category.name}
+                    </Link>
+
                   </li>
                 );
               })}

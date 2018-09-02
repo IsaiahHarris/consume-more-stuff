@@ -47,8 +47,10 @@ class MainContainer extends Component {
             component={ItemNew}
           />
           <Route
-            exact path="/items/category/:categoryId"
-            component={CardsByCategory}
+            exact path="/items/:categoryId/category"
+            render={(props) => (
+              <CardsByCategory key={props.match.params.categoryId} {...props} />)
+            }
           />
           <Route
             exact path="/items/:id"
