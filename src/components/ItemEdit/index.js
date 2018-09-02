@@ -9,17 +9,17 @@ class ItemEdit extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      titleInput: null,
-      priceInput: null,
-      manufacturerInput: null,
-      modelInput: null,
-      dimensionsInput: null,
-      detailsInput: null,
-      imageInput: null,
-      sellerInput: null,
-      categoryInput: null,
-      itemStatusInput: null,
-      conditionInput: null
+      titleInput: '',
+      priceInput: '',
+      manufacturerInput: '',
+      modelInput: '',
+      dimensionsInput: '',
+      detailsInput: '',
+      imageInput: '',
+      sellerInput: '',
+      categoryInput: '',
+      itemStatusInput: '',
+      conditionInput: ''
     }
     this.editThisCard = this.editThisCard.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this);
