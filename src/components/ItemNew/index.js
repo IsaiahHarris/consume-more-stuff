@@ -80,7 +80,7 @@ class ItemNew extends React.Component {
     data.model = this.state.modelInput
     data.dimensions = this.state.dimensionsInput
     data.details = this.state.detailsInput
-    data.image_url = this.state.imageInput
+    data.image_url = 'https://i.imgur.com/34axnfY.png'
     data.category_id = this.state.categoryInput
     data.condition_id = this.state.conditionInput
     data.item_status_id = 1;
