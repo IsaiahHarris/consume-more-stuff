@@ -20,7 +20,7 @@ const MainContainer = () => {
           component={Body}
         />
         <Route
-          exact path="/items/edit/:id"
+          exact path="/items/:id/edit"
           component={ItemEdit}
         />
         <Route

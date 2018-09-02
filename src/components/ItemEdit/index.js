@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Button from '../Button';
 import './ItemEdit.css'
-import { editCard, loadCategories, loadConditions } from '../../actions';
+import { editCard, loadCategories, loadConditions, loadCard } from '../../actions';
 import EditCardButton from '../EditCardButton';
 
 class ItemEdit extends React.Component {
@@ -24,12 +24,17 @@ class ItemEdit extends React.Component {
     this.editThisCard = this.editThisCard.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this);
   }
+
   componentDidMount() {
     this.props.loadCategories();
     this.props.loadConditions();
+    this.props.loadCard(this.props.match.params.id);
 
   }
+
   handleInputChange(event) {
+
+
     switch (event.target.id) {
       case 'title':
         this.setState({ titleInput: event.target.value })
@@ -70,7 +75,7 @@ class ItemEdit extends React.Component {
   }
 
   editThisCard() {
-    console.log('this.props', this.props);
+
     const data = {}
     data.title = this.state.titleInput
     data.price = this.state.priceInput
@@ -84,131 +89,161 @@ class ItemEdit extends React.Component {
     data.item_status_id = 1;
     data.id = this.props.match.params.id
     data.seller_id = 1;
-    console.log('this.props', this.props);
+
     this.props.editCard(data)
+  }
+  static getDerivedStateFromProps(props, state) {
+
+    let realCard = props.card[0]
+    if (realCard) {
+      return {
+        titleInput: state.titleInput || realCard[0].title,
+        priceInput: state.priceInput || realCard[0].price,
+        manufacturerInput: state.manufacturerInput || realCard[0].manufacturer,
+        modelInput: state.modelInput || realCard[0].model,
+        dimensionsInput: state.dimensionsInput || realCard[0].dimensions,
+        detailsInput: state.detailsInput || realCard[0].details,
+        imageInput: state.imageInput || realCard[0].image_url,
+        sellerInput: state.sellerInput || realCard[0].seller_id,
+        categoryInput: state.categoryInput || realCard[0].category_id,
+        itemStatusInput: state.itemStatusInput || realCard[0].item_status_id,
+        conditionInput: state.conditionInput || realCard[0].condition_id
+      }
+    } else {
+      return null;
+    }
+
   }
 
   render() {
-    const styles = {
-      backgroundImage: 'url("https://i.imgur.com/34axnfY.png")',
-      backgroundSize: 'contain',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center center',
-      height: '20vh',
-      width: '150px',
-      paddingTop: '3%'
-    };
+    if (this.props.card[0]) {
 
-    return (
-      <div className="item-detail-view-container">
+      let propsCard = this.props.card[0]
+      let realCard = propsCard[0]
 
-        <div style={styles} className="item-photo"></div>
+      const styles = {
+        backgroundImage: 'url("https://i.imgur.com/34axnfY.png")',
+        backgroundSize: 'contain',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center center',
+        height: '20vh',
+        width: '150px',
+        paddingTop: '3%'
+      };
+      return (
+        <div className="item-detail-view-container">
 
-        <div className="item-header">
+          <div style={styles} className="item-photo"></div>
 
-          <label htmlFor="title">Title: </label>
-          <input
-            type="text"
-            name="title"
-            id="title"
-            value={this.state.titleInput}
-            onChange={this.handleInputChange} />
+          <div className="item-header">
 
+            <label htmlFor="title">Title: </label>
+            <input
+              type="text"
+              name="title"
+              id="title"
+              value={this.state.titleInput}
+              onChange={this.handleInputChange} />
+          </div>
+
+          <div className="add-button-container">
+            <Button label='Add Photo' />
+          </div>
+
+          <div className="item-details-container">
+
+            <label htmlFor="price">Price: </label>
+            <input
+              type="text"
+              name="price"
+              id="price"
+              value={this.state.priceInput}
+              onChange={this.handleInputChange} />
+
+            <label htmlFor="condition">Condition: </label>
+            <select
+              name="condition"
+              id="condition"
+              value={this.state.conditionInput}
+              onChange={this.handleInputChange}
+            >
+              <option value="">--Condition--</option>
+              {this.props.conditions.map((condition, i) => {
+                return (
+                  <option key={i} value={condition.id}>{condition.name}</option>
+                )
+              })}
+            </select>
+
+            <label htmlFor="manufacturer">Manufacturer: </label>
+            <input
+              type="text"
+              name="manufacturer"
+              id="manufacturer"
+              value={this.state.manufacturerInput}
+              onChange={this.handleInputChange} />
+
+            <label htmlFor="model">Model: </label>
+            <input
+              type="text"
+              name="model"
+              id="model"
+              value={this.state.modelInput}
+              onChange={this.handleInputChange} />
+
+            <label htmlFor="dimensions">Dimensions: </label>
+            <input
+              type="text"
+              name="dimensions"
+              id="dimensions"
+              value={this.state.dimensionsInput}
+              onChange={this.handleInputChange} />
+
+            <label htmlFor="category">Category: </label>
+            <select
+              name="category"
+              id="category"
+              value={this.state.categoryInput}
+              onChange={this.handleInputChange}
+            >
+              <option value="">--Category--</option>
+              {this.props.categories.map((category, i) => {
+                return (
+                  <option key={i} value={category.id} >{category.name}</option>
+                )
+              })}
+            </select>
+
+            <label htmlFor="details">Note: </label>
+            <input type="text"
+              name="details"
+              id="details"
+              value={this.state.detailsInput}
+              onChange={this.handleInputChange}
+            />
+            <label htmlFor="seller">Seller: </label>
+            <input type="text"
+              name="seller"
+              id="seller"
+              value={this.state.sellerInput}
+              onChange={this.handleInputChange}
+            />
+            <label htmlFor="itemStatus">ItemStatus: </label>
+            <input type="text"
+              name="itemStatus"
+              id="itemStatus"
+              value={this.state.itemStatusInput}
+              onChange={this.handleInputChange}
+            />
+          </div>
+          <EditCardButton label="Add" clickHandler={this.editThisCard} />
         </div>
-
-        <div className="add-button-container">
-          <Button label='Add Photo' />
-        </div>
-
-        <div className="item-details-container">
-
-          <label htmlFor="price">Price: </label>
-          <input
-            type="text"
-            name="price"
-            id="price"
-            value={this.state.priceInput}
-            onChange={this.handleInputChange} />
-
-          <label htmlFor="condition">Condition: </label>
-          <select
-            name="condition"
-            id="condition"
-            value={this.state.conditionInput}
-            onChange={this.handleInputChange}
-          >
-            <option value="">--Condition--</option>
-            {this.props.conditions.map(condition => {
-              return (
-                <option value={condition.id}>{condition.name}</option>
-              )
-            })}
-          </select>
-
-          <label htmlFor="manufacturer">Manufacturer: </label>
-          <input
-            type="text"
-            name="manufacturer"
-            id="manufacturer"
-            value={this.state.manufacturerInput}
-            onChange={this.handleInputChange} />
-
-          <label htmlFor="model">Model: </label>
-          <input
-            type="text"
-            name="model"
-            id="model"
-            value={this.state.modelInput}
-            onChange={this.handleInputChange} />
-
-          <label htmlFor="dimensions">Dimensions: </label>
-          <input
-            type="text"
-            name="dimensions"
-            id="dimensions"
-            value={this.state.dimensionsInput}
-            onChange={this.handleInputChange} />
-
-          <label htmlFor="category">Category: </label>
-          <select
-            name="category"
-            id="category"
-            value={this.state.categoryInput}
-            onChange={this.handleInputChange}
-          >
-            <option value="">--Category--</option>
-            {this.props.categories.map(category => {
-              return (
-                <option value={category.id} >{category.name}</option>
-              )
-            })}
-          </select>
-
-          <label htmlFor="details">Note: </label>
-          <input type="text"
-            name="details"
-            id="details"
-            value={this.state.detailsInput}
-            onChange={this.handleInputChange}
-          />
-          <label htmlFor="seller">Seller: </label>
-          <input type="text"
-            name="seller"
-            id="seller"
-            value={this.state.sellerInput}
-            onChange={this.handleInputChange}
-          />
-          <label htmlFor="itemStatus">ItemStatus: </label>
-          <input type="text"
-            name="itemStatus"
-            id="itemStatus"
-            value={this.state.itemStatusInput}
-            onChange={this.handleInputChange}
-          />
-        </div>
-        <EditCardButton label="Add" clickHandler={this.editThisCard} />
-      </div>
-    )
+      )
+    } else {
+      return (
+        ''
+      )
+    }
   }
 }
 
@@ -222,6 +257,9 @@ const mapDispatchToProps = dispatch => {
     },
     loadConditions: () => {
       dispatch(loadConditions())
+    },
+    loadCard: (card) => {
+      dispatch(loadCard(card))
     }
   }
 }
