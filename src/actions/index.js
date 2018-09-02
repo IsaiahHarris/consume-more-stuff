@@ -4,6 +4,7 @@ export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
 export const LOAD_CARD = 'LOAD_CARD';
 export const ADD_CARD = 'ADD_CARD';
 export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
+export const EDIT_CARD = 'EDIT_CARD';
 
 export const loadConditions = () => {
   return dispatch => {
@@ -45,7 +46,7 @@ export const loadCard = (card) => {
   return dispatch => {
     return axios.get(`/api/items/${card}`)
       .then(response => {
-        console.log('response', response);
+
         dispatch({
           type: LOAD_CARD,
           card: response.data
@@ -63,6 +64,21 @@ export const addCard = (data) => {
           card: response.data
         })
         window.location.href = `/items/${response.data.id}`
+      })
+  }
+}
+
+export const editCard = (card) => {
+  console.log('card', card);
+  return dispatch => {
+    return axios.put(`/api/items/${card.id}`, card)
+      .then(response => {
+        dispatch({
+          type: EDIT_CARD,
+          editCard: response.data
+        })
+        console.log('response.data', response.data);
+        // window.location.href = `/items/${response.data.id}`
       })
   }
 }

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import { addCard, loadCategories, loadConditions } from '../../actions';
+
 import './ItemNew.css';
 import Button from '../Button';
 import AddNewButton from '../AddNewButton';
-import { Link, Redirect } from 'react-router-dom';
 
-class ItemNew extends React.Component {
+class ItemNew extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,6 +32,7 @@ class ItemNew extends React.Component {
     this.props.loadConditions();
     this.props.addCard();
   }
+
   handleInputChange(event) {
     switch (event.target.id) {
       case 'title':
@@ -94,6 +96,7 @@ class ItemNew extends React.Component {
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center center'
     };
+
     return (
       <div className="item-new-container">
         <div className="item-new-photo">
@@ -222,6 +225,7 @@ const mapDispatchToProps = dispatch => {
     }
   };
 };
+
 const mapStateToProps = state => {
   return {
     categories: state.categoriesList,
@@ -229,6 +233,7 @@ const mapStateToProps = state => {
     card: state.cardsList
   };
 };
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
