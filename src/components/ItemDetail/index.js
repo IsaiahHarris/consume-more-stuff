@@ -5,6 +5,24 @@ import './itemDetail.css';
 import Button from '../Button';
 import { Redirect } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { Tracker } from 'react-tracker';
+const tracker = new Tracker([
+  pageViewListener
+]);
+
+const pageViewListener = (event, trackingHistory) => {
+  window.dataLayer.push(event);
+};
+
+tracker.on('PAGE_VIEW', pageViewListener);
+
+const pageViewEvent = (pageId, userId) => ({
+  type: 'PAGE_VIEW',
+  data: {
+    pageId,
+    userId
+  }
+});
 function switchCardVariable(card, location) {
   if (card) {
     return card[0]
@@ -15,6 +33,7 @@ function switchCardVariable(card, location) {
   }
 }
 
+
 class ItemDetail extends React.Component {
   constructor(props) {
     super(props);
@@ -22,6 +41,8 @@ class ItemDetail extends React.Component {
 
   componentDidMount() {
     this.props.loadCard(this.props.match.params.id);
+
+
   }
 
   render() {

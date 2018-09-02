@@ -8,6 +8,8 @@ import './index.css';
 import App from './components/App/App';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { TrackerProvider } from 'react-tracker';
+
 
 const store = createStore(
   reducers,
@@ -18,11 +20,13 @@ const store = createStore(
 )
 
 ReactDOM.render(
-  <Router>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </Router>,
+  <TrackerProvider tracker={tracker}>
+    <Router>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </Router>
+  </TrackerProvider>,
   document.getElementById('root')
 );
 registerServiceWorker();

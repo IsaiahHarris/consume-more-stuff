@@ -7,7 +7,7 @@ const Item = require('../../db/models/Item');
 router.route('/:id')
   .get((req, res) => { // Get a specifc item info
     const id = req.params.id;
-
+    console.log('req.user', req.user);
     return new Item()
       .query(qb => {
         qb.where({ id })
