@@ -6,7 +6,7 @@ import Button from '../Button';
 import AddNewButton from '../AddNewButton';
 import { Link } from 'react-router-dom';
 
-const TEMP_SELLER_ID = 800913;
+const TEMP_SELLER_ID = 1;
 
 class ItemNew extends Component {
   constructor(props) {
