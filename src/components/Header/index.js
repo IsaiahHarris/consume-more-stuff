@@ -4,14 +4,15 @@ import SearchBar from '../SearchBar';
 import Logout from '../Logout';
 import { NavLink } from 'react-router-dom';
 
-// const user = localStorage.getItem('user') ? localStorage.getItem('user') : null
-
 class Header extends React.Component {
   constructor(props) {
     super(props)
+    this.user = localStorage.getItem('user');
   }
 
-
+  // componentDidMount() {
+  //   const user = localStorage.getItem('user')
+  // }
 
   render() {
     return (
@@ -23,8 +24,6 @@ class Header extends React.Component {
         </nav>
         <Logout />
         {localStorage.getItem('user') ? localStorage.getItem('user') : null}
-
-
       </div>
     )
   }
