@@ -9,8 +9,8 @@ class Login extends Component {
     super(props);
 
     this.state = { // tracks username and password locally
-      username:'username',
-      password:'password',
+      username: 'username',
+      password: 'password',
     }
 
     this.inputChange = this.inputChange.bind(this);
@@ -20,10 +20,10 @@ class Login extends Component {
   inputChange(event) { // tracks login form input
     switch (event.target.name) {
       case 'username':
-        this.setState({username: event.target.value});
+        this.setState({ username: event.target.value });
         break;
       case 'password':
-        this.setState({password: event.target.value});
+        this.setState({ password: event.target.value });
         break;
       default:
         break;
@@ -43,24 +43,23 @@ class Login extends Component {
     return (
       <div className='login-container'>
         <h1>Login Page</h1>
-        <input 
+        <input
           type='text' name='username'
-          placeholder={ this.state.username }
-          onChange={ this.inputChange }
+          placeholder={this.state.username}
+          onChange={this.inputChange}
         />
-        <input 
+        <input
           type='text' name='password'
-          placeholder={ this.state.password }
-          onChange={ this.inputChange }
+          placeholder={this.state.password}
+          onChange={this.inputChange}
         />
-        <button className='btn' onClick={ this.loginUser }>Login</button>
+        <button className='btn' onClick={this.loginUser}>Login</button>
       </div>
     );
   }
 }
 
 const mapDispatchToProps = dispatch => {
-  console.log('mapDispatchToProps ACTIVATED');
   return {
     addUser: user => {
       dispatch(addUser(user));

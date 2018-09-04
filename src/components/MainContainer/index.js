@@ -10,17 +10,16 @@ import ItemNew from '../ItemNew';
 import Login from '../Login';
 import Register from '../Register';
 import ItemEdit from '../ItemEdit';
+import CardsByCategory from '../CardsByCategory';
 
 class MainContainer extends Component {
   constructor(props) {
     super(props);
-
     this.loggedIn = false;
     this.checkLoggedIn = this.checkLoggedIn.bind(this);
   }
 
   checkLoggedIn() {
-    console.log('This is current logged in user', this.props.user);
     if (this.props.user.length > 0) {
       this.loggedIn = true;
     } else {
@@ -47,6 +46,12 @@ class MainContainer extends Component {
           <Route
             exact path="/items/new"
             component={ItemNew}
+          />
+          <Route
+            exact path="/items/category/:categoryId"
+            render={(props) => (
+              <CardsByCategory key={props.match.params.categoryId} {...props} />)
+            }
           />
           <Route
             exact path="/items/:id"
