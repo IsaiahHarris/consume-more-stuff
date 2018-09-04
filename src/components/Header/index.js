@@ -3,6 +3,8 @@ import './Header.css';
 import SearchBar from '../SearchBar';
 import Logout from '../Logout';
 import { NavLink } from 'react-router-dom';
+import { loadUser } from '../../actions';
+import { connect } from 'react-redux';
 
 class Header extends React.Component {
   constructor(props) {
@@ -11,7 +13,7 @@ class Header extends React.Component {
   }
 
   // componentDidMount() {
-  //   const user = localStorage.getItem('user')
+  //   this.props.loadUser()
   // }
 
   render() {
@@ -29,4 +31,19 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+const mapStateToProps = state => {
+  console.log('state', state);
+  return {
+    user: state
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    loadUser: user => {
+      dispatch(loadUser(user))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header)

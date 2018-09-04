@@ -8,6 +8,7 @@ export const ADD_CARD = 'ADD_CARD';
 export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const EDIT_CARD = 'EDIT_CARD';
 export const LOAD_CARDS_BY_CATEGORY = 'LOAD_CARDS_BY_CATEGORY';
+export const LOAD_USER = 'LOAD_USER';
 
 export const loadConditions = () => {
   return dispatch => {
@@ -124,5 +125,14 @@ export const editCard = (card) => {
         })
         window.location.href = `/items/${card.id}`
       })
+  }
+}
+
+export const loadUser = () => {
+  return dispatch => {
+    dispatch({
+      type: LOAD_USER
+    })
+    window.localStorage.getItem('user');
   }
 }
