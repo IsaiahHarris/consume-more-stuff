@@ -23,13 +23,13 @@ class ItemNew extends Component {
       sellerInput: '',
       categoryInput: '',
       itemStatusInput: '',
-      conditionInput: ''
+      conditionInput: '',
+      imageUploadUrl: 'https://i.imgur.com/34axnfY.png'
     };
-
-    this.imageUrl = '';
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleImageSubmit = this.handleImageSubmit.bind(this);
+    this.previewImage = this.previewImage.bind(this);
     this.addNewCard = this.addNewCard.bind(this);
   }
 
@@ -80,10 +80,32 @@ class ItemNew extends Component {
   }
 
   handleImageSubmit() {
-    const file = document.getElementById('item-new-photo-form')[1]['files'][0]
+    const file = document.getElementById('item-new-photo-form')[1]['files'][0];
     console.log('FILE', file);
 
-    this.imageUrl = `https://cms-2018.s3.amazonaws.com/${TEMP_SELLER_ID}/${file.name}`;
+    this.setState({
+      imageUploadUrl: `https://cms-2018.s3.amazonaws.com/${TEMP_SELLER_ID}/${
+        file.name
+      }`
+    });
+  }
+
+  previewImage() {
+    const preview = document.getElementsByClassName('item-new-photo-img')[0];
+    const file = document.querySelector('input[type=file]').files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener(
+      'load',
+      () => {
+        preview.src = reader.result;
+      },
+      false
+    );
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
   }
 
   addNewCard() {
@@ -95,7 +117,7 @@ class ItemNew extends Component {
     data.model = this.state.modelInput;
     data.dimensions = this.state.dimensionsInput;
     data.details = this.state.detailsInput;
-    data.image_url = this.imageUrl ? this.imageUrl : 'https://i.imgur.com/34axnfY.png';
+    data.image_url = this.state.imageUploadUrl;
     data.category_id = this.state.categoryInput;
     data.condition_id = this.state.conditionInput;
     data.item_status_id = 1;
@@ -106,10 +128,8 @@ class ItemNew extends Component {
 
   render() {
     const styles = {
-      backgroundImage: 'url("https://i.imgur.com/34axnfY.png")',
-      backgroundSize: 'contain',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center center'
+      height: '200px',
+      width: '200px'
     };
 
     const iframeStyles = {
@@ -122,12 +142,11 @@ class ItemNew extends Component {
 
     return (
       <div className="item-new-container">
-
         <div className="item-new-photo">
           <Link to={'/'}>
             <Button label="Back" />
           </Link>
-          <div style={styles} className="item-new-photo-img" />
+          <img src="https://i.imgur.com/34axnfY.png" style={styles} className="item-new-photo-img" />
 
           <iframe name="hiddenFrame" style={iframeStyles} />
 
@@ -136,6 +155,7 @@ class ItemNew extends Component {
             action="/api/s3Upload"
             method="POST"
             encType="multipart/form-data"
+            onChange={this.previewImage}
             onSubmit={this.handleImageSubmit}
             target="hiddenFrame"
           >
@@ -148,8 +168,7 @@ class ItemNew extends Component {
         </div>
 
         <div className="item-new-details">
-          <div className="header-button">
-          </div>
+          <div className="header-button" />
           <div className="item-new-details-input">
             <label htmlFor="title">Title: </label>
             <input
@@ -171,9 +190,7 @@ class ItemNew extends Component {
             >
               <option value="">--Category--</option>
               {this.props.categories.map(category => {
-                return (
-                  <option value={category.id}>{category.name}</option>
-                );
+                return <option value={category.id}>{category.name}</option>;
               })}
             </select>
           </div>
@@ -188,9 +205,7 @@ class ItemNew extends Component {
             >
               <option value="">--Condition--</option>
               {this.props.conditions.map(condition => {
-                return (
-                  <option value={condition.id}>{condition.name}</option>
-                );
+                return <option value={condition.id}>{condition.name}</option>;
               })}
             </select>
           </div>
