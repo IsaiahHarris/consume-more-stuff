@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+
 
 class Register extends Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class Register extends Component {
       username: 'username',
       email: 'email',
       password: 'password',
+      redirect: false
     }
 
     this.inputChange = this.inputChange.bind(this);
@@ -29,6 +31,7 @@ class Register extends Component {
     }
   }
 
+  // Send http request with registration data to backend
   registerUser() {
     const data = {
       username: this.state.username,
@@ -40,42 +43,44 @@ class Register extends Component {
     return axios.post('/api/register', data)
       .then(response => {
         console.log('User registered! ', response);
+        this.setState({ redirect: true });
       })
       .catch(err => console.log('Registration error! ', err.response));
   }
 
+  // Method activated when user is successfully registered
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to='/login' />
+    }
+  }
+
   render() {
     return (
-      <div className='register-container'>
-        <h1>Register</h1>
-        <input
-          type='text' name='username'
-          placeholder={this.state.username}
-          onChange={this.inputChange}
-        />
-        <input
-          type='text' name='email'
-          placeholder={this.state.email}
-          onChange={this.inputChange}
-        />
-        <input
-          type='text' name='password'
-          placeholder={this.state.password}
-          onChange={this.inputChange}
-        />
-        <button className='btn' onClick={ this.registerUser }>Submit</button>
+      <div>
+        { this.renderRedirect() }
+        <div className='register-container'>
+          <h1>Register</h1>
+          <input
+            type='text' name='username'
+            placeholder={this.state.username}
+            onChange={this.inputChange}
+          />
+          <input
+            type='text' name='email'
+            placeholder={this.state.email}
+            onChange={this.inputChange}
+          />
+          <input
+            type='text' name='password'
+            placeholder={this.state.password}
+            onChange={this.inputChange}
+          />
+          <button className='btn' onClick={ this.registerUser }>Submit</button>
+        </div>
       </div>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  // console.log('mapDispatchToProps ACTIVATED');
-  // return {
-  //   RegisterUser: () => {
-  //     dispatch(RegisterUser());
-  //   }
-  // }
-}
-
-export default connect(null, mapDispatchToProps)(Register);
+export default Register;
