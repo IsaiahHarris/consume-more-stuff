@@ -59,13 +59,7 @@ class MainContainer extends Component {
           />
           <Route
             exact path="/login"
-            render={() => (
-              this.loggedIn ? (
-                <Redirect to="/" />
-              ) : (
-                  <Login />
-                )
-            )}
+            component={Login}
           />
         </Switch>
       </div>
