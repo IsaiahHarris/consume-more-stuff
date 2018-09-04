@@ -10,7 +10,7 @@ const usersList = (state = intialState, action) => {
     case ADD_USER:
       return [action.user.username];
     case LOGOUT:
-      return [state];
+      return [];
     default:
       return state;
   }
