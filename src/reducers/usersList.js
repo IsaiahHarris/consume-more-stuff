@@ -1,17 +1,16 @@
 import { ADD_USER } from '../actions';
-import { LOGOUT, LOAD_USER } from '../actions';
+import { LOGOUT } from '../actions';
 
-const intialState = [];
+const intialState = {
+  // username: window.localStorage.getItem('user')
+}
 
 const usersList = (state = intialState, action) => {
   switch (action.type) {
     case ADD_USER:
-      return [...state, action.user];
+      return [...action.user.username];
     case LOGOUT:
-      return intialState;
-    case LOAD_USER:
-      console.log('action', action);
-      return [action]
+      return [...state];
     default:
       return state;
   }

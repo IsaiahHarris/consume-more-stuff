@@ -8,7 +8,7 @@ export const ADD_CARD = 'ADD_CARD';
 export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const EDIT_CARD = 'EDIT_CARD';
 export const LOAD_CARDS_BY_CATEGORY = 'LOAD_CARDS_BY_CATEGORY';
-export const LOAD_USER = 'LOAD_USER';
+
 
 export const loadConditions = () => {
   return dispatch => {
@@ -75,7 +75,6 @@ export const loadCard = (card) => {
   return dispatch => {
     return axios.get(`/api/items/${card}`)
       .then(response => {
-
         dispatch({
           type: LOAD_CARD,
           card: response.data
@@ -88,12 +87,11 @@ export const addUser = (user) => {
   return dispatch => {
     return axios.post('/api/login', user)
       .then(response => {
-        console.log('response', response.data);
+        window.localStorage.setItem('user', response.data.username)
         dispatch({
           type: ADD_USER,
           user: response.data
         })
-        window.localStorage.setItem('user', response.data.username)
       })
       .catch(err => console.log('Login Error! ', err.response));
 
@@ -128,11 +126,3 @@ export const editCard = (card) => {
   }
 }
 
-export const loadUser = () => {
-  return dispatch => {
-    dispatch({
-      type: LOAD_USER
-    })
-    window.localStorage.getItem('user');
-  }
-}
