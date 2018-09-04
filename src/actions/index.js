@@ -16,7 +16,7 @@ export const uploadToS3 = formData => {
     url: '/api/s3Upload',
     data: formData,
     headers: {
-      'Content-Type': `multipart/form-data; boundary=${formData._boundary}`
+      'Content-Type': `multipart/form-data`
     }
   })
   .then(response => {
