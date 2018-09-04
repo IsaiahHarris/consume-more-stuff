@@ -23,6 +23,8 @@ class Register extends Component {
       case 'username':
         this.setState({ username: event.target.value });
         break;
+      case 'email':
+        this.setState({ email: event.target.value });
       case 'password':
         this.setState({ password: event.target.value });
         break;
