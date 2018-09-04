@@ -95,13 +95,9 @@ class ItemNew extends Component {
     const file = document.querySelector('input[type=file]').files[0];
     const reader = new FileReader();
 
-    reader.addEventListener(
-      'load',
-      () => {
-        preview.src = reader.result;
-      },
-      false
-    );
+    reader.addEventListener('load', () => {
+      preview.style.backgroundImage = 'url("' + reader.result + '")';
+    }, false);
 
     if (file) {
       reader.readAsDataURL(file);
@@ -128,8 +124,10 @@ class ItemNew extends Component {
 
   render() {
     const styles = {
-      height: '200px',
-      width: '200px'
+      backgroundImage: 'url("' + this.state.imageUploadUrl + '")',
+      backgroundSize: 'contain',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center center'
     };
 
     const iframeStyles = {
@@ -146,7 +144,7 @@ class ItemNew extends Component {
           <Link to={'/'}>
             <Button label="Back" />
           </Link>
-          <img src="https://i.imgur.com/34axnfY.png" style={styles} className="item-new-photo-img" />
+          <div style={styles} className="item-new-photo-img" />
 
           <iframe name="hiddenFrame" style={iframeStyles} />
 
