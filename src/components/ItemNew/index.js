@@ -81,13 +81,16 @@ class ItemNew extends Component {
 
   handleImageSubmit() {
     const file = document.getElementById('item-new-photo-form')[1]['files'][0];
-    console.log('FILE', file);
 
-    this.setState({
-      imageUploadUrl: `https://cms-2018.s3.amazonaws.com/${TEMP_SELLER_ID}/${
-        file.name
-      }`
-    });
+    /* Delay allows time for AWS to generate URL prior to setting state: */
+    setTimeout(() => {
+      this.setState({
+        imageUploadUrl: `https://cms-2018.s3.amazonaws.com/${TEMP_SELLER_ID}/${
+          file.name
+        }`
+      });
+    }, 1000);
+
   }
 
   previewImage() {
@@ -146,8 +149,9 @@ class ItemNew extends Component {
           </Link>
           <div style={styles} className="item-new-photo-img" />
 
+          {/* Use of iframe allows user to stay on page after submit: */}
+          {/* Source (Stack Overflow): https://goo.gl/1ohihG */}
           <iframe name="hiddenFrame" style={iframeStyles} />
-
           <form
             id="item-new-photo-form"
             action="/api/s3Upload"
