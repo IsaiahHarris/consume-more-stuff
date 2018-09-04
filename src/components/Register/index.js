@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { connect } from 'react-redux';
 
 class Register extends Component {
@@ -12,6 +13,7 @@ class Register extends Component {
     }
 
     this.inputChange = this.inputChange.bind(this);
+    this.registerUser = this.registerUser.bind(this);
   }
 
   inputChange(event) { // tracks login form input
@@ -25,6 +27,21 @@ class Register extends Component {
       default:
         break;
     }
+  }
+
+  registerUser() {
+    const data = {
+      username: this.state.username,
+      email: this.state.email,
+      password: this.state.password
+    }
+    console.log('Registration method');
+
+    return axios.post('/api/register', data)
+      .then(response => {
+        console.log('User registered! ', response);
+      })
+      .catch(err => console.log('Registration error! ', err.response));
   }
 
   render() {
@@ -46,7 +63,7 @@ class Register extends Component {
           placeholder={this.state.password}
           onChange={this.inputChange}
         />
-        <button className='btn'>Login</button>
+        <button className='btn' onClick={ this.registerUser }>Submit</button>
       </div>
     );
   }
