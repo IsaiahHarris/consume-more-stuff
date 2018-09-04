@@ -24,11 +24,11 @@ class ItemNew extends Component {
       categoryInput: '',
       itemStatusInput: '',
       conditionInput: '',
+      imageUploadData: '',
       imageUploadUrl: 'https://i.imgur.com/34axnfY.png'
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleImageSubmit = this.handleImageSubmit.bind(this);
     this.previewImage = this.previewImage.bind(this);
     this.addNewCard = this.addNewCard.bind(this);
   }
@@ -74,23 +74,21 @@ class ItemNew extends Component {
       case 'condition':
         this.setState({ conditionInput: event.target.value });
         break;
+      case 'fileUpload':
+        console.log('event.target', event.target.files[0]);
+        this.setState({
+          imageUploadData: event.target.files[0],
+          imageUploadUrl: event.target.files[0]
+            ? `https://cms-2018.s3.amazonaws.com/${TEMP_SELLER_ID}/${
+                event.target.files[0].name
+              }`
+            : /* Revent to placeholder image if user cancels upload: */
+              'https://i.imgur.com/34axnfY.png'
+        });
+        break;
       default:
         break;
     }
-  }
-
-  handleImageSubmit() {
-    const file = document.getElementById('item-new-photo-form')[1]['files'][0];
-
-    /* Delay allows time for AWS to generate URL prior to setting state: */
-    setTimeout(() => {
-      this.setState({
-        imageUploadUrl: `https://cms-2018.s3.amazonaws.com/${TEMP_SELLER_ID}/${
-          file.name
-        }`
-      });
-    }, 1000);
-
   }
 
   previewImage() {
@@ -98,9 +96,13 @@ class ItemNew extends Component {
     const file = document.querySelector('input[type=file]').files[0];
     const reader = new FileReader();
 
-    reader.addEventListener('load', () => {
-      preview.style.backgroundImage = 'url("' + reader.result + '")';
-    }, false);
+    reader.addEventListener(
+      'load',
+      () => {
+        preview.style.backgroundImage = 'url("' + reader.result + '")';
+      },
+      false
+    );
 
     if (file) {
       reader.readAsDataURL(file);
@@ -133,14 +135,6 @@ class ItemNew extends Component {
       backgroundPosition: 'center center'
     };
 
-    const iframeStyles = {
-      position: 'absolute',
-      top: '-1px',
-      left: '-1px',
-      width: '1px',
-      height: '1px'
-    };
-
     return (
       <div className="item-new-container">
         <div className="item-new-photo">
@@ -149,24 +143,14 @@ class ItemNew extends Component {
           </Link>
           <div style={styles} className="item-new-photo-img" />
 
-          {/* Use of iframe allows user to stay on page after submit: */}
-          {/* Source (Stack Overflow): https://goo.gl/1ohihG */}
-          <iframe name="hiddenFrame" style={iframeStyles} />
-          <form
-            id="item-new-photo-form"
-            action="/api/s3Upload"
-            method="POST"
-            encType="multipart/form-data"
-            onChange={this.previewImage}
-            onSubmit={this.handleImageSubmit}
-            target="hiddenFrame"
-          >
-            <input type="text" name="userId" value={TEMP_SELLER_ID} hidden />
-            <input type="file" name="fileUpload" />
-            <div className="item-new-photo-btn">
-              <input type="submit" />
-            </div>
-          </form>
+          <div id="item-new-photo-upload" onChange={this.previewImage}>
+            <input
+              type="file"
+              name="fileUpload"
+              id="fileUpload"
+              onChange={this.handleInputChange}
+            />
+          </div>
         </div>
 
         <div className="item-new-details">
