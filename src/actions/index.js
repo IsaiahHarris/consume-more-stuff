@@ -93,7 +93,7 @@ export const loginUser = (user, history) => {
           type: LOGIN,
           user: response.data
         })
-
+        console.log('response.data', response.data);
         history.push('/')
       })
       .catch(err => console.log('Login Error! ', err.response));
@@ -104,7 +104,7 @@ export const logoutUser = () => {
   return dispatch => {
     return axios.get('/api/logout')
       .then(response => {
-        console.log('Logout success!');
+        console.log('Logout success!', response);
         dispatch({
           type: LOGOUT
         })
@@ -118,11 +118,11 @@ export const logoutUser = () => {
 export const registerUser = (user, history) => {
   return dispatch => {
     return axios.post('/api/register', user)
-    .then(response => {
-      console.log('User registered! ', response);
-      history.push('/login');
-    })
-    .catch(err => console.log('Registration error! ', err.response));
+      .then(response => {
+        console.log('User registered! ', response);
+        history.push('/login');
+      })
+      .catch(err => console.log('Registration error! ', err.response));
   }
 }
 
@@ -140,10 +140,12 @@ export const editCard = (card) => {
 }
 
 export const checkUser = () => {
-  if (localStorage.user) {
-    return {
-      type: LOGIN,
-      user: { username: localStorage.user }
+  return dispatch => {
+    if (localStorage.user) {
+      dispatch({
+        type: LOGIN,
+        user: { username: localStorage.user }
+      })
     }
   }
 }
