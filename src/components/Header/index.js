@@ -18,9 +18,9 @@ class Header extends React.Component {
         <img src="https://i.imgur.com/34axnfY.png" className="logo" alt="" />
         <SearchBar classNameLabel="wrap" />
         <nav>
-          <Link exact to='/login'>Login</Link>
+          {!this.props.user.username && <Link exact to='/login'>Login</Link>}
         </nav>
-        <Logout />
+        {this.props.user.username && < Logout />}
         {this.props.user.username}
       </div>
     )
