@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { loadCard } from '../../actions';
 import './itemDetail.css';
 import Button from '../Button';
-import { Redirect } from 'react-router-dom';
+
 import { Link } from 'react-router-dom';
 function switchCardVariable(card, location) {
   if (card) {

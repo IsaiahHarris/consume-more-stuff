@@ -1,7 +1,6 @@
 import React from 'react';
 import './Card.css';
 import { loadCard } from '../../actions';
-import ItemDetail from '../ItemDetail'
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 class Card extends React.Component {

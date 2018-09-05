@@ -9,17 +9,12 @@ import { connect } from 'react-redux';
 class Header extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      user: localStorage.getItem('user')
-    }
+    //question jesse
+
   }
 
-  // componentDidMount() {
-  //   this.props.loadUser()
-  // }
 
   render() {
-    console.log('this.props.user.user', this.props.user);
     return (
       <div className="header-container">
         <img src="https://i.imgur.com/34axnfY.png" className="logo" alt="" />
@@ -28,7 +23,7 @@ class Header extends React.Component {
           <Link exact to='/login'>Login</Link>
         </nav>
         <Logout />
-        {this.props.user[0]}
+        {this.props.user.username}
       </div>
     )
   }

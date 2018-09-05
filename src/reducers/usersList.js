@@ -1,15 +1,14 @@
-import { ADD_USER } from '../actions';
+import { LOGIN } from '../actions';
 import { LOGOUT } from '../actions';
 
-const intialState = []
-// username: window.localStorage.getItem('user')
+const initialState = {}
 
-const usersList = (state = intialState, action) => {
+const usersList = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_USER:
-      return [action.user.username];
+    case LOGIN:
+      return { username: action.user.username };
     case LOGOUT:
-      return [];
+      return {};
     default:
       return state;
   }

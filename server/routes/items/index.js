@@ -26,6 +26,7 @@ router.route('/')
       });
   })
   .post((req, res) => { // Posts one new item
+    console.log('req.user', req.user);
     //--Primary Keys--// 
     const title = req.body.title.trim();
 

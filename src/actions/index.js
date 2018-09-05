@@ -2,7 +2,7 @@ import axios from 'axios';
 export const LOAD_CARDS = 'LOAD_CARDS';
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
 export const LOAD_CARD = 'LOAD_CARD';
-export const ADD_USER = 'ADD_USER';
+export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT'
 export const ADD_CARD = 'ADD_CARD';
 export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
@@ -83,18 +83,19 @@ export const loadCard = (card) => {
   }
 }
 
-export const addUser = (user) => {
+export const loginUser = (user, history) => {
   return dispatch => {
     return axios.post('/api/login', user)
       .then(response => {
         window.localStorage.setItem('user', response.data.username)
         dispatch({
-          type: ADD_USER,
+          type: LOGIN,
           user: response.data
         })
+        console.log('response.data', response.data);
+        history.push('/')
       })
       .catch(err => console.log('Login Error! ', err.response));
-
   }
 }
 
