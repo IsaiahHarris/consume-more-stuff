@@ -63,7 +63,7 @@ class MainContainer extends Component {
           />
           <Route
             exact path="/items/:id"
-            component={ItemDetail}          />
+            component={ItemDetail} />
         </Switch>
       </div>
     );

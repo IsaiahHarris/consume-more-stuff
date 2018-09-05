@@ -29,7 +29,7 @@ router.post('/register', (req, res) => {
         })
         .catch(err => {
           console.log('err.message', err.message);
-          res.json({ message: 'username/email already exists' })
+          res.status(400).json({ message: 'username/email already exists' });
         });
     })
   })

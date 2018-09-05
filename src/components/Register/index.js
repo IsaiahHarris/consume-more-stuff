@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { registerUser } from '../../actions';
 
 
 class Register extends Component {
@@ -11,11 +11,10 @@ class Register extends Component {
       username: 'username',
       email: 'email',
       password: 'password',
-      redirect: false
     }
 
     this.inputChange = this.inputChange.bind(this);
-    this.registerUser = this.registerUser.bind(this);
+    this.register = this.register.bind(this);
   }
 
   inputChange(event) { // tracks login form input
@@ -34,33 +33,21 @@ class Register extends Component {
   }
 
   // Send http request with registration data to backend
-  registerUser() {
-    const data = {
+  register() {
+    const newUser = {
       username: this.state.username,
       email: this.state.email,
       password: this.state.password
     }
     console.log('Registration method');
 
-    return axios.post('/api/register', data)
-      .then(response => {
-        console.log('User registered! ', response);
-        this.setState({ redirect: true });
-      })
-      .catch(err => console.log('Registration error! ', err.response));
-  }
-
-  // Method activated when user is successfully registered
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to='/login' />
-    }
+    this.props.registerUser(newUser, this.props.history);
   }
 
   render() {
     return (
       <div>
-        { this.renderRedirect() }
+        {/* { this.renderRedirect() } */}
         <div className='register-container'>
           <h1>Register</h1>
           <input
@@ -78,11 +65,18 @@ class Register extends Component {
             placeholder={this.state.password}
             onChange={this.inputChange}
           />
-          <button className='btn' onClick={ this.registerUser }>Submit</button>
+          <button className='btn' onClick={ this.register }>Submit</button>
         </div>
       </div>
     );
   }
 }
+const mapDispatchToProps = dispatch => {
+  return {
+    registerUser: (user, history) => {
+      dispatch(registerUser(user, history));
+    }
+  }
+}
 
-export default Register;
+export default connect(null, mapDispatchToProps)(Register);
