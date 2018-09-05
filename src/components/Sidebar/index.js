@@ -27,18 +27,22 @@ class Sidebar extends Component {
   componentDidMount() {
     this.props.loadCategories();
   }
+
   render() {
+
+
     return (
       <div className="Sidebar">
-        <div className="Sidebar-auth-display">
-          <div className="Sidebar-auth-display-options">Messages</div>
-          <div className="Sidebar-auth-display-options">Settings</div>
-          <Link to={'/items/new'}>
-            <Button label="ADD" />
-          </Link>
-
-        </div>
-
+        {
+          this.props.user.username &&
+          <div className="Sidebar-auth-display">
+            <div className="Sidebar-auth-display-options">Messages</div>
+            <div className="Sidebar-auth-display-options">Settings</div>
+            <Link to={'/items/new'}>
+              <Button label="ADD" />
+            </Link>
+          </div>
+        }
         {/* Display for Desktop View: */}
         <div className="Sidebar-main-desktop">
           <div className="Sidebar-main-desktop-home">
@@ -114,7 +118,8 @@ function stopEventPropagation(event) {
 const mapStateToProps = state => {
   return {
     cards: state.cardsList,
-    categories: state.categoriesList
+    categories: state.categoriesList,
+    user: state.usersList
   };
 };
 

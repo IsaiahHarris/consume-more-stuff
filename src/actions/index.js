@@ -92,7 +92,7 @@ export const loginUser = (user, history) => {
           type: LOGIN,
           user: response.data
         })
-        console.log('response.data', response.data);
+
         history.push('/')
       })
       .catch(err => console.log('Login Error! ', err.response));
@@ -103,7 +103,7 @@ export const logoutUser = () => {
   return dispatch => {
     return axios.get('/api/logout')
       .then(response => {
-        console.log('Logout success!', response);
+        console.log('Logout success!');
         dispatch({
           type: LOGOUT
         })

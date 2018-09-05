@@ -18,7 +18,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header />
+        <Header showUser={this.props.user} />
         <SearchBar classNameLabel="mobile-search-bar" />
         <MainContainer />
       </div>
