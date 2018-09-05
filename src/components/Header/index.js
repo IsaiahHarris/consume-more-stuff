@@ -7,10 +7,9 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 class Header extends React.Component {
+
   constructor(props) {
     super(props)
-    //question jesse
-
   }
 
   render() {
@@ -33,13 +32,5 @@ const mapStateToProps = state => {
     user: state.usersList
   }
 }
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     loadUser: user => {
-//       dispatch(loadUser(user))
-//     }
-//   }
-// }
 
 export default connect(mapStateToProps, null)(Header)
