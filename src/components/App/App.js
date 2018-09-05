@@ -6,19 +6,17 @@ import SearchBar from '../SearchBar';
 import MainContainer from '../MainContainer';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { loginUser, LOGIN, checkUser } from '../../actions';
+import { checkUser } from '../../actions';
 
 class App extends Component {
-
   componentDidMount() {
     this.props.checkUser()
-
   }
 
   render() {
     return (
       <div className="App">
-        <Header />
+        <Header showUser={this.props.user} />
         <SearchBar classNameLabel="mobile-search-bar" />
         <MainContainer />
       </div>

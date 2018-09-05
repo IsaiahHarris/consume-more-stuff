@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import './Sidebar.css';
-import Button from '../Button';
-import { connect } from 'react-redux';
-import { loadCategories } from '../../actions';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import "./Sidebar.css";
+import Button from "../Button";
+import { connect } from "react-redux";
+import { loadCategories } from "../../actions";
+import { Link } from "react-router-dom";
 
 class Sidebar extends Component {
   constructor(props) {
@@ -11,38 +11,41 @@ class Sidebar extends Component {
 
     this.state = {
       mainMobileListCollection: document.getElementsByClassName(
-        'Sidebar-main-mobile-details'
+        "Sidebar-main-mobile-details"
       )
     };
 
-    this.toggleMobileCategoriesList = this.toggleMobileCategoriesList.bind(this);
+    this.toggleMobileCategoriesList = this.toggleMobileCategoriesList.bind(
+      this
+    );
   }
 
   toggleMobileCategoriesList() {
-    this.state.mainMobileListCollection[0].classList.contains('hidden')
-      ? this.state.mainMobileListCollection[0].classList.remove('hidden')
-      : this.state.mainMobileListCollection[0].classList.add('hidden');
+    this.state.mainMobileListCollection[0].classList.contains("hidden")
+      ? this.state.mainMobileListCollection[0].classList.remove("hidden")
+      : this.state.mainMobileListCollection[0].classList.add("hidden");
   }
 
   componentDidMount() {
     this.props.loadCategories();
   }
+
   render() {
     return (
       <div className="Sidebar">
-        <div className="Sidebar-auth-display">
-          <div className="Sidebar-auth-display-options">Messages</div>
-          <div className="Sidebar-auth-display-options">Settings</div>
-          <Link to={'/items/new'}>
-            <Button label="ADD" />
-          </Link>
-
-        </div>
-
+        {this.props.user.username && (
+          <div className="Sidebar-auth-display">
+            <div className="Sidebar-auth-display-options">Messages</div>
+            <div className="Sidebar-auth-display-options">Settings</div>
+            <Link to={"/items/new"}>
+              <Button label="ADD" />
+            </Link>
+          </div>
+        )}
         {/* Display for Desktop View: */}
         <div className="Sidebar-main-desktop">
           <div className="Sidebar-main-desktop-home">
-            <Link to={'/'}>
+            <Link to={"/"}>
               <span>Home</span>
             </Link>
           </div>
@@ -50,13 +53,8 @@ class Sidebar extends Component {
             <span>Categories</span>
             {this.props.categories.map((category, index) => {
               return (
-                <li
-                  key={index}
-                  className="Sidebar-main-desktop-list-item"
-                >
-                  <Link
-                    to={`/items/category/${category.id}`}
-                  >
+                <li key={index} className="Sidebar-main-desktop-list-item">
+                  <Link to={`/items/category/${category.id}`}>
                     {category.name}
                   </Link>
                 </li>
@@ -89,12 +87,9 @@ class Sidebar extends Component {
                     key={index}
                     className="Sidebar-main-mobile-details-inner-list-item"
                   >
-                    <Link
-                      to={`/items/category/${category.id}`}
-                    >
+                    <Link to={`/items/category/${category.id}`}>
                       {category.name}
                     </Link>
-
                   </li>
                 );
               })}
@@ -114,7 +109,8 @@ function stopEventPropagation(event) {
 const mapStateToProps = state => {
   return {
     cards: state.cardsList,
-    categories: state.categoriesList
+    categories: state.categoriesList,
+    user: state.usersList
   };
 };
 

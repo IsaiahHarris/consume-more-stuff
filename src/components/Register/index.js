@@ -24,6 +24,7 @@ class Register extends Component {
         break;
       case 'email':
         this.setState({ email: event.target.value });
+        break;
       case 'password':
         this.setState({ password: event.target.value });
         break;
@@ -65,7 +66,7 @@ class Register extends Component {
             placeholder={this.state.password}
             onChange={this.inputChange}
           />
-          <button className='btn' onClick={ this.register }>Submit</button>
+          <button className='btn' onClick={this.register}>Submit</button>
         </div>
       </div>
     );
