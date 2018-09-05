@@ -29,6 +29,7 @@ class MainContainer extends Component {
   render() {
     console.log('localStorage', localStorage);
     this.checkLoggedIn();
+    console.log('this.props.user', this.props.user);
 
     return (
       <div className="MainContainer">
@@ -74,3 +75,4 @@ const mapStateToProps = state => {
 }
 
 export default withRouter(connect(mapStateToProps)(MainContainer));
+// export default connect(mapStateToProps, null)(MainContainer);

@@ -9,9 +9,9 @@ import { connect } from 'react-redux';
 class Header extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      user: localStorage.getItem('user')
-    }
+    // this.state = {
+    //   user: localStorage.getItem('user')
+    // }
   }
 
   // componentDidMount() {

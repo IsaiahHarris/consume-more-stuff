@@ -117,10 +117,6 @@ class ItemEdit extends React.Component {
 
   render() {
     if (this.props.card[0]) {
-
-      let propsCard = this.props.card[0]
-      let realCard = propsCard[0]
-
       const styles = {
         backgroundImage: 'url("https://i.imgur.com/34axnfY.png")',
         backgroundSize: 'contain',

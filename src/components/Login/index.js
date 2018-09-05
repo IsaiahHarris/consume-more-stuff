@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addUser } from '../../actions';
+import { loginUser } from '../../actions';
 
 import './Login.css';
 
@@ -36,7 +36,7 @@ class Login extends Component {
       password: this.state.password
     }
 
-    this.props.addUser(user);
+    this.props.loginUser(user);
 
   }
 
@@ -62,8 +62,8 @@ class Login extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addUser: user => {
-      dispatch(addUser(user));
+    loginUser: user => {
+      dispatch(loginUser(user));
     }
   }
 }
