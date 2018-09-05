@@ -29,14 +29,13 @@ class ItemNew extends Component {
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.previewImage = this.previewImage.bind(this);
+    this.handleImageUpload = this.handleImageUpload.bind(this);
     this.addNewCard = this.addNewCard.bind(this);
   }
 
   componentDidMount() {
     this.props.loadCategories();
     this.props.loadConditions();
-    this.props.addCard();
   }
 
   handleInputChange(event) {
@@ -75,38 +74,34 @@ class ItemNew extends Component {
         this.setState({ conditionInput: event.target.value });
         break;
       case 'fileUpload':
-        console.log('event.target', event.target.files[0]);
-        this.setState({
-          imageUploadData: event.target.files[0],
-          imageUploadUrl: event.target.files[0]
-            ? `https://cms-2018.s3.amazonaws.com/${TEMP_SELLER_ID}/${
-                event.target.files[0].name
-              }`
-            : /* Revent to placeholder image if user cancels upload: */
-              'https://i.imgur.com/34axnfY.png'
-        });
+        this.handleImageUpload(event);
         break;
       default:
         break;
     }
   }
 
-  previewImage() {
+  handleImageUpload(event) {
+    console.log('event.target', event.target.files[0]);
+
     const preview = document.getElementsByClassName('item-new-photo-img')[0];
-    const file = document.querySelector('input[type=file]').files[0];
+    const file = event.target.files[0];
     const reader = new FileReader();
 
-    reader.addEventListener(
-      'load',
-      () => {
-        preview.style.backgroundImage = 'url("' + reader.result + '")';
-      },
-      false
-    );
+    reader.addEventListener('load', () => {
+      preview.style.backgroundImage = 'url("' + reader.result + '")';
+    }, false);
 
     if (file) {
       reader.readAsDataURL(file);
     }
+
+    this.setState({
+      imageUploadData: file,
+      imageUploadUrl: file
+        ? `${reader.result}` // Does not appear to have any effect.
+        : 'https://i.imgur.com/34axnfY.png' // Restore placeholder image.
+    });
   }
 
   addNewCard() {
@@ -118,6 +113,7 @@ class ItemNew extends Component {
     data.model = this.state.modelInput;
     data.dimensions = this.state.dimensionsInput;
     data.details = this.state.detailsInput;
+    data.image_data = this.state.imageUploadData;
     data.image_url = this.state.imageUploadUrl;
     data.category_id = this.state.categoryInput;
     data.condition_id = this.state.conditionInput;
@@ -143,7 +139,7 @@ class ItemNew extends Component {
           </Link>
           <div style={styles} className="item-new-photo-img" />
 
-          <div id="item-new-photo-upload" onChange={this.previewImage}>
+          <div id="item-new-photo-upload">
             <input
               type="file"
               name="fileUpload"
@@ -176,7 +172,7 @@ class ItemNew extends Component {
             >
               <option value="">--Category--</option>
               {this.props.categories.map(category => {
-                return <option value={category.id}>{category.name}</option>;
+                return (<option value={category.id}>{category.name}</option>);
               })}
             </select>
           </div>
@@ -191,7 +187,7 @@ class ItemNew extends Component {
             >
               <option value="">--Condition--</option>
               {this.props.conditions.map(condition => {
-                return <option value={condition.id}>{condition.name}</option>;
+                return (<option value={condition.id}>{condition.name}</option>);
               })}
             </select>
           </div>
