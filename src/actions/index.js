@@ -39,6 +39,8 @@ export const addCard = data => {
   delete data['image_data'];
   console.log('data', data);
 
+  let itemId;
+
   return dispatch => {
     axios
       .post('/api/items', data)
@@ -50,11 +52,15 @@ export const addCard = data => {
         // window.location.href = `/items/${response.data.id}`
       })
       .then(response => {
-        const itemId = response.card.id;
+        itemId = response.card.id;
 
-        console.log('itemId', itemId);
+        return uploadToS3(imageData, itemId);
+      })
+      .then(response => {
+        data['image_url'] = response.data.data.Location;
+        data['id'] = itemId;
 
-        return uploadToS3(imageData);
+        return editCard(data);
       });
   };
 };
@@ -121,8 +127,10 @@ export const logoutUser = () => {
 };
 
 export const editCard = card => {
+  console.log('CARD', card);
   return dispatch => {
     return axios.put(`/api/items/${card.id}`, card).then(response => {
+      console.log('EDIT RESPONSE', response);
       dispatch({
         type: EDIT_CARD,
         editCard: response.data
@@ -137,16 +145,16 @@ export const editCard = card => {
 function uploadToS3(imageData, itemId) {
   const formData = new FormData();
   formData.append('file', imageData);
+  formData.append('itemId', itemId);
 
   const config = {
     headers: {
       'content-type': 'multipart/form-data'
     }
-  }
+  };
 
-  return axios.post('/api/s3Upload', formData, config)
-    .then(response => {
-      console.log('RESPONSE', response);
-      return response;
-    });
-};
+  return axios.post('/api/s3Upload', formData, config).then(response => {
+    console.log('RESPONSE', response);
+    return response;
+  });
+}

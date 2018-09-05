@@ -6,7 +6,7 @@ const router = express.Router();
 const AWS = require('aws-sdk');
 const Busboy = require('busboy');
 
-function uploadToS3(userId, file) {
+function uploadToS3(res, itemId, file) {
   const s3bucket = new AWS.S3({
     accessKeyId: process.env.IAM_USER_KEY,
     secretAccessKey: process.env.IAM_USER_SECRET,
@@ -16,34 +16,29 @@ function uploadToS3(userId, file) {
   s3bucket.createBucket(() => {
     const params = {
       Bucket: process.env.S3_BUCKET_NAME,
-      Key: `${userId}/${file.name}`,
+      Key: `${itemId}/${file.name}`,
       Body: file.data
     };
 
     s3bucket.upload(params, (err, data) => {
       if (err) {
         console.log(err);
+        return res.json({ error: err });
       }
       console.log('Success:', data);
-      return data;
+      return res.json({ data });
     });
   });
 }
 
 router.post('/s3Upload', (req, res) => {
-  console.log('BODY', req.body);
-  console.log('FILES', req.files);
-
   const busboy = new Busboy({ headers: req.headers });
 
   busboy.on('finish', () => {
-    const userId = 1;
+    const itemId = req.body.itemId;
     const file = req.files.file;
 
-    uploadToS3(userId, file);
-
-    res.json({ test: 'test' });
-    console.log('Upload Complete:', file);
+    uploadToS3(res, itemId, file);
   });
 
   req.pipe(busboy);
