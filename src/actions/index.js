@@ -115,12 +115,12 @@ export const logoutUser = () => {
   }
 }
 
-export const registerUser = (user) => {
+export const registerUser = (user, history) => {
   return dispatch => {
     return axios.post('/api/register', user)
     .then(response => {
       console.log('User registered! ', response);
-     
+      history.push('/login');
     })
     .catch(err => console.log('Registration error! ', err.response));
   }
