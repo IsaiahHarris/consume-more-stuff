@@ -11,9 +11,8 @@ const CardsList = props => {
   //   this.props.loadCards();
   // }
   // render() {
-  console.log('CardList props', props);
 
-  if (props.cardsByCategory) {
+  if (props.cardsByCategory) { // Display for categories page
     return (
       <div className="cards-list-container">
         {
@@ -41,7 +40,7 @@ const CardsList = props => {
         }
       </div>
     )
-  } else if (props.cards) {
+  } else if (props.cards) { // Display for unauth homepage
     return (
       <div className="cards-list-container">
         {
