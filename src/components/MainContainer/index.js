@@ -52,7 +52,7 @@ class MainContainer extends Component {
             component={Login}
           />
           <Route
-            exact path="/Register"
+            exact path="/register"
             component={Register}
           />
           <Route
