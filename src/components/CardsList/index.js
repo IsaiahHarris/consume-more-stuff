@@ -11,7 +11,7 @@ const CardsList = props => {
   //   this.props.loadCards();
   // }
   // render() {
-  console.log('props', props);
+  console.log('CardList props', props);
 
   if (props.cardsByCategory) {
     return (
