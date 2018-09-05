@@ -12,6 +12,7 @@ const ItemStatus = require('../../db/models/ItemStatus');
 // items root route
 router.route('/')
   .get((req, res) => { // Fetches all the items for homepage
+    console.log('req.user', req.user);
     return Item.query(function (qb) {
       qb.orderBy('created_at', 'DESC')
     })
@@ -25,6 +26,7 @@ router.route('/')
       });
   })
   .post((req, res) => { // Posts one new item
+    console.log('req.user', req.user);
     //--Primary Keys--// 
     const title = req.body.title.trim();
 

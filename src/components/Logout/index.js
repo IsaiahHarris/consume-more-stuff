@@ -9,7 +9,7 @@ class Logout extends Component {
 
     this.clickEvent = this.clickEvent.bind(this);
   }
-  
+
   clickEvent() {
     this.props.logoutUser();
   }
@@ -17,14 +17,13 @@ class Logout extends Component {
   render() {
     return (
       <div className='logout-container'>
-      <Button label="Logout" clickHandler={ this.clickEvent } />
+        <Button label="Logout" clickHandler={this.clickEvent} />
       </div>
     );
   }
 }
 
 const mapDispatchToProps = dispatch => {
-  console.log('mapDispatchToProps ACTIVATED');
   return {
     logoutUser: () => {
       dispatch(logoutUser());

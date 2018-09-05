@@ -32,6 +32,13 @@ h3 {
 .item-info * {
   padding-bottom: 15px;
 }
+.card-title-detail{
+  white-space: pre-line;
+  word-break:break-all;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  width:70%;
+}
 
 .item-buttons {
   display: flex;

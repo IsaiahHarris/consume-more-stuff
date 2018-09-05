@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { loadCards, loadCategories } from '../../actions';
 import './Body.css';
 import Row from '../Row';
-import { Route, Switch } from 'react-router-dom';
-import ItemDetail from '../ItemDetail';
 
 class Body extends Component {
   constructor(props) {

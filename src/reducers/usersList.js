@@ -1,14 +1,14 @@
-import { ADD_USER } from '../actions';
+import { LOGIN } from '../actions';
 import { LOGOUT } from '../actions';
 
-const intialState = [];
+const initialState = {}
 
-const usersList = (state = intialState, action) => {
+const usersList = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_USER:
-      return [...state, action.user];
+    case LOGIN:
+      return { username: action.user.username };
     case LOGOUT:
-      return intialState;
+      return {};
     default:
       return state;
   }

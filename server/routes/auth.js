@@ -6,6 +6,7 @@ const User = require('../db/models/User');
 const saltedRounds = 12;
 
 router.post('/register', (req, res) => {
+  console.log('Register Route Backend: ', req.body);
   let {
     username,
     email
@@ -28,7 +29,7 @@ router.post('/register', (req, res) => {
         })
         .catch(err => {
           console.log('err.message', err.message);
-          res.json({ message: 'username/email already exists' })
+          res.status(400).json({ message: 'username/email already exists' });
         });
     })
   })
@@ -36,7 +37,6 @@ router.post('/register', (req, res) => {
 
 // Log in with username and password
 router.post('/login', (req, res, next) => {
-  console.log('Login Route Backend: ', req.body);
   if(req.user) { // if user is logged in tell them to log out first
     res.status(400).json({message: `${req.user.username} is already logged in`});
   } else {
@@ -56,7 +56,6 @@ router.post('/login', (req, res, next) => {
 });
 
 router.get('/logout', (req, res) => {
-  console.log('logout Route Backend: ', req.user);
   req.logout();
   res.json({ success: true })
 });

@@ -12,6 +12,10 @@
   height: 50px;
   min-width: 50px;
 }
+.welcome-user{
+  font-size: 15px;
+  white-space: nowrap;
+}
 
 .button-container {
   display: flex;

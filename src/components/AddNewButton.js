@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 let styles = {
   fontSize: '1.5rem',
   backgroundColor: 'green',
