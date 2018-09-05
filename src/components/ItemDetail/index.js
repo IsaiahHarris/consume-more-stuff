@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { loadCard } from '../../actions';
 import './itemDetail.css';
 import Button from '../Button';
-import { Redirect } from 'react-router-dom';
+
 import { Link } from 'react-router-dom';
 function switchCardVariable(card, location) {
   if (card) {
@@ -42,7 +42,9 @@ class ItemDetail extends React.Component {
       const conditionName = card && card.condition ? card.condition.name : null
       return (
         <div className="item-container">
-          <h3>{card.title}</h3>
+          <div className="card-title-detail">
+            <h3>{card.title}</h3>
+          </div>
           <div style={styles} className="item-photo" />
           <div className="item-info">
             <div className="item-info-condition">

@@ -2,12 +2,13 @@ import axios from 'axios';
 export const LOAD_CARDS = 'LOAD_CARDS';
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
 export const LOAD_CARD = 'LOAD_CARD';
-export const ADD_USER = 'ADD_USER';
+export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT'
 export const ADD_CARD = 'ADD_CARD';
 export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const EDIT_CARD = 'EDIT_CARD';
 export const LOAD_CARDS_BY_CATEGORY = 'LOAD_CARDS_BY_CATEGORY';
+
 
 export const loadConditions = () => {
   return dispatch => {
@@ -74,7 +75,6 @@ export const loadCard = (card) => {
   return dispatch => {
     return axios.get(`/api/items/${card}`)
       .then(response => {
-
         dispatch({
           type: LOAD_CARD,
           card: response.data
@@ -83,14 +83,17 @@ export const loadCard = (card) => {
   }
 }
 
-export const addUser = (user) => {
+export const loginUser = (user, history) => {
   return dispatch => {
     return axios.post('/api/login', user)
       .then(response => {
+        window.localStorage.setItem('user', response.data.username)
         dispatch({
-          type: ADD_USER,
+          type: LOGIN,
           user: response.data
         })
+        console.log('response.data', response.data);
+        history.push('/')
       })
       .catch(err => console.log('Login Error! ', err.response));
   }
@@ -104,6 +107,8 @@ export const logoutUser = () => {
         dispatch({
           type: LOGOUT
         })
+        window.localStorage.removeItem('user')
+
       })
       .catch(err => console.log('Logout Failed! ', err.response));
   }
@@ -119,5 +124,16 @@ export const editCard = (card) => {
         })
         window.location.href = `/items/${card.id}`
       })
+  }
+}
+
+export const checkUser = () => {
+  return dispatch => {
+    if (localStorage.user) {
+      dispatch({
+        type: LOGIN,
+        user: { username: localStorage.user }
+      })
+    }
   }
 }

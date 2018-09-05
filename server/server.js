@@ -40,46 +40,47 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((user, done) => {
   console.log('deserializing user: ', user);
-  new User({ id: user.id}).fetch()
-  .then(user => {
-    user = user.toJSON();
-    return done(null, { // You can get more stuff from db
-      id: user.id,
-      username: user.username
+  new User({ id: user.id }).fetch()
+    .then(user => {
+      console.log('user', user);
+      user = user.toJSON();
+      return done(null, { // You can get more stuff from db
+        id: user.id,
+        username: user.username
+      })
     })
-  })
-  .catch((err) => {
-    console.log(err);
-    return done(err);
-  })
+    .catch((err) => {
+      console.log(err);
+      return done(err);
+    })
 })
 
-passport.use(new LocalStrategy(function(username, password, done) {
-  return new User({username: username}).fetch()
-  .then( user => {
-    console.log(user)
-    if (!user) {
-      console.log('user null not working?');
-      return done({message: 'Wrong Username'});
-    }
-    else {
-      console.log('else not working?');
-      user = user.toJSON();
-      console.log(password, user.pasword);
-      bcrypt.compare(password, user.password)
-      .then((samePassword) => {
-        if (samePassword) { return done(null, user); }
-        else {
-          return done({message: 'Wrong Password'});
-        }
-      })
+passport.use(new LocalStrategy(function (username, password, done) {
+  return new User({ username: username }).fetch()
+    .then(user => {
+      console.log(user)
+      if (!user) {
+        console.log('user null not working?');
+        return done({ message: 'Wrong Username' });
+      }
+      else {
+        console.log('else not working?');
+        user = user.toJSON();
+        console.log(password, user.pasword);
+        bcrypt.compare(password, user.password)
+          .then((samePassword) => {
+            if (samePassword) { return done(null, user); }
+            else {
+              return done({ message: 'Wrong Password' });
+            }
+          })
 
-    }
-  })
-  .catch( err => {
-    console.log('error: ', err);
-    return done(err);
-  })
+      }
+    })
+    .catch(err => {
+      console.log('error: ', err);
+      return done(err);
+    })
 }))
 //-- PASSPORT configs end --//
 
