@@ -16,11 +16,10 @@ class UserHomepage extends Component {
     console.log('UserHomepage: ', this.props.cards);
     return (
       <div className="UserHomepage">
-        {
-          <div className="cards-by-category">
+      <h1>User Home</h1>
+         <div className="cards-by-category">
           <CardsList cards={this.props.cards}/>
         </div>
-        }
       </div>
     )
   }

@@ -11,6 +11,7 @@ import Login from '../Login';
 import Register from '../Register';
 import ItemEdit from '../ItemEdit';
 import CardsByCategory from '../CardsByCategory';
+import UserHomepage from '../UserHomepage';
 
 class MainContainer extends Component {
   constructor(props) {
@@ -38,6 +39,10 @@ class MainContainer extends Component {
           <Route
             exact path="/"
             component={Body}
+          />
+          <Route
+            exact path="/userhome"
+            component={UserHomepage}
           />
           <Route
             exact path="/items/:id/edit"
