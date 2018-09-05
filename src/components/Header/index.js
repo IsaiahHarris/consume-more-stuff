@@ -17,12 +17,10 @@ class Header extends React.Component {
       <div className="header-container">
         <img src="https://i.imgur.com/34axnfY.png" className="logo" alt="" />
         <SearchBar classNameLabel="wrap" />
-        <nav>
-          {!this.props.user.username && <Link exact to='/login'>Login</Link>}
-        </nav>
+        {!this.props.user.username && <Link to='/login'>Login</Link>}
+        <div className="welcome-user">Welcome, {this.props.user.username}</div>
         {this.props.user.username && < Logout />}
-        {this.props.user.username}
-      </div>
+      </div >
     )
   }
 }

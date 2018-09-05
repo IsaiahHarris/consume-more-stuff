@@ -128,12 +128,10 @@ export const editCard = (card) => {
 }
 
 export const checkUser = () => {
-  return dispatch => {
-    if (localStorage.user) {
-      dispatch({
-        type: LOGIN,
-        user: { username: localStorage.user }
-      })
+  if (localStorage.user) {
+    return {
+      type: LOGIN,
+      user: { username: localStorage.user }
     }
   }
 }
