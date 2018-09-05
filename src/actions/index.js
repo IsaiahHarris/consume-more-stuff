@@ -3,7 +3,8 @@ export const LOAD_CARDS = 'LOAD_CARDS';
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
 export const LOAD_CARD = 'LOAD_CARD';
 export const LOGIN = 'LOGIN';
-export const LOGOUT = 'LOGOUT'
+export const LOGOUT = 'LOGOUT';
+export const REGISTER = 'REGISTER';
 export const ADD_CARD = 'ADD_CARD';
 export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const EDIT_CARD = 'EDIT_CARD';
@@ -111,6 +112,17 @@ export const logoutUser = () => {
 
       })
       .catch(err => console.log('Logout Failed! ', err.response));
+  }
+}
+
+export const registerUser = (user, history) => {
+  return dispatch => {
+    return axios.post('/api/register', user)
+    .then(response => {
+      console.log('User registered! ', response);
+      history.push('/login');
+    })
+    .catch(err => console.log('Registration error! ', err.response));
   }
 }
 

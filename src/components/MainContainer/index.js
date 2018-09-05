@@ -8,6 +8,7 @@ import Body from '../Body';
 import ItemDetail from '../ItemDetail';
 import ItemNew from '../ItemNew';
 import Login from '../Login';
+import Register from '../Register';
 import ItemEdit from '../ItemEdit';
 import CardsByCategory from '../CardsByCategory';
 
@@ -51,6 +52,10 @@ class MainContainer extends Component {
             component={Login}
           />
           <Route
+            exact path="/Register"
+            component={Register}
+          />
+          <Route
             exact path="/items/category/:categoryId"
             render={(props) => (
               <CardsByCategory key={props.match.params.categoryId} {...props} />)
@@ -58,8 +63,7 @@ class MainContainer extends Component {
           />
           <Route
             exact path="/items/:id"
-            component={ItemDetail}
-          />
+            component={ItemDetail} />
         </Switch>
       </div>
     );
