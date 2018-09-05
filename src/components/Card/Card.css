@@ -60,6 +60,13 @@
   color: red;
 }
 
+.card-title{
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width:210px;
+}
+
 @media (min-width: 768px) {
   .main-card-container {
     margin-top: 25px;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addUser } from '../../actions';
+import { loginUser } from '../../actions';
 
 import './Login.css';
 
@@ -14,7 +14,7 @@ class Login extends Component {
     }
 
     this.inputChange = this.inputChange.bind(this);
-    this.loginUser = this.loginUser.bind(this);
+    this.loginHandler = this.loginHandler.bind(this);
   }
 
   inputChange(event) { // tracks login form input
@@ -30,13 +30,12 @@ class Login extends Component {
     }
   }
 
-  loginUser() {
+  loginHandler() {
     const user = {
       username: this.state.username,
       password: this.state.password
     }
-
-    this.props.addUser(user);
+    this.props.loginUser(user, this.props.history);
   }
 
   render() {
@@ -53,7 +52,7 @@ class Login extends Component {
           placeholder={this.state.password}
           onChange={this.inputChange}
         />
-        <button className='btn' onClick={this.loginUser}>Login</button>
+        <button className='btn' onClick={this.loginHandler}>Login</button>
       </div>
     );
   }
@@ -61,8 +60,8 @@ class Login extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addUser: user => {
-      dispatch(addUser(user));
+    loginUser: (user, history) => {
+      dispatch(loginUser(user, history));
     }
   }
 }
