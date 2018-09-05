@@ -32,6 +32,8 @@ function uploadToS3(res, itemId, file) {
 }
 
 router.post('/s3Upload', (req, res) => {
+  console.log('S3UPLOAD REQ', req);
+
   const busboy = new Busboy({ headers: req.headers });
 
   busboy.on('finish', () => {

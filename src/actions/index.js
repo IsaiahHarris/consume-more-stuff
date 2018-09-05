@@ -34,33 +34,30 @@ export const loadCards = () => {
 
 export const addCard = data => {
   const imageData = data['image_data'];
-  console.log('imageData', imageData);
 
   delete data['image_data'];
-  console.log('data', data);
 
-  let itemId;
+  const formData = new FormData();
+  formData.append('file', imageData);
+
+  for (let key in data) {
+    formData.append(key, data[key]);
+  }
+
+  const config = {
+    headers: {
+      'content-type': 'multipart/form-data'
+    }
+  };
 
   return dispatch => {
-    axios
-      .post('/api/items', data)
+    return axios.post('/api/items', formData, config)
       .then(response => {
-        return dispatch({
+        dispatch({
           type: ADD_CARD,
           card: response.data
         });
-        // window.location.href = `/items/${response.data.id}`
-      })
-      .then(response => {
-        itemId = response.card.id;
-
-        return uploadToS3(imageData, itemId);
-      })
-      .then(response => {
-        data['image_url'] = response.data.data.Location;
-        data['id'] = itemId;
-
-        return editCard(data);
+        window.location.href = `/items/${response.data.id}`
       });
   };
 };
@@ -139,22 +136,3 @@ export const editCard = card => {
     });
   };
 };
-
-// -----------------------=[   HELPER FUNCTION(S)   ]=----------------------- //
-
-function uploadToS3(imageData, itemId) {
-  const formData = new FormData();
-  formData.append('file', imageData);
-  formData.append('itemId', itemId);
-
-  const config = {
-    headers: {
-      'content-type': 'multipart/form-data'
-    }
-  };
-
-  return axios.post('/api/s3Upload', formData, config).then(response => {
-    console.log('RESPONSE', response);
-    return response;
-  });
-}
