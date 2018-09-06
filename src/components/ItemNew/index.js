@@ -123,7 +123,7 @@ class ItemNew extends Component {
     data.category_id = this.state.categoryInput;
     data.condition_id = this.state.conditionInput;
     data.item_status_id = 1;
-    data.seller_id = 1;
+    data.seller_id = this.props.user.id;
     this.props.addCard(data);
     console.log('data', data);
   }
