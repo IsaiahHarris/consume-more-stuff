@@ -10,6 +10,7 @@ export const ADD_CARD = 'ADD_CARD';
 export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const EDIT_CARD = 'EDIT_CARD';
 export const LOAD_CARDS_BY_CATEGORY = 'LOAD_CARDS_BY_CATEGORY';
+export const EDIT_PASSWORD = 'EDIT_PASSWORD';
 
 export const loadConditions = () => {
   return dispatch => {
@@ -154,6 +155,18 @@ export const editCard = card => {
     });
   };
 };
+
+export const editPassword = password =>{
+  return dispatch =>{
+    return axios.put(`/api/user/settings`, password)
+    .then(response=>{
+      dispatch({
+        type: EDIT_PASSWORD,
+        editPassword: response.data
+      })
+    })
+  }
+}
 
 export const checkUser = () => {
   return dispatch => {
