@@ -48,7 +48,7 @@ class Settings extends React.Component {
         </div>
         <label htmlFor="oldPass">Current Password: </label>
         <input
-          type="text"
+          type="password"
           name="oldPass"
           id="oldPass"
           value={this.state.oldPassInput}
@@ -56,13 +56,13 @@ class Settings extends React.Component {
         />
         <label htmlFor="newPass">New Password: </label>
         <input
-          type="text"
+          type="password"
           name="newPass"
           id="newPass"
           value={this.state.newPassInput}
           onChange={this.handleInputChange}
         />
-        <button onClick = {this.editThisPassword}> edit password </button>
+        <button onClick = {this.editThisPassword}> Change Password </button>
       </div>
     );
   }
