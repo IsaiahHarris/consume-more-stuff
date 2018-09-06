@@ -7,8 +7,9 @@ export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const REGISTER = 'REGISTER';
 export const ADD_CARD = 'ADD_CARD';
-export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const EDIT_CARD = 'EDIT_CARD';
+export const DELETE_CARD = 'DELETE_CARD';
+export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const LOAD_CARDS_BY_CATEGORY = 'LOAD_CARDS_BY_CATEGORY';
 
 export const loadConditions = () => {
@@ -85,12 +86,25 @@ export const editCard = data => {
   };
 
   return dispatch => {
-    return axios.put(`/api/items/${data.id}`, formData, config).then(response => {
-      dispatch({
-        type: EDIT_CARD,
-        editCard: response.data
+    return axios.put(`/api/items/${data.id}`, formData, config)
+      .then(response => {
+        dispatch({
+          type: EDIT_CARD,
+          editCard: response.data
+        });
+        window.location.href = `/items/${data.id}`;
       });
-      window.location.href = `/items/${data.id}`;
+  };
+};
+
+export const deleteCard = cardId => {
+  return dispatch => {
+    return axios.delete(`/api/items/${cardId}`).then(response => {
+      dispatch({
+        type: DELETE_CARD,
+        deletedCard: response.data
+      });
+      window.location.href = '/';
     });
   };
 };
