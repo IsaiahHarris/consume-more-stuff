@@ -9,6 +9,7 @@ export const ADD_CARD = 'ADD_CARD';
 export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const EDIT_CARD = 'EDIT_CARD';
 export const LOAD_CARDS_BY_CATEGORY = 'LOAD_CARDS_BY_CATEGORY';
+export const LOGIN_ERROR = 'LOGIN_ERROR';
 
 export const loadConditions = () => {
   return dispatch => {
@@ -90,7 +91,13 @@ export const loginUser = (user, history) => {
         console.log('response.data', response.data);
         history.push('/');
       })
-      .catch(err => console.log('Login Error! ', err.response));
+      .catch((err) =>{
+        dispatch({
+          type:LOGIN_ERROR,
+          loginError: 'true'
+        })
+      })
+        
   };
 };
 
@@ -143,3 +150,12 @@ export const checkUser = () => {
     }
   };
 };
+
+export const loginError = ()=>{
+  return dispatch=>{
+    dispatch({
+      type:LOGIN_ERROR,
+      loginError: true
+    })
+  }
+}

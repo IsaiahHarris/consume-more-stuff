@@ -12,7 +12,8 @@ class Login extends Component {
       username: '',
       password: '',
       passwordError: '',
-      usernameError: ''
+      usernameError: '',
+      loginError:'hii'
     };
 
     this.inputChange = this.inputChange.bind(this);
@@ -39,11 +40,16 @@ class Login extends Component {
       username: this.state.username,
       password: this.state.password
     };
+    this.setState({
+      loginError: 'by'
+    })
+    console.log('this.state', this.state);
     this.props.loginUser(user, this.props.history);
     this.setState({
       username: '',
-      password: ''
+      password: '',
     });
+    
   }
 
   validation(event) {
@@ -65,8 +71,12 @@ class Login extends Component {
   render() {
     const {password, username } = this.state;
     let isEnabled = username.length > 0 && password.length > 0;
+    console.log('this.props', this.props);
     return (
       <div className="login-container">
+
+      {this.props.loginError.error && <div>Wrong Username Or Password</div>}
+
         <h1>Login Page</h1>
         <input
           type="text"
@@ -106,7 +116,13 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
+const mapStateToProps = state=>{
+  return {
+    loginError: state.usersList
+  }
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Login);
