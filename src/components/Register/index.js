@@ -82,9 +82,12 @@ class Register extends Component {
         {/* { this.renderRedirect() } */}
 
         <div className="register-container">
-          <div className="error-message">
-            {this.props.error.error &&
-              'User already exists under that email or username'}
+          <div className="error-message-container">
+            {this.props.error.error && (
+              <div className="error-message">
+                User already exists under that email or username
+              </div>
+            )}
           </div>
 
           <h1>Register</h1>

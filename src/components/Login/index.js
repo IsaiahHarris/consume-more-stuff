@@ -12,7 +12,7 @@ class Login extends Component {
       username: '',
       password: '',
       passwordError: '',
-      usernameError: '',
+      usernameError: ''
     };
 
     this.inputChange = this.inputChange.bind(this);
@@ -47,7 +47,6 @@ class Login extends Component {
       passwordError: '',
       usernameError: ''
     });
-    
   }
 
   validation(event) {
@@ -67,11 +66,11 @@ class Login extends Component {
   }
 
   render() {
-    const {password, username } = this.state;
+    const { password, username } = this.state;
     let isEnabled = username.length > 0 && password.length > 0;
     return (
       <div className="login-container">
-      {this.props.loginError.error && <div>Wrong Username Or Password</div>}
+        {this.props.loginError.error && <div className="error-message-login">Wrong Username Or Password</div>}
         <h1>Login Page</h1>
         <input
           type="text"
@@ -81,7 +80,11 @@ class Login extends Component {
           onBlur={this.validation}
           value={this.state.username}
         />
-        {!isEnabled && this.state.usernameError ? <div className="username-error">{this.state.usernameError}</div> : ''}
+        {!isEnabled && this.state.usernameError ? (
+          <div className="username-error">{this.state.usernameError}</div>
+        ) : (
+          ''
+        )}
         <input
           type="text"
           name="password"
@@ -90,7 +93,11 @@ class Login extends Component {
           onBlur={this.validation}
           value={this.state.password}
         />
-        {!isEnabled && this.state.passwordError ? <div className="password-error">{this.state.passwordError}</div>: ''}
+        {!isEnabled && this.state.passwordError ? (
+          <div className="password-error">{this.state.passwordError}</div>
+        ) : (
+          ''
+        )}
         <button
           className="btn"
           onClick={this.loginHandler}
@@ -111,11 +118,11 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const mapStateToProps = state=>{
+const mapStateToProps = state => {
   return {
     loginError: state.usersList
-  }
-}
+  };
+};
 
 export default connect(
   mapStateToProps,
