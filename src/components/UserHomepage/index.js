@@ -17,6 +17,7 @@ class UserHomepage extends Component {
   render() {
     console.log('this.props.user auth-home: ', this.props.user);
     console.log('soldCards: ', this.props.soldCards);
+    filterByUserId(this.props.soldCards, this.props.user.userId);
 
     return (
       <div className="UserHomepage">
@@ -32,6 +33,15 @@ class UserHomepage extends Component {
       </div>
     )
   }
+}
+
+function filterByUserId(cards, userId) {
+  const newCards = cards.filter(card => {
+    console.log(card.seller_id);
+    return (Number(card.seller_id) === Number(userId));
+  })
+
+  console.log('filterByCards : ', newCards);
 }
 
 const mapStateToProps = state => {
