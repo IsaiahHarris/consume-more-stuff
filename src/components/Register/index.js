@@ -77,22 +77,12 @@ class Register extends Component {
     const { email, password, username } = this.state;
     let isEnabled = username.length > 0 && password.length > 0;
 
-    console.log('this.props', this.props);
-
-    if (this.props.error.error) {
-      let errorMessageDiv = document.getElementsByClassName(
-        'error-message hidden'
-      );
-      console.log('errorMessageDiv', errorMessageDiv);
-      errorMessageDiv[0].classList.remove('hidden');
-    }
-
     return (
       <div>
         {/* { this.renderRedirect() } */}
 
         <div className="register-container">
-          <div className="error-message hidden">
+          <div className="error-message">
             {this.props.error.error &&
               'User already exists under that email or username'}
           </div>

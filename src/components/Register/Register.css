@@ -1,7 +1,14 @@
 .error-message{
-  opacity: 1;
-   transition: opacity 20s ease-in-out;
+ animation: fadeIn 10s;
+ color:red;
 }
-.hidden{
-  opacity: 0;
+
+
+@keyframes fadeIn{
+  from{
+    opacity: 0;
+  }
+  to{
+    opacity: 1;
+  }
 }
