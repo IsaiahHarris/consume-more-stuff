@@ -63,6 +63,38 @@ export const addCard = data => {
   };
 };
 
+export const editCard = data => {
+  const imageData = data['image_data'];
+
+  // Delete 'image_data' as it will be transformed into form data below:
+  delete data['image_data'];
+
+  // Create form data object:
+  const formData = new FormData();
+  formData.append('file', imageData);
+  for (let key in data) {
+    formData.append(key, data[key]);
+  }
+
+  console.log('FORM DATA', formData);
+
+  const config = {
+    headers: {
+      'content-type': 'multipart/form-data'
+    }
+  };
+
+  return dispatch => {
+    return axios.put(`/api/items/${data.id}`, formData, config).then(response => {
+      dispatch({
+        type: EDIT_CARD,
+        editCard: response.data
+      });
+      window.location.href = `/items/${data.id}`;
+    });
+  };
+};
+
 export const loadCategories = () => {
   return dispatch => {
     return axios.get('/api/categories').then(response => {
@@ -134,18 +166,6 @@ export const registerUser = (user, history) => {
         history.push('/login');
       })
       .catch(err => console.log('Registration error! ', err.response));
-  };
-};
-
-export const editCard = card => {
-  return dispatch => {
-    return axios.put(`/api/items/${card.id}`, card).then(response => {
-      dispatch({
-        type: EDIT_CARD,
-        editCard: response.data
-      });
-      window.location.href = `/items/${card.id}`;
-    });
   };
 };
 
