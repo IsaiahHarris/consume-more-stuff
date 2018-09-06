@@ -2,6 +2,8 @@ require('dotenv').config()
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const busboy = require('connect-busboy');
+const busboyBodyParser = require('busboy-body-parser');
 const app = express();
 const routes = require('./routes');
 const PORT = process.env.PORT || 8080;
@@ -16,6 +18,8 @@ const User = require('./db/models/User');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(busboy());
+app.use(busboyBodyParser());
 
 //-- PASSPORT configs start --//
 app.use(session({

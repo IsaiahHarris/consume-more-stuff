@@ -25,7 +25,6 @@ router.route('/:id')
     //--Primary Keys--//
     const id = req.params.id;
 
-
     const title = req.body.title ? req.body.title.trim() : null;
     const price = req.body.price ? req.body.price.trim() : null;
     const manufacturer = req.body.manufacturer ? req.body.manufacturer.trim() : null;
