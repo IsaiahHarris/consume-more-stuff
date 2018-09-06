@@ -31,16 +31,20 @@ class Sidebar extends Component {
   }
 
   render() {
-    return <div className="Sidebar">
-        {this.props.user.username && <div className="Sidebar-auth-display">
+    return (
+      <div className="Sidebar">
+        {this.props.user.username && (
+          <div className="Sidebar-auth-display">
+            <div className="Sidebar-auth-display-options">Messages</div>
+
             <Link to={'/user/settings'}>
-              <div className="Sidebar-auth-display-options">Messages</div>
+              <div className="Sidebar-auth-display-options">Settings</div>
             </Link>
-            <div className="Sidebar-auth-display-options">Settings</div>
             <Link to={'/items/new'}>
               <Button label="ADD" />
             </Link>
-          </div>}
+          </div>
+        )}
         {/* Display for Desktop View: */}
         <div className="Sidebar-main-desktop">
           <div className="Sidebar-main-desktop-home">
@@ -51,11 +55,13 @@ class Sidebar extends Component {
           <ul className="Sidebar-main-desktop-list">
             <span>Categories</span>
             {this.props.categories.map((category, index) => {
-              return <li key={index} className="Sidebar-main-desktop-list-item">
+              return (
+                <li key={index} className="Sidebar-main-desktop-list-item">
                   <Link to={`/items/category/${category.id}`}>
                     {category.name}
                   </Link>
-                </li>;
+                </li>
+              );
             })}
           </ul>
           <Link to={'/'}>
@@ -64,19 +70,33 @@ class Sidebar extends Component {
         </div>
 
         {/* Display for Mobile View: */}
-        <div className="Sidebar-main-mobile" onClick={this.toggleMobileCategoriesList}>
+        <div
+          className="Sidebar-main-mobile"
+          onClick={this.toggleMobileCategoriesList}
+        >
           <span>Home</span>
           <span>Categories</span>
         </div>
-        <div className="Sidebar-main-mobile-details hidden" onClick={this.toggleMobileCategoriesList}>
-          <div className="Sidebar-main-mobile-details-inner" onClick={stopEventPropagation}>
+        <div
+          className="Sidebar-main-mobile-details hidden"
+          onClick={this.toggleMobileCategoriesList}
+        >
+          <div
+            className="Sidebar-main-mobile-details-inner"
+            onClick={stopEventPropagation}
+          >
             <ul className="Sidebar-main-mobile-details-inner-list">
               {this.props.categories.map((category, index) => {
-                return <li key={index} className="Sidebar-main-mobile-details-inner-list-item">
+                return (
+                  <li
+                    key={index}
+                    className="Sidebar-main-mobile-details-inner-list-item"
+                  >
                     <Link to={`/items/category/${category.id}`}>
                       {category.name}
                     </Link>
-                  </li>;
+                  </li>
+                );
               })}
             </ul>
             <Link to={'/'}>
@@ -84,7 +104,8 @@ class Sidebar extends Component {
             </Link>
           </div>
         </div>
-      </div>;
+      </div>
+    );
   }
 }
 
