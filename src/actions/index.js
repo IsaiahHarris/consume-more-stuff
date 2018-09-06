@@ -89,7 +89,9 @@ export const loginUser = (user, history) => {
   return dispatch => {
     return axios.post('/api/login', user)
       .then(response => {
-        window.localStorage.setItem('user', response.data.username)
+        window.localStorage.setItem('user', response.data.username);
+        window.localStorage.setItem('userId', response.data.userId);
+
         dispatch({
           type: LOGIN,
           user: response.data
@@ -145,7 +147,7 @@ export const checkUser = () => {
     if (localStorage.user) {
       dispatch({
         type: LOGIN,
-        user: { username: localStorage.user }
+        user: { userId: localStorage.userId, username: localStorage.user }
       })
     }
   }

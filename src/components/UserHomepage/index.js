@@ -14,8 +14,7 @@ class UserHomepage extends Component {
     this.props.loadCardsBySold(1);
   }
   render() {
-    console.log('this.props.soldCards ', this.props.soldCards);
-    console.log('this.props.publishCards ', this.props.publishCards);
+    console.log('this.props.user auth-home: ', this.props.user);
 
     return (
       <div className="UserHomepage">
@@ -36,7 +35,8 @@ class UserHomepage extends Component {
 const mapStateToProps = state => {
   return {
     soldCards: state.soldList,
-    publishCards: state.publishList
+    publishCards: state.publishList,
+    user: state.usersList,
   }
 }
 

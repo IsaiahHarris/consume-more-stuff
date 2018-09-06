@@ -7,7 +7,11 @@ const initialState = {}
 const usersList = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN:
-      return { username: action.user.username };
+    console.log('userList action: ', action.user);
+      return { 
+        'userId': action.user.userId, 
+        'username': action.user.username 
+      };
     case LOGOUT:
       return {};
     default:
