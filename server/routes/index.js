@@ -3,13 +3,13 @@ const categories = require('./categories');
 const items = require('./items');
 const auth = require('./auth')
 const conditions = require('./conditions');
-const userview = require('./userview');
+const user = require('./user');
 const router = express.Router();
 
 router.use('/conditions', conditions)
 router.use('/categories', categories);
 router.use('/items', items);
 router.use('/', auth);
-router.use('/', userview);
+router.use('/user', user);
 
 module.exports = router;
