@@ -36,7 +36,11 @@ class Register extends Component {
       default:
         break;
     }
-    if (event.target.name === 'email' && !this.state.email.includes('@') && this.state.email) {
+    if (
+      event.target.name === 'email' &&
+      !this.state.email.includes('@') &&
+      this.state.email
+    ) {
       let emailError = 'Must Be A Valid Email';
       this.setState({ emailError: emailError });
     } else if (event.target.name === 'email' && this.state.email.length === 0) {
@@ -93,7 +97,9 @@ class Register extends Component {
             onBlur={this.validation}
             value={this.state.email}
           />
-          {this.state.emailError.length > 0 && <div className="error">{this.state.emailError}</div>}
+          {this.state.emailError.length > 0 && (
+            <div className="error">{this.state.emailError}</div>
+          )}
           <input
             type="text"
             name="password"
