@@ -239,7 +239,7 @@ class ItemNew extends Component {
               })}
             </select>
             {!isEnabled && this.state.categoryError ? (
-              <div className="category-error">{this.state.categoryError}</div>
+              <div className="title-error">{this.state.categoryError}</div>
             ) : (
               ''
             )}
@@ -260,7 +260,7 @@ class ItemNew extends Component {
               })}
             </select>
             {!isEnabled && this.state.conditionError ? (
-              <div className="condition-error">{this.state.conditionError}</div>
+              <div className="title-error">{this.state.conditionError}</div>
             ) : (
               ''
             )}
