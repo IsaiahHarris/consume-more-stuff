@@ -1,5 +1,5 @@
-import { LOGIN } from '../actions';
-import { LOGOUT } from '../actions';
+import { LOGIN, LOGOUT, LOGIN_ERROR } from '../actions';
+
 
 const initialState = {}
 
@@ -9,6 +9,8 @@ const usersList = (state = initialState, action) => {
       return { username: action.user.username };
     case LOGOUT:
       return {};
+    case LOGIN_ERROR:
+      return {error: action.loginError};
     default:
       return state;
   }

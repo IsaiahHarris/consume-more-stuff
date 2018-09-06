@@ -25,12 +25,16 @@ class ItemNew extends Component {
       itemStatusInput: '',
       conditionInput: '',
       imageUploadData: '',
-      imageUploadUrl: 'https://i.imgur.com/34axnfY.png'
+      imageUploadUrl: 'https://i.imgur.com/34axnfY.png',
+      titleError: '',
+      categoryError: '',
+      conditionError: ''
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
     this.addNewCard = this.addNewCard.bind(this);
+    this.validation = this.validation.bind(this);
   }
 
   componentDidMount() {
@@ -86,9 +90,13 @@ class ItemNew extends Component {
     const file = event.target.files[0];
     const reader = new FileReader();
 
-    reader.addEventListener('load', () => {
-      preview.style.backgroundImage = 'url("' + reader.result + '")';
-    }, false);
+    reader.addEventListener(
+      'load',
+      () => {
+        preview.style.backgroundImage = 'url("' + reader.result + '")';
+      },
+      false
+    );
 
     if (file) {
       reader.readAsDataURL(file);
@@ -119,9 +127,55 @@ class ItemNew extends Component {
     };
 
     this.props.addCard(data);
+    this.setState({
+      titleInput: '',
+      priceInput: '',
+      manufacturerInput: '',
+      modelInput: '',
+      dimensionsInput: '',
+      detailsInput: '',
+      imageInput: '',
+      sellerInput: '',
+      categoryInput: '',
+      itemStatusInput: '',
+      conditionInput: '',
+      imageUploadData: '',
+      imageUploadUrl: 'https://i.imgur.com/34axnfY.png',
+      titleError: '',
+      categoryError: '',
+      conditionError: ''
+    });
+  }
+
+  validation(event) {
+    if (event.target.name === 'title' && !this.state.titleInput) {
+      let titleError = 'Title Is Required To Add An Item';
+      this.setState({
+        titleError: titleError
+      });
+    }
+
+    if (event.target.name === 'category' && !this.state.categoryInput) {
+      let categoryError = 'Category Is Required To Add An Item';
+      this.setState({
+        categoryError: categoryError
+      });
+    }
+
+    if (event.target.name === 'condition' && !this.state.conditionInput) {
+      let conditionError = 'Condition Is Required To Add An Item';
+      this.setState({
+        conditionError: conditionError
+      });
+    }
   }
 
   render() {
+    const { titleInput, conditionInput, categoryInput } = this.state;
+    let isEnabled =
+      titleInput.length > 0 &&
+      conditionInput.length > 0 &&
+      categoryInput.length > 0;
     const styles = {
       backgroundImage: 'url("' + this.state.imageUploadUrl + '")',
       backgroundSize: 'contain',
@@ -148,6 +202,9 @@ class ItemNew extends Component {
         </div>
 
         <div className="item-new-details">
+          {this.props.error.error && (
+            <div>Please Try Again With Required Fields</div>
+          )}
           <div className="header-button" />
           <div className="item-new-details-input">
             <label htmlFor="title">Title: </label>
@@ -157,7 +214,14 @@ class ItemNew extends Component {
               id="title"
               value={this.state.titleInput}
               onChange={this.handleInputChange}
+              placeholder="Title (required)"
+              onBlur={this.validation}
             />
+            {!isEnabled && this.state.titleError ? (
+              <div className="title-error">{this.state.titleError}</div>
+            ) : (
+              ''
+            )}
           </div>
 
           <div className="item-new-details-input">
@@ -167,12 +231,18 @@ class ItemNew extends Component {
               id="category"
               value={this.state.categoryInput}
               onChange={this.handleInputChange}
+              onBlur={this.validation}
             >
-              <option value="">--Category--</option>
+              <option value="">--Category (required)--</option>
               {this.props.categories.map(category => {
-                return (<option value={category.id}>{category.name}</option>);
+                return <option value={category.id}>{category.name}</option>;
               })}
             </select>
+            {!isEnabled && this.state.categoryError ? (
+              <div className="title-error">{this.state.categoryError}</div>
+            ) : (
+              ''
+            )}
           </div>
 
           <div className="item-new-details-input">
@@ -182,12 +252,18 @@ class ItemNew extends Component {
               id="condition"
               value={this.state.conditionInput}
               onChange={this.handleInputChange}
+              onBlur={this.validation}
             >
-              <option value="">--Condition--</option>
+              <option value="">--Condition (required)--</option>
               {this.props.conditions.map(condition => {
-                return (<option value={condition.id}>{condition.name}</option>);
+                return <option value={condition.id}>{condition.name}</option>;
               })}
             </select>
+            {!isEnabled && this.state.conditionError ? (
+              <div className="title-error">{this.state.conditionError}</div>
+            ) : (
+              ''
+            )}
           </div>
 
           <div className="item-new-details-input">
@@ -243,7 +319,11 @@ class ItemNew extends Component {
               onChange={this.handleInputChange}
             />
           </div>
-          <AddNewButton label="SUBMIT" clickHandler={this.addNewCard} />
+          <AddNewButton
+            label="SUBMIT"
+            disable={!isEnabled}
+            clickHandler={this.addNewCard}
+          />
         </div>
       </div>
     );
@@ -268,7 +348,8 @@ const mapStateToProps = state => {
   return {
     categories: state.categoriesList,
     conditions: state.conditionsList,
-    card: state.cardsList
+    card: state.cardsList,
+    error: state.usersList
   };
 };
 
