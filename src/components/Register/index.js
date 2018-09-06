@@ -37,16 +37,6 @@ class Register extends Component {
       default:
         break;
     }
-    if (
-      event.target.name === 'email' &&
-      !this.state.email.includes('@') &&
-      this.state.email
-    ) {
-      let emailError = 'Must Be A Valid Email';
-      this.setState({ emailError: emailError });
-    } else if (event.target.name === 'email' && this.state.email.length === 0) {
-      this.setState({ emailError: '' });
-    }
   }
 
   validation(event) {
@@ -63,6 +53,14 @@ class Register extends Component {
         passwordError: passwordError
       });
     }
+
+    if (
+      event.target.name === 'email' &&
+      (!this.state.email.includes('@') && !this.state.email)
+    ) {
+      let emailError = 'Email Is Required To Register';
+      this.setState({ emailError: emailError });
+    }
   }
   // Send http request with registration data to backend
   register() {
@@ -75,12 +73,14 @@ class Register extends Component {
   }
   render() {
     const { email, password, username } = this.state;
-    let isEnabled = username.length > 0 && password.length > 0 && email.length> 0;
+    let isEnabled =
+      username.length > 0 &&
+      password.length > 0 &&
+      email.length > 0 &&
+      email.includes('a');
 
     return (
       <div>
-        {/* { this.renderRedirect() } */}
-
         <div className="register-container">
           <div className="error-message-container">
             {this.props.error.error && (
