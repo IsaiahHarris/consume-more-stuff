@@ -41,7 +41,7 @@ class MainContainer extends Component {
             component={Body}
           />
           <Route
-            exact path="/userhome"
+            exact path="/auth-home"
             component={UserHomepage}
           />
           <Route
