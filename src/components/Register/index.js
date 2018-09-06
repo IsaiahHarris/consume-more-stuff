@@ -85,7 +85,7 @@ class Register extends Component {
             onChange={this.inputChange}
             onBlur={this.validation}
           />
-          <div className="error">{this.state.usernameError}</div>
+          {/* <div className="error">{this.state.usernameError}</div> */}
           <input
             type="text"
             name="email"
@@ -94,7 +94,7 @@ class Register extends Component {
             onBlur={this.validation}
             value={this.state.email}
           />
-          {this.state.emailError.length > 0 && <div className="error">{this.state.emailError}</div>}
+          {/* {this.state.emailError.length > 0 && <div className="error">{this.state.emailError}</div>} */}
           <input
             type="text"
             name="password"
