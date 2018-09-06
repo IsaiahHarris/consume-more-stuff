@@ -9,7 +9,8 @@ export const ADD_CARD = 'ADD_CARD';
 export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const EDIT_CARD = 'EDIT_CARD';
 export const LOAD_CARDS_BY_CATEGORY = 'LOAD_CARDS_BY_CATEGORY';
-
+export const LOAD_CARDS_BY_PUBLISHED = 'LOAD_CARDS_BY_PUBLISHED';
+export const LOAD_CARDS_BY_SOLD = 'LOAD_CARDS_BY_SOLD';
 
 export const loadConditions = () => {
   return dispatch => {
@@ -147,5 +148,17 @@ export const checkUser = () => {
         user: { username: localStorage.user }
       })
     }
+  }
+}
+
+export const loadCardsBySold = (userId) => {
+  return dispatch => {
+    return axios.get(`/api/user/${userId}/sold`)
+      .then(response => {
+        dispatch({
+          type: LOAD_CARDS_BY_SOLD,
+          soldCards: response.data
+        })
+      })
   }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loadCards, loadCategories } from '../../actions';
+import { loadCardsBySold } from '../../actions';
 import CardsList from '../CardsList';
 
 class UserHomepage extends Component {
@@ -10,7 +10,7 @@ class UserHomepage extends Component {
   }
 
   componentDidMount() {
-    this.props.loadCards();
+    this.props.loadCardsBySold(1);
   }
   render() {
     console.log('UserHomepage: ', this.props.cards);
@@ -27,19 +27,15 @@ class UserHomepage extends Component {
 
 const mapStateToProps = state => {
   return {
-    cards: state.cardsList,
-    categories: state.categoriesList
+    cards: state.userItemList,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadCards: () => {
-      dispatch(loadCards())
+    loadCardsBySold: userId => {
+      dispatch(loadCardsBySold(userId));
     },
-    loadCategories: () => {
-      dispatch(loadCategories())
-    }
   }
 }
 
