@@ -77,7 +77,7 @@ class Register extends Component {
       username.length > 0 &&
       password.length > 0 &&
       email.length > 0 &&
-      email.includes('a');
+      email.includes('@');
 
     return (
       <div>
