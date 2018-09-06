@@ -175,7 +175,7 @@ class ItemEdit extends React.Component {
   }
 
   render() {
-    const { titleInput,} = this.state;
+    const { titleInput } = this.state;
     let isEnabled =
       titleInput.length > 0;
 
