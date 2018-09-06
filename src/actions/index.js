@@ -11,6 +11,7 @@ export const EDIT_CARD = 'EDIT_CARD';
 export const DELETE_CARD = 'DELETE_CARD';
 export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const LOAD_CARDS_BY_CATEGORY = 'LOAD_CARDS_BY_CATEGORY';
+export const LOGIN_ERROR = 'LOGIN_ERROR';
 
 export const loadConditions = () => {
   return dispatch => {
@@ -54,13 +55,21 @@ export const addCard = data => {
   };
 
   return dispatch => {
-    return axios.post('/api/items', formData, config).then(response => {
+    return axios.post('/api/items', formData, config)
+    .then(response => {
       dispatch({
         type: ADD_CARD,
         card: response.data
       });
       window.location.href = `/items/${response.data.id}`;
-    });
+    })
+    .catch(err=>{
+      dispatch({
+        type: LOGIN_ERROR,
+        loginError: 'true'
+      })
+      window.location.href = `/items/new`;
+    })
   };
 };
 
@@ -144,7 +153,8 @@ export const loadCard = card => {
 
 export const loginUser = (user, history) => {
   return dispatch => {
-    return axios.post('/api/login', user)
+    return axios
+      .post('/api/login', user)
       .then(response => {
         window.localStorage.setItem('user', response.data.username);
         dispatch({
@@ -154,13 +164,20 @@ export const loginUser = (user, history) => {
         console.log('response.data', response.data);
         history.push('/');
       })
-      .catch(err => console.log('Login Error! ', err.response));
+      .catch((err) =>{
+        dispatch({
+          type:LOGIN_ERROR,
+          loginError: 'true'
+        })
+      })
+        
   };
 };
 
 export const logoutUser = () => {
   return dispatch => {
-    return axios.get('/api/logout')
+    return axios
+      .get('/api/logout')
       .then(response => {
         console.log('Logout success!', response);
         dispatch({
@@ -174,12 +191,18 @@ export const logoutUser = () => {
 
 export const registerUser = (user, history) => {
   return dispatch => {
-    return axios.post('/api/register', user)
+    return axios
+      .post('/api/register', user)
       .then(response => {
         console.log('User registered! ', response);
         history.push('/login');
       })
-      .catch(err => console.log('Registration error! ', err.response));
+      .catch(err=>{
+        dispatch({
+          type: LOGIN_ERROR,
+          loginError: 'true'
+        })
+      });
   };
 };
 

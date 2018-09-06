@@ -1,0 +1,14 @@
+.error-message{
+ animation: fadeIn 1s;
+ color:red;
+}
+
+
+@keyframes fadeIn{
+  from{
+    opacity: 0;
+  }
+  to{
+    opacity: 1;
+  }
+}
