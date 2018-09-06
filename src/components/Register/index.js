@@ -75,7 +75,7 @@ class Register extends Component {
   }
   render() {
     const { email, password, username } = this.state;
-    let isEnabled = username.length > 0 && password.length > 0;
+    let isEnabled = username.length > 0 && password.length > 0 && email.length> 0;
 
     return (
       <div>
@@ -107,7 +107,7 @@ class Register extends Component {
           <input
             type="text"
             name="email"
-            placeholder="email (optional)"
+            placeholder="email"
             onChange={this.inputChange}
             onBlur={this.validation}
             value={this.state.email}
