@@ -49,7 +49,6 @@ router.route('/')
     // Variables to be used if the new item includes an image:
     let itemId;
     let imageData;
-    let image_url;
 
     if (req.files.file) {
       imageData = req.files.file;
@@ -79,14 +78,11 @@ router.route('/')
       })
       .then(response => {
         if (imageData) {
-          // Set default placeholder if user did not upload image:
-          image_url = imageData
-            ? `https://cms-2018.s3.amazonaws.com/${itemId}/${imageData.name}`
-            : 'https://i.imgur.com/34axnfY.png';
+          const imageUrl = `https://cms-2018.s3.amazonaws.com/${itemId}/${imageData.name}`;
 
           return new Item()
             .where({ id: itemId })
-            .save({ image_url }, { patch: true });
+            .save({ image_url: imageUrl }, { patch: true });
         }
 
         return response;
