@@ -76,7 +76,7 @@ class Login extends Component {
           onBlur={this.validation}
           value={this.state.username}
         />
-        <div className="username-error">{this.state.usernameError}</div>
+        {!isEnabled && this.state.usernameError ? <div className="username-error">{this.state.usernameError}</div> : ''}
         <input
           type="text"
           name="password"
@@ -85,7 +85,7 @@ class Login extends Component {
           onBlur={this.validation}
           value={this.state.password}
         />
-        <div className="password-error">{this.state.passwordError}</div>
+        {!isEnabled && this.state.passwordError ? <div className="password-error">{this.state.passwordError}</div>: ''}
         <button
           className="btn"
           onClick={this.loginHandler}

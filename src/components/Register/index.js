@@ -88,7 +88,10 @@ class Register extends Component {
             onBlur={this.validation}
             value={this.state.username}
           />
-          <div className="error">{this.state.usernameError}</div>
+          {
+            !isEnabled && this.state.usernameError ?
+              <div className="error">{this.state.usernameError}</div> : ''
+          }       
           <input
             type="text"
             name="email"
@@ -97,9 +100,10 @@ class Register extends Component {
             onBlur={this.validation}
             value={this.state.email}
           />
-          {this.state.emailError.length > 0 && (
-            <div className="error">{this.state.emailError}</div>
-          )}
+          {
+            !isEnabled && this.state.emailError? 
+            <div className="error">{this.state.emailError}</div>: ''
+          }
           <input
             type="text"
             name="password"
@@ -108,7 +112,11 @@ class Register extends Component {
             onBlur={this.validation}
             value={this.state.password}
           />
-          <div className="error">{this.state.passwordError}</div>
+          {
+            !isEnabled && this.state.passwordError ?
+              <div className="error">{this.state.passwordError}</div> : ''
+          }
+          
           <button className="btn" onClick={this.register} disabled={!isEnabled}>
             Submit
           </button>
