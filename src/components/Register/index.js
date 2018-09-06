@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { registerUser } from '../../actions';
+import './Register.css';
 
 class Register extends Component {
   constructor(props) {
@@ -75,10 +76,27 @@ class Register extends Component {
   render() {
     const { email, password, username } = this.state;
     let isEnabled = username.length > 0 && password.length > 0;
+
+    console.log('this.props', this.props);
+
+    if (this.props.error.error) {
+      let errorMessageDiv = document.getElementsByClassName(
+        'error-message hidden'
+      );
+      console.log('errorMessageDiv', errorMessageDiv);
+      errorMessageDiv[0].classList.remove('hidden');
+    }
+
     return (
       <div>
         {/* { this.renderRedirect() } */}
+
         <div className="register-container">
+          <div className="error-message hidden">
+            {this.props.error.error &&
+              'User already exists under that email or username'}
+          </div>
+
           <h1>Register</h1>
           <input
             type="text"
@@ -88,10 +106,11 @@ class Register extends Component {
             onBlur={this.validation}
             value={this.state.username}
           />
-          {
-            !isEnabled && this.state.usernameError ?
-              <div className="error">{this.state.usernameError}</div> : ''
-          }       
+          {!isEnabled && this.state.usernameError ? (
+            <div className="error">{this.state.usernameError}</div>
+          ) : (
+            ''
+          )}
           <input
             type="text"
             name="email"
@@ -100,10 +119,11 @@ class Register extends Component {
             onBlur={this.validation}
             value={this.state.email}
           />
-          {
-            !isEnabled && this.state.emailError? 
-            <div className="error">{this.state.emailError}</div>: ''
-          }
+          {!isEnabled && this.state.emailError ? (
+            <div className="error">{this.state.emailError}</div>
+          ) : (
+            ''
+          )}
           <input
             type="text"
             name="password"
@@ -112,11 +132,11 @@ class Register extends Component {
             onBlur={this.validation}
             value={this.state.password}
           />
-          {
-            !isEnabled && this.state.passwordError ?
-              <div className="error">{this.state.passwordError}</div> : ''
-          }
-          
+          {!isEnabled && this.state.passwordError ? (
+            <div className="error">{this.state.passwordError}</div>
+          ) : (
+            ''
+          )}
           <button className="btn" onClick={this.register} disabled={!isEnabled}>
             Submit
           </button>
@@ -133,7 +153,13 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
+const mapStateToProps = state => {
+  return {
+    error: state.usersList
+  };
+};
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Register);

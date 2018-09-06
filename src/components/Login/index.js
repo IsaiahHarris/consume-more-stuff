@@ -71,12 +71,9 @@ class Login extends Component {
   render() {
     const {password, username } = this.state;
     let isEnabled = username.length > 0 && password.length > 0;
-    console.log('this.props', this.props);
     return (
       <div className="login-container">
-
       {this.props.loginError.error && <div>Wrong Username Or Password</div>}
-
         <h1>Login Page</h1>
         <input
           type="text"

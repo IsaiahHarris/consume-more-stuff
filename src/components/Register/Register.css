@@ -1,0 +1,7 @@
+.error-message{
+  opacity: 1;
+   transition: opacity 20s ease-in-out;
+}
+.hidden{
+  opacity: 0;
+}

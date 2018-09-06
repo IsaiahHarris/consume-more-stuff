@@ -124,7 +124,12 @@ export const registerUser = (user, history) => {
         console.log('User registered! ', response);
         history.push('/login');
       })
-      .catch(err => console.log('Registration error! ', err.response));
+      .catch(err=>{
+        dispatch({
+          type: LOGIN_ERROR,
+          loginError: 'true'
+        })
+      });
   };
 };
 
