@@ -90,9 +90,13 @@ class ItemNew extends Component {
     const file = event.target.files[0];
     const reader = new FileReader();
 
-    reader.addEventListener('load', () => {
-      preview.style.backgroundImage = 'url("' + reader.result + '")';
-    }, false);
+    reader.addEventListener(
+      'load',
+      () => {
+        preview.style.backgroundImage = 'url("' + reader.result + '")';
+      },
+      false
+    );
 
     if (file) {
       reader.readAsDataURL(file);
@@ -143,33 +147,35 @@ class ItemNew extends Component {
     });
   }
 
-  validation(event){
-    if(event.target.name === 'title' && !this.state.titleInput){
+  validation(event) {
+    if (event.target.name === 'title' && !this.state.titleInput) {
       let titleError = 'Title Is Required To Add An Item';
       this.setState({
         titleError: titleError
-      })
+      });
     }
 
-    if(event.target.name === 'category' && !this.state.categoryInput){
+    if (event.target.name === 'category' && !this.state.categoryInput) {
       let categoryError = 'Category Is Required To Add An Item';
       this.setState({
         categoryError: categoryError
-      })
+      });
     }
 
-    if(event.target.name === 'condition' && !this.state.conditionInput){
-      let conditionError = "Condition Is Required To Add An Item";
+    if (event.target.name === 'condition' && !this.state.conditionInput) {
+      let conditionError = 'Condition Is Required To Add An Item';
       this.setState({
         conditionError: conditionError
-      })
+      });
     }
   }
 
   render() {
-      console.log('this.props', this.props);
-    const {titleInput, conditionInput, categoryInput} = this.state;
-    let isEnabled = titleInput.length > 0 && conditionInput.length> 0 && categoryInput.length > 0;
+    const { titleInput, conditionInput, categoryInput } = this.state;
+    let isEnabled =
+      titleInput.length > 0 &&
+      conditionInput.length > 0 &&
+      categoryInput.length > 0;
     const styles = {
       backgroundImage: 'url("' + this.state.imageUploadUrl + '")',
       backgroundSize: 'contain',
@@ -196,7 +202,9 @@ class ItemNew extends Component {
         </div>
 
         <div className="item-new-details">
-          {this.props.error.error && <div>Please Try Again With Required Fields</div>}
+          {this.props.error.error && (
+            <div>Please Try Again With Required Fields</div>
+          )}
           <div className="header-button" />
           <div className="item-new-details-input">
             <label htmlFor="title">Title: </label>
@@ -206,10 +214,14 @@ class ItemNew extends Component {
               id="title"
               value={this.state.titleInput}
               onChange={this.handleInputChange}
-              placeholder='Title (required)'
+              placeholder="Title (required)"
               onBlur={this.validation}
             />
-            {!isEnabled && this.state.titleError ? <div className="title-error">{this.state.titleError}</div> : ''}
+            {!isEnabled && this.state.titleError ? (
+              <div className="title-error">{this.state.titleError}</div>
+            ) : (
+              ''
+            )}
           </div>
 
           <div className="item-new-details-input">
@@ -223,10 +235,14 @@ class ItemNew extends Component {
             >
               <option value="">--Category (required)--</option>
               {this.props.categories.map(category => {
-                return (<option value={category.id}>{category.name}</option>);
+                return <option value={category.id}>{category.name}</option>;
               })}
             </select>
-            {!isEnabled && this.state.categoryError ? <div className="category-error">{this.state.categoryError}</div> : ''}
+            {!isEnabled && this.state.categoryError ? (
+              <div className="category-error">{this.state.categoryError}</div>
+            ) : (
+              ''
+            )}
           </div>
 
           <div className="item-new-details-input">
@@ -240,10 +256,14 @@ class ItemNew extends Component {
             >
               <option value="">--Condition (required)--</option>
               {this.props.conditions.map(condition => {
-                return (<option value={condition.id}>{condition.name}</option>);
+                return <option value={condition.id}>{condition.name}</option>;
               })}
             </select>
-            {!isEnabled && this.state.conditionError ? <div className="condition-error">{this.state.conditionError}</div> : ''}
+            {!isEnabled && this.state.conditionError ? (
+              <div className="condition-error">{this.state.conditionError}</div>
+            ) : (
+              ''
+            )}
           </div>
 
           <div className="item-new-details-input">
@@ -299,7 +319,11 @@ class ItemNew extends Component {
               onChange={this.handleInputChange}
             />
           </div>
-          <AddNewButton label="SUBMIT" disable={!isEnabled} clickHandler={this.addNewCard} />
+          <AddNewButton
+            label="SUBMIT"
+            disable={!isEnabled}
+            clickHandler={this.addNewCard}
+          />
         </div>
       </div>
     );

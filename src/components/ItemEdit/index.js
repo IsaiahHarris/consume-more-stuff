@@ -32,11 +32,15 @@ class ItemEdit extends React.Component {
       sellerInput: '',
       categoryInput: '',
       itemStatusInput: '',
-      conditionInput: ''
+      conditionInput: '',
+      titleError: '',
+      categoryError: '',
+      conditionError: ''
     };
 
     this.editThisCard = this.editThisCard.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.validation = this.validation.bind(this);
   }
 
   componentDidMount() {
@@ -112,9 +116,13 @@ class ItemEdit extends React.Component {
     const file = event.target.files[0];
     const reader = new FileReader();
 
-    reader.addEventListener('load', () => {
-      preview.style.backgroundImage = 'url("' + reader.result + '")';
-    }, false);
+    reader.addEventListener(
+      'load',
+      () => {
+        preview.style.backgroundImage = 'url("' + reader.result + '")';
+      },
+      false
+    );
 
     if (file) {
       reader.readAsDataURL(file);
@@ -143,7 +151,34 @@ class ItemEdit extends React.Component {
     this.props.editCard(data);
   }
 
+  validation(event) {
+    if (event.target.name === 'title' && !this.state.titleInput) {
+      let titleError = 'Title Is Required For An Item';
+      this.setState({
+        titleError: titleError
+      });
+    }
+
+    if (event.target.name === 'category' && !this.state.categoryInput) {
+      let categoryError = 'Category Is Required For An Item';
+      this.setState({
+        categoryError: categoryError
+      });
+    }
+
+    if (event.target.name === 'condition' && !this.state.conditionInput) {
+      let conditionError = 'Condition Is Required To Add An Item';
+      this.setState({
+        conditionError: conditionError
+      });
+    }
+  }
+
   render() {
+    const { titleInput,} = this.state;
+    let isEnabled =
+      titleInput.length > 0;
+
     if (this.props.card[0]) {
       const styles = {
         backgroundImage: 'url("' + this.state.imageUrl + '")',
@@ -181,7 +216,13 @@ class ItemEdit extends React.Component {
                 id="title"
                 value={this.state.titleInput}
                 onChange={this.handleInputChange}
+                onBlur={this.validation}
               />
+              {!isEnabled && this.state.titleError ? (
+                <div className="title-error">{this.state.titleError}</div>
+              ) : (
+                  ''
+                )}
             </div>
 
             <div className="item-edit-details-input">
@@ -275,7 +316,11 @@ class ItemEdit extends React.Component {
                 onChange={this.handleInputChange}
               />
             </div>
-            <EditCardButton label="SUBMIT" clickHandler={this.editThisCard} />
+            <EditCardButton
+              label="SUBMIT"
+              clickHandler={this.editThisCard}
+              disable={!isEnabled}
+            />
           </div>
         </div>
       );
