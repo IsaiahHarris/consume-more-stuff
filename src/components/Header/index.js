@@ -2,9 +2,12 @@ import React from 'react';
 import './Header.css';
 import SearchBar from '../SearchBar';
 import Logout from '../Logout';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+import { connect } from 'react-redux';
 
 class Header extends React.Component {
+
   constructor(props) {
     super(props)
   }
@@ -14,13 +17,20 @@ class Header extends React.Component {
       <div className="header-container">
         <img src="https://i.imgur.com/34axnfY.png" className="logo" alt="" />
         <SearchBar classNameLabel="wrap" />
-        <nav>
-          <NavLink exact to='/login'>Login</NavLink>
-        </nav>
-        <Logout />
-      </div>
+        {!this.props.user.username && <Link to='/login'>Login</Link>}
+        {this.props.user.username &&
+          <div className="welcome-user">Welcome, {this.props.user.username}</div>
+        }
+        {this.props.user.username && < Logout />}
+      </div >
     )
   }
 }
 
-export default Header;
+const mapStateToProps = state => {
+  return {
+    user: state.usersList
+  }
+}
+
+export default connect(mapStateToProps, null)(Header)

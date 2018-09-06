@@ -3,8 +3,9 @@ import axios from 'axios';
 export const LOAD_CARDS = 'LOAD_CARDS';
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
 export const LOAD_CARD = 'LOAD_CARD';
-export const ADD_USER = 'ADD_USER';
+export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
+export const REGISTER = 'REGISTER';
 export const ADD_CARD = 'ADD_CARD';
 export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const EDIT_CARD = 'EDIT_CARD';
@@ -35,11 +36,12 @@ export const loadCards = () => {
 export const addCard = data => {
   const imageData = data['image_data'];
 
+  // Delete 'image_data' as it will be transformed into form data below:
   delete data['image_data'];
 
+  // Create form data object:
   const formData = new FormData();
   formData.append('file', imageData);
-
   for (let key in data) {
     formData.append(key, data[key]);
   }
@@ -51,14 +53,13 @@ export const addCard = data => {
   };
 
   return dispatch => {
-    return axios.post('/api/items', formData, config)
-      .then(response => {
-        dispatch({
-          type: ADD_CARD,
-          card: response.data
-        });
-        window.location.href = `/items/${response.data.id}`
+    return axios.post('/api/items', formData, config).then(response => {
+      dispatch({
+        type: ADD_CARD,
+        card: response.data
       });
+      window.location.href = `/items/${response.data.id}`;
+    });
   };
 };
 
@@ -95,15 +96,17 @@ export const loadCard = card => {
   };
 };
 
-export const addUser = user => {
+export const loginUser = (user, history) => {
   return dispatch => {
-    return axios
-      .post('/api/login', user)
+    return axios.post('/api/login', user)
       .then(response => {
+        window.localStorage.setItem('user', response.data.username);
         dispatch({
-          type: ADD_USER,
+          type: LOGIN,
           user: response.data
         });
+        console.log('response.data', response.data);
+        history.push('/');
       })
       .catch(err => console.log('Login Error! ', err.response));
   };
@@ -111,28 +114,48 @@ export const addUser = user => {
 
 export const logoutUser = () => {
   return dispatch => {
-    return axios
-      .get('/api/logout')
+    return axios.get('/api/logout')
       .then(response => {
         console.log('Logout success!', response);
         dispatch({
           type: LOGOUT
         });
+        window.localStorage.removeItem('user');
       })
       .catch(err => console.log('Logout Failed! ', err.response));
   };
 };
 
+export const registerUser = (user, history) => {
+  return dispatch => {
+    return axios.post('/api/register', user)
+      .then(response => {
+        console.log('User registered! ', response);
+        history.push('/login');
+      })
+      .catch(err => console.log('Registration error! ', err.response));
+  };
+};
+
 export const editCard = card => {
-  console.log('CARD', card);
   return dispatch => {
     return axios.put(`/api/items/${card.id}`, card).then(response => {
-      console.log('EDIT RESPONSE', response);
       dispatch({
         type: EDIT_CARD,
         editCard: response.data
       });
       window.location.href = `/items/${card.id}`;
     });
+  };
+};
+
+export const checkUser = () => {
+  return dispatch => {
+    if (localStorage.user) {
+      dispatch({
+        type: LOGIN,
+        user: { username: localStorage.user }
+      });
+    }
   };
 };
