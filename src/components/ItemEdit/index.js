@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import './ItemEdit.css';
 import Button from '../Button';
@@ -42,29 +43,28 @@ class ItemEdit extends React.Component {
     this.props.loadCategories();
     this.props.loadConditions();
     this.props.loadCard(this.props.match.params.id);
-  }
 
-  static getDerivedStateFromProps(props, state) {
-    let initialData = props.card[0];
+    // Allows data inputs to initially be populated with database information:
+    return axios
+      .get(`/api/items/${this.props.match.params.id}`)
+      .then(response => {
+        const initialData = response.data[0];
 
-    if (initialData) {
-      return {
-        titleInput: state.titleInput || initialData[0].title,
-        priceInput: state.priceInput || initialData[0].price,
-        manufacturerInput:
-          state.manufacturerInput || initialData[0].manufacturer,
-        modelInput: state.modelInput || initialData[0].model,
-        dimensionsInput: state.dimensionsInput || initialData[0].dimensions,
-        detailsInput: state.detailsInput || initialData[0].details,
-        imageUrl: initialData[0].image_url,
-        sellerInput: state.sellerInput || initialData[0].seller_id,
-        categoryInput: state.categoryInput || initialData[0].category_id,
-        itemStatusInput: state.itemStatusInput || initialData[0].item_status_id,
-        conditionInput: state.conditionInput || initialData[0].condition_id
-      };
-    } else {
-      return null;
-    }
+        // Necessary to include empty string alternative to prevent warning:
+        this.setState({
+          titleInput: initialData.title || '',
+          priceInput: initialData.price || '',
+          manufacturerInput: initialData.manufacturer || '',
+          modelInput: initialData.model || '',
+          dimensionsInput: initialData.dimensions || '',
+          detailsInput: initialData.details || '',
+          imageUrl: initialData.image_url || '',
+          sellerInput: initialData.seller_id || '',
+          categoryInput: initialData.category_id || '',
+          itemStatusInput: initialData.item_status_id || '',
+          conditionInput: initialData.condition_id || ''
+        });
+      });
   }
 
   handleInputChange(event) {
@@ -120,8 +120,7 @@ class ItemEdit extends React.Component {
       reader.readAsDataURL(file);
       this.setState({ imageUploadData: file });
     } else {
-      preview.style.backgroundImage =
-        'url("' + this.state.imageUrl + '")';
+      preview.style.backgroundImage = 'url("' + this.state.imageUrl + '")';
     }
   }
 
