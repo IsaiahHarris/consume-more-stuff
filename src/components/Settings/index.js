@@ -34,8 +34,9 @@ class Settings extends React.Component {
     data.newPass = this.state.newPassInput;
     this.props.editPassword(data);
     this.setState({
-      oldPass: '',
-      newPass: ''
+      oldPassInput: '',
+      newPassInput: '',
+      message:'password changed!'
     })
   }
 
@@ -63,6 +64,7 @@ class Settings extends React.Component {
           onChange={this.handleInputChange}
         />
         <button onClick = {this.editThisPassword}> Change Password </button>
+        {this.state.message}
       </div>
     );
   }
