@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 export const LOAD_CARDS = 'LOAD_CARDS';
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
 export const LOAD_CARD = 'LOAD_CARD';
@@ -34,8 +35,26 @@ export const loadCards = () => {
 };
 
 export const addCard = data => {
+  const imageData = data['image_data'];
+
+  // Delete 'image_data' as it will be transformed into form data below:
+  delete data['image_data'];
+
+  // Create form data object:
+  const formData = new FormData();
+  formData.append('file', imageData);
+  for (let key in data) {
+    formData.append(key, data[key]);
+  }
+
+  const config = {
+    headers: {
+      'content-type': 'multipart/form-data'
+    }
+  };
+
   return dispatch => {
-    axios.post('/api/items', data).then(response => {
+    return axios.post('/api/items', formData, config).then(response => {
       dispatch({
         type: ADD_CARD,
         card: response.data
