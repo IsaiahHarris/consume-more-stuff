@@ -22,9 +22,8 @@ router.route('/:id')
       });
   })
   .put((req, res) => { // Edit a specfic item info
-    // console.log('REQ', req);
     //--Primary Keys--//
-    const id = req.params.id ? req.params.id : req.body.id;
+    const id = req.params.id;
 
     const title = req.body.title ? req.body.title.trim() : null;
     const price = req.body.price ? req.body.price.trim() : null;
