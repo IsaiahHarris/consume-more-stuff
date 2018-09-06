@@ -66,8 +66,6 @@ class Register extends Component {
       email: this.state.email,
       password: this.state.password
     };
-    console.log('Registration method');
-
     this.props.registerUser(newUser, this.props.history);
   }
   render() {
@@ -84,8 +82,9 @@ class Register extends Component {
             placeholder={this.state.username}
             onChange={this.inputChange}
             onBlur={this.validation}
+            value={this.state.username}
           />
-          {/* <div className="error">{this.state.usernameError}</div> */}
+          <div className="error">{this.state.usernameError}</div>
           <input
             type="text"
             name="email"
@@ -94,13 +93,14 @@ class Register extends Component {
             onBlur={this.validation}
             value={this.state.email}
           />
-          {/* {this.state.emailError.length > 0 && <div className="error">{this.state.emailError}</div>} */}
+          {this.state.emailError.length > 0 && <div className="error">{this.state.emailError}</div>}
           <input
             type="text"
             name="password"
             placeholder={this.state.password}
             onChange={this.inputChange}
             onBlur={this.validation}
+            value={this.state.password}
           />
           <div className="error">{this.state.passwordError}</div>
           <button className="btn" onClick={this.register} disabled={!isEnabled}>

@@ -9,8 +9,8 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      username: 'username',
-      password: 'password',
+      username: '',
+      password: '',
       passwordError: '',
       usernameError: ''
     };
@@ -63,6 +63,8 @@ class Login extends Component {
   }
 
   render() {
+    const {password, username } = this.state;
+    let isEnabled = username.length > 0 && password.length > 0;
     return (
       <div className="login-container">
         <h1>Login Page</h1>
@@ -72,6 +74,7 @@ class Login extends Component {
           placeholder={this.state.username}
           onChange={this.inputChange}
           onBlur={this.validation}
+          value={this.state.username}
         />
         <div className="username-error">{this.state.usernameError}</div>
         <input
@@ -80,12 +83,13 @@ class Login extends Component {
           placeholder={this.state.password}
           onChange={this.inputChange}
           onBlur={this.validation}
+          value={this.state.password}
         />
         <div className="password-error">{this.state.passwordError}</div>
         <button
           className="btn"
           onClick={this.loginHandler}
-          disabled={!this.state.password || !this.state.username}
+          disabled={!isEnabled}
         >
           Login
         </button>
