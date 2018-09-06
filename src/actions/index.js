@@ -98,11 +98,12 @@ export const loadCard = card => {
 
 export const loginUser = (user, history) => {
   return dispatch => {
-    return axios.post('/api/login', user)
+    return axios
+      .post('/api/login', user)
       .then(response => {
         console.log('response', response);
         window.localStorage.setItem('user', response.data.username);
-        window.localStorage.setItem('userid', response.data.id)
+        window.localStorage.setItem('userid', response.data.id);
         dispatch({
           type: LOGIN,
           user: response.data
@@ -116,14 +117,15 @@ export const loginUser = (user, history) => {
 
 export const logoutUser = () => {
   return dispatch => {
-    return axios.get('/api/logout')
+    return axios
+      .get('/api/logout')
       .then(response => {
         console.log('Logout success!', response);
         dispatch({
           type: LOGOUT
         });
         window.localStorage.removeItem('user');
-         window.localStorage.removeItem('userid')
+        window.localStorage.removeItem('userid');
       })
       .catch(err => console.log('Logout Failed! ', err.response));
   };
@@ -131,7 +133,8 @@ export const logoutUser = () => {
 
 export const registerUser = (user, history) => {
   return dispatch => {
-    return axios.post('/api/register', user)
+    return axios
+      .post('/api/register', user)
       .then(response => {
         console.log('User registered! ', response);
         history.push('/login');
@@ -157,9 +160,10 @@ export const checkUser = () => {
     if (localStorage.user) {
       dispatch({
         type: LOGIN,
-        user: { username: localStorage.user,
+        user: {
+          username: localStorage.user,
           id: localStorage.userid
-         }
+        }
       });
     }
   };

@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addCard, loadCategories, loadConditions, checkUser } from '../../actions';
+import {
+  addCard,
+  loadCategories,
+  loadConditions,
+  checkUser
+} from '../../actions';
 import './ItemNew.css';
 import Button from '../Button';
 import AddNewButton from '../AddNewButton';
@@ -87,9 +92,13 @@ class ItemNew extends Component {
     const file = event.target.files[0];
     const reader = new FileReader();
 
-    reader.addEventListener('load', () => {
-      preview.style.backgroundImage = 'url("' + reader.result + '")';
-    }, false);
+    reader.addEventListener(
+      'load',
+      () => {
+        preview.style.backgroundImage = 'url("' + reader.result + '")';
+      },
+      false
+    );
 
     if (file) {
       reader.readAsDataURL(file);
@@ -116,7 +125,7 @@ class ItemNew extends Component {
     data.category_id = this.state.categoryInput;
     data.condition_id = this.state.conditionInput;
     data.item_status_id = 1;
-    data.seller_id =1;
+    data.seller_id = 1;
     this.props.addCard(data);
     console.log('data', data);
   }
@@ -170,7 +179,7 @@ class ItemNew extends Component {
             >
               <option value="">--Category--</option>
               {this.props.categories.map(category => {
-                return (<option value={category.id}>{category.name}</option>);
+                return <option value={category.id}>{category.name}</option>;
               })}
             </select>
           </div>
@@ -185,7 +194,7 @@ class ItemNew extends Component {
             >
               <option value="">--Condition--</option>
               {this.props.conditions.map(condition => {
-                return (<option value={condition.id}>{condition.name}</option>);
+                return <option value={condition.id}>{condition.name}</option>;
               })}
             </select>
           </div>
@@ -260,7 +269,8 @@ const mapDispatchToProps = dispatch => {
     },
     loadConditions: () => {
       dispatch(loadConditions());
-    }, checkUser: () => {
+    },
+    checkUser: () => {
       dispatch(checkUser());
     }
   };

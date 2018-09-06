@@ -11,6 +11,7 @@ import Login from '../Login';
 import Register from '../Register';
 import ItemEdit from '../ItemEdit';
 import CardsByCategory from '../CardsByCategory';
+import Settings from '../Settings';
 
 class MainContainer extends Component {
   constructor(props) {
@@ -54,6 +55,13 @@ class MainContainer extends Component {
           <Route
             exact path="/register"
             component={Register}
+          />
+          <Route
+            exact path="/register"
+            component={Register}
+          /><Route
+            exact path="/user/settings"
+            component={Settings}
           />
           <Route
             exact path="/items/category/:categoryId"
