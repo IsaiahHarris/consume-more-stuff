@@ -162,3 +162,15 @@ export const loadCardsBySold = (userId) => {
       })
   }
 }
+
+export const loadCardsByPublished = (userId) => {
+  return dispatch => {
+    return axios.get(`/api/user/${userId}/published`)
+      .then(response => {
+        dispatch({
+          type: LOAD_CARDS_BY_PUBLISHED,
+          publishCards: response.data
+        })
+      })
+  }
+}
