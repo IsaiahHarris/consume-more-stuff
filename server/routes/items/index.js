@@ -1,11 +1,10 @@
-require('dotenv').config();
 
 const express = require('express');
 const router = express.Router();
-const AWS = require('aws-sdk');
-const Busboy = require('busboy');
+
 const Item = require('../../db/models/Item');
-const itemId = require('./ItemById');
+const itemById = require('./itemById');
+const { uploadToS3 } = require('./../../../util');
 
 // Required for withRelated to work:
 const User = require('../../db/models/User');
@@ -46,10 +45,12 @@ router.route('/')
       condition_id: Number(req.body.condition_id)
     };
 
+    // Used to store item model entered into DB:
+    let newItem;
+
     // Variables to be used if the new item includes an image:
     let itemId;
     let imageData;
-    let image_url;
 
     if (req.files.file) {
       imageData = req.files.file;
@@ -58,38 +59,23 @@ router.route('/')
     return new Item()
       .save(itemInput)
       .then(response => {
-        return response.refresh({
-          withRelated: ['seller', 'category', 'condition', 'itemStatus']
-        });
-      })
-      .then(response => {
-        if (imageData) {
-          const busboy = new Busboy({ headers: req.headers });
+        newItem = response;
 
+        if (imageData) {
           // Set itemId to ensure file is saved to unique AWS folder:
           itemId = response.attributes.id;
-
-          busboy.on('finish', () => {
-            uploadToS3(itemId, imageData);
-          });
-          return req.pipe(busboy);
+          return uploadToS3(itemId, imageData);
+        } else {
+          return null;
         }
-
-        return response;
       })
       .then(response => {
-        if (imageData) {
-          // Set default placeholder if user did not upload image:
-          image_url = imageData
-            ? `https://cms-2018.s3.amazonaws.com/${itemId}/${imageData.name}`
-            : 'https://i.imgur.com/34axnfY.png';
-
-          return new Item()
-            .where({ id: itemId })
-            .save({ image_url }, { patch: true });
+        if (response) {
+          const imageUrl = response.Location;
+          return newItem.save({ image_url: imageUrl }, { patch: true });
+        } else {
+          return newItem;
         }
-
-        return response;
       })
       .then(response => {
         return response.refresh({
@@ -105,69 +91,44 @@ router.route('/')
   });
 
 // Items Search Route, let George know if you need search route from category
-router.route('/search/:term').get((req, res) => {
-  // Fetches all items in home based on a search term:
-  const term = `%${req.params.term}%`;
+router.route('/search/:term')
+  .get((req, res) => {
+    // Fetches all items in home based on a search term:
+    const term = `%${req.params.term}%`;
 
-  return Item.query(qb => {
-    qb.whereRaw(`LOWER(title) LIKE ?`, [term]).andWhere({ deleted_at: null });
-  })
-    .fetchAll()
-    .then(items => {
-      return res.json(items);
+    return Item.query(qb => {
+      qb.whereRaw(`LOWER(title) LIKE ?`, [term]).andWhere({ deleted_at: null });
     })
-    .catch(err => {
-      return res.json({ error: err.message });
-    });
-});
+      .fetchAll()
+      .then(items => {
+        return res.json(items);
+      })
+      .catch(err => {
+        return res.json({ error: err.message });
+      });
+  });
 
 // Items Category Route:
-router.route('/category/:categoryId').get((req, res) => {
-  // Fetch all items for different categories:
-  const category_id = req.params.categoryId;
-  console.log('category running: ', category_id);
-  return Item.query(qb => {
-    qb.where({ category_id }).andWhere({ deleted_at: null });
-  })
-    .fetchAll({
-      withRelated: ['seller', 'category', 'condition', 'itemStatus']
+router.route('/category/:categoryId')
+  .get((req, res) => {
+    // Fetch all items for different categories:
+    const category_id = req.params.categoryId;
+    console.log('Category Running:', category_id);
+    return Item.query(qb => {
+      qb.where({ category_id }).andWhere({ deleted_at: null });
     })
-    .then(items => {
-      return res.json(items);
-    })
-    .catch(err => {
-      return res.json({ error: err.message });
-    });
-});
-
-//-- Specfic Item Routes located at ItemById.js --//
-router.use('/', itemId);
-
-// -----------------------=[   HELPER FUNCTION(S)   ]=----------------------- //
-
-function uploadToS3(itemId, file) {
-  const s3bucket = new AWS.S3({
-    accessKeyId: process.env.IAM_USER_KEY,
-    secretAccessKey: process.env.IAM_USER_SECRET,
-    Bucket: process.env.S3_BUCKET_NAME
+      .fetchAll({
+        withRelated: ['seller', 'category', 'condition', 'itemStatus']
+      })
+      .then(items => {
+        return res.json(items);
+      })
+      .catch(err => {
+        return res.json({ error: err.message });
+      });
   });
 
-  s3bucket.createBucket(() => {
-    const params = {
-      Bucket: process.env.S3_BUCKET_NAME,
-      Key: `${itemId}/${file.name}`,
-      Body: file.data
-    };
-
-    s3bucket.upload(params, (err, data) => {
-      if (err) {
-        console.log(err);
-        return err;
-      }
-      console.log('Success:', data);
-      return data;
-    });
-  });
-}
+// Specfic Item Routes located at ItemById.js
+router.use('/', itemById);
 
 module.exports = router;

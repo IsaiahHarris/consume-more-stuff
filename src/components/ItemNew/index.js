@@ -86,8 +86,6 @@ class ItemNew extends Component {
   }
 
   handleImageUpload(event) {
-    console.log('event.target', event.target.files[0]);
-
     const preview = document.getElementsByClassName('item-new-photo-img')[0];
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -107,7 +105,7 @@ class ItemNew extends Component {
     this.setState({
       imageUploadData: file,
       imageUploadUrl: file
-        ? `${reader.result}` // Does not appear to have any effect.
+        ? `${reader.result}`
         : 'https://i.imgur.com/34axnfY.png' // Restore placeholder image.
     });
   }
