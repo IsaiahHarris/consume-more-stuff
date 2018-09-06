@@ -1,25 +1,22 @@
 require('dotenv').config();
 
-// Main imports
 const express = require('express');
 const router = express.Router();
-
 const AWS = require('aws-sdk');
 const Busboy = require('busboy');
-
 const Item = require('../../db/models/Item');
 const itemId = require('./ItemById');
-// Models I need to import for withRelatd to work
+
+// Required for withRelated to work:
 const User = require('../../db/models/User');
 const Category = require('../../db/models/Category');
 const Condition = require('../../db/models/Condition');
 const ItemStatus = require('../../db/models/ItemStatus');
 
-// items root route
-router
-  .route('/')
+// Items Root Route:
+router.route('/')
   .get((req, res) => {
-    // Fetches all the items for homepage
+    // Fetches all items for the home page:
     return Item.query(function(qb) {
       qb.orderBy('created_at', 'DESC');
     })
@@ -35,55 +32,29 @@ router
       });
   })
   .post((req, res) => {
-    console.log('POST REQ', req);
-    console.log('POST REQ BODY', req.body);
-
-    const imageData = req.files.file;
-    console.log('POST REQ IMG DATA', imageData);
-
-    // Posts one new item
-
-    //--Primary Keys--//
-    const title = req.body.title.trim();
-    const price = req.body.price ? req.body.price.trim() : req.body.price;
-    const manufacturer = req.body.manufacturer
-      ? req.body.manufacturer.trim()
-      : req.body.manufacturer;
-    const model = req.body.model ? req.body.model.trim() : req.body.model;
-    const dimensions = req.body.dimensions
-      ? req.body.dimensions.trim()
-      : req.body.dimensions;
-    const details = req.body.details
-      ? req.body.details.trim()
-      : req.body.details;
-    const image_url = req.body.image_url
-      ? req.body.image_url.trim()
-      : req.body.image_url;
-
-    //--Foreign Keys--//
-    const seller_id = parseInt(req.body.seller_id);
-    const category_id = parseInt(req.body.category_id);
-    const item_status_id = parseInt(req.body.item_status_id);
-    const condition_id = parseInt(req.body.condition_id);
-
-    // No empty strings for db
     const itemInput = {
-      title: title ? title : null,
-      price: price ? price : null,
-      manufacturer: manufacturer ? manufacturer : null,
-      model: model ? model : null,
-      dimensions: dimensions ? dimensions : null,
-      details: details ? details : null,
-      image_url: image_url ? image_url : null,
-      seller_id,
-      category_id,
-      item_status_id,
-      condition_id
+      title: req.body.title.trim(),
+      price: req.body.price ? req.body.price.trim() : null,
+      manufacturer: req.body.manufacturer ? req.body.manufacturer.trim() : null,
+      model: req.body.model ? req.body.model.trim() : null,
+      dimensions: req.body.dimensions ? req.body.dimensions.trim() : null,
+      details: req.body.details ? req.body.details.trim() : null,
+      image_url: req.body.image_url ? req.body.image_url.trim() : null,
+      seller_id: Number(req.body.seller_id),
+      category_id: Number(req.body.category_id),
+      item_status_id: Number(req.body.item_status_id),
+      condition_id: Number(req.body.condition_id)
     };
 
+    // Variables to be used if the new item includes an image:
     let itemId;
+    let imageData;
+    let image_url;
 
-    // Save item to db with bookshelf
+    if (req.files.file) {
+      imageData = req.files.file;
+    }
+
     return new Item()
       .save(itemInput)
       .then(response => {
@@ -92,67 +63,50 @@ router
         });
       })
       .then(response => {
-        console.log('DB RESPONSE', response);
+        if (imageData) {
+          const busboy = new Busboy({ headers: req.headers });
 
-        itemId = response.attributes.id;
-        const busboy = new Busboy({ headers: req.headers });
+          // Set itemId to ensure file is saved to unique AWS folder:
+          itemId = response.attributes.id;
 
-        busboy.on('finish', () => {
-          uploadToS3(itemId, imageData);
-        });
-
-        return req.pipe(busboy);
-      })
-      .then(s3Response => {
-        console.log('FINAL S3 RESPONSE DATA', s3Response);
-
-        //--Primary Keys--//
-        const id = itemId;
-
-        const image_url = `https://cms-2018.s3.amazonaws.com/${itemId}/${imageData.name}`;
-
-        // Edit using bookshelf
-        return new Item()
-          .query(qb => {
-            qb.where({ id }).andWhere({ deleted_at: null });
-          })
-          .save(
-            {
-              title: title ? title : null,
-              price: price ? price : null,
-              manufacturer: manufacturer ? manufacturer : null,
-              model: model ? model : null,
-              dimensions: dimensions ? dimensions : null,
-              details: details ? details : null,
-              image_url: image_url ? image_url : null,
-              category_id,
-              item_status_id,
-              condition_id
-            },
-            { patch: true }
-          )
-          .then(response => {
-            console.log('Edited Item', response);
-            return response.refresh({
-              withRelated: ['seller', 'category', 'condition', 'itemStatus']
-            });
-          })
-          .then(item => {
-            return res.json(item);
-          })
-          .catch(err => {
-            console.log(err.message);
-            return res.json({ error: err.message });
+          busboy.on('finish', () => {
+            uploadToS3(itemId, imageData);
           });
+          return req.pipe(busboy);
+        }
+
+        return response;
+      })
+      .then(response => {
+        if (imageData) {
+          // Set default placeholder if user did not upload image:
+          image_url = imageData
+            ? `https://cms-2018.s3.amazonaws.com/${itemId}/${imageData.name}`
+            : 'https://i.imgur.com/34axnfY.png';
+
+          return new Item()
+            .where({ id: itemId })
+            .save({ image_url }, { patch: true });
+        }
+
+        return response;
+      })
+      .then(response => {
+        return response.refresh({
+          withRelated: ['seller', 'category', 'condition', 'itemStatus']
+        });
+      })
+      .then(item => {
+        return res.json(item);
       })
       .catch(err => {
         return res.json({ error: err.message });
       });
   });
 
-// Items search route, let George know if you need search route from category
+// Items Search Route, let George know if you need search route from category
 router.route('/search/:term').get((req, res) => {
-  // Fetches all items in home based on a search term
+  // Fetches all items in home based on a search term:
   const term = `%${req.params.term}%`;
 
   return Item.query(qb => {
@@ -167,9 +121,9 @@ router.route('/search/:term').get((req, res) => {
     });
 });
 
-// Items category route
+// Items Category Route:
 router.route('/category/:categoryId').get((req, res) => {
-  // Fetch all items for different categories
+  // Fetch all items for different categories:
   const category_id = req.params.categoryId;
   console.log('category running: ', category_id);
   return Item.query(qb => {
@@ -186,7 +140,7 @@ router.route('/category/:categoryId').get((req, res) => {
     });
 });
 
-//-- Specfic Item Routes at ItemById.js --//
+//-- Specfic Item Routes located at ItemById.js --//
 router.use('/', itemId);
 
 // -----------------------=[   HELPER FUNCTION(S)   ]=----------------------- //
