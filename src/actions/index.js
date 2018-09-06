@@ -153,9 +153,9 @@ export const checkUser = () => {
   }
 }
 
-export const loadCardsBySold = (userId) => {
+export const loadCardsBySold = () => {
   return dispatch => {
-    return axios.get(`/api/user/${userId}/sold`)
+    return axios.get(`/api/user/sold`)
       .then(response => {
         dispatch({
           type: LOAD_CARDS_BY_SOLD,
@@ -165,9 +165,9 @@ export const loadCardsBySold = (userId) => {
   }
 }
 
-export const loadCardsByPublished = (userId) => {
+export const loadCardsByPublished = () => {
   return dispatch => {
-    return axios.get(`/api/user/${userId}/published`)
+    return axios.get(`/api/user/published`)
       .then(response => {
         dispatch({
           type: LOAD_CARDS_BY_PUBLISHED,

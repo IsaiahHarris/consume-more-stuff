@@ -10,11 +10,13 @@ class UserHomepage extends Component {
   }
 
   componentDidMount() {
-    this.props.loadCardsByPublished(1);
-    this.props.loadCardsBySold(1);
+    console.log('componentDidMount', this.props.user);
+    this.props.loadCardsByPublished();
+    this.props.loadCardsBySold();
   }
   render() {
     console.log('this.props.user auth-home: ', this.props.user);
+    console.log('soldCards: ', this.props.soldCards);
 
     return (
       <div className="UserHomepage">
