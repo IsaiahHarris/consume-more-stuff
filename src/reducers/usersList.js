@@ -10,7 +10,6 @@ const usersList = (state = initialState, action) => {
     case LOGOUT:
       return {};
     case LOGIN_ERROR:
-    console.log('action', action);
       return {error: action.loginError};
     default:
       return state;

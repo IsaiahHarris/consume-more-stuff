@@ -54,13 +54,21 @@ export const addCard = data => {
   };
 
   return dispatch => {
-    return axios.post('/api/items', formData, config).then(response => {
+    return axios.post('/api/items', formData, config)
+    .then(response => {
       dispatch({
         type: ADD_CARD,
         card: response.data
       });
       window.location.href = `/items/${response.data.id}`;
-    });
+    })
+    .catch(err=>{
+      dispatch({
+        type: LOGIN_ERROR,
+        loginError: 'true'
+      })
+      window.location.href = `/items/new`;
+    })
   };
 };
 
@@ -174,12 +182,3 @@ export const checkUser = () => {
     }
   };
 };
-
-export const loginError = ()=>{
-  return dispatch=>{
-    dispatch({
-      type:LOGIN_ERROR,
-      loginError: true
-    })
-  }
-}

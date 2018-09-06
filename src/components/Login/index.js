@@ -13,7 +13,6 @@ class Login extends Component {
       password: '',
       passwordError: '',
       usernameError: '',
-      loginError:'hii'
     };
 
     this.inputChange = this.inputChange.bind(this);
@@ -40,14 +39,13 @@ class Login extends Component {
       username: this.state.username,
       password: this.state.password
     };
-    this.setState({
-      loginError: 'by'
-    })
     console.log('this.state', this.state);
     this.props.loginUser(user, this.props.history);
     this.setState({
       username: '',
       password: '',
+      passwordError: '',
+      usernameError: ''
     });
     
   }
