@@ -100,7 +100,9 @@ export const loginUser = (user, history) => {
   return dispatch => {
     return axios.post('/api/login', user)
       .then(response => {
+        console.log('response', response);
         window.localStorage.setItem('user', response.data.username);
+        window.localStorage.setItem('userid', response.data.id)
         dispatch({
           type: LOGIN,
           user: response.data
@@ -121,6 +123,7 @@ export const logoutUser = () => {
           type: LOGOUT
         });
         window.localStorage.removeItem('user');
+         window.localStorage.removeItem('userid')
       })
       .catch(err => console.log('Logout Failed! ', err.response));
   };
@@ -154,7 +157,9 @@ export const checkUser = () => {
     if (localStorage.user) {
       dispatch({
         type: LOGIN,
-        user: { username: localStorage.user }
+        user: { username: localStorage.user,
+          id: localStorage.userid
+         }
       });
     }
   };

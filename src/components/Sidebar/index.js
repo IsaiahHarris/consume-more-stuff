@@ -61,7 +61,9 @@ class Sidebar extends Component {
               );
             })}
           </ul>
-          <Button label="ALL" />
+          <Link to={"/"}>
+            <Button label="ALL" />
+          </Link>
         </div>
 
         {/* Display for Mobile View: */}

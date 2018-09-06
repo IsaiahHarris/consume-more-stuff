@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addCard, loadCategories, loadConditions } from '../../actions';
+import { addCard, loadCategories, loadConditions, checkUser } from '../../actions';
 import './ItemNew.css';
 import Button from '../Button';
 import AddNewButton from '../AddNewButton';
 import { Link } from 'react-router-dom';
-
-const TEMP_SELLER_ID = 1;
 
 class ItemNew extends Component {
   constructor(props) {
@@ -36,6 +34,7 @@ class ItemNew extends Component {
   componentDidMount() {
     this.props.loadCategories();
     this.props.loadConditions();
+    this.props.checkUser();
   }
 
   handleInputChange(event) {
@@ -106,7 +105,6 @@ class ItemNew extends Component {
 
   addNewCard() {
     const data = {};
-
     data.title = this.state.titleInput;
     data.price = this.state.priceInput;
     data.manufacturer = this.state.manufacturerInput;
@@ -118,9 +116,9 @@ class ItemNew extends Component {
     data.category_id = this.state.categoryInput;
     data.condition_id = this.state.conditionInput;
     data.item_status_id = 1;
-    data.seller_id = TEMP_SELLER_ID;
-
+    data.seller_id =1;
     this.props.addCard(data);
+    console.log('data', data);
   }
 
   render() {
@@ -262,6 +260,8 @@ const mapDispatchToProps = dispatch => {
     },
     loadConditions: () => {
       dispatch(loadConditions());
+    }, checkUser: () => {
+      dispatch(checkUser());
     }
   };
 };
@@ -270,7 +270,8 @@ const mapStateToProps = state => {
   return {
     categories: state.categoriesList,
     conditions: state.conditionsList,
-    card: state.cardsList
+    card: state.cardsList,
+    user: state.usersList
   };
 };
 
