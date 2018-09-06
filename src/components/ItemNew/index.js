@@ -196,6 +196,7 @@ class ItemNew extends Component {
         </div>
 
         <div className="item-new-details">
+          {this.props.error.error && <div>Please Try Again With Required Fields</div>}
           <div className="header-button" />
           <div className="item-new-details-input">
             <label htmlFor="title">Title: </label>
