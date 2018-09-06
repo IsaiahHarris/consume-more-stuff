@@ -10,25 +10,26 @@ class UserHomepage extends Component {
   }
 
   componentDidMount() {
-    console.log('componentDidMount', this.props.user);
     this.props.loadCardsByPublished();
     this.props.loadCardsBySold();
   }
+
   render() {
     console.log('this.props.user auth-home: ', this.props.user);
     console.log('soldCards: ', this.props.soldCards);
-    filterByUserId(this.props.soldCards, this.props.user.userId);
+    const publishCards = filterByUserId(this.props.publishCards, this.props.user.userId);
+    const soldCards = filterByUserId(this.props.soldCards, this.props.user.userId);
 
     return (
       <div className="UserHomepage">
       <h1>User Home</h1>
          <div className="cards-published">
           <h3>Published</h3>
-          <CardsList cards={this.props.publishCards}/>
+          <CardsList cards={publishCards}/>
         </div>
         <div className="cards-sold">
           <h3>Sold</h3>
-          <CardsList cards={this.props.soldCards}/>
+          <CardsList cards={soldCards}/>
         </div>
       </div>
     )
@@ -42,6 +43,7 @@ function filterByUserId(cards, userId) {
   })
 
   console.log('filterByCards : ', newCards);
+  return newCards
 }
 
 const mapStateToProps = state => {
