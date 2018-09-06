@@ -82,8 +82,6 @@ class ItemNew extends Component {
   }
 
   handleImageUpload(event) {
-    console.log('event.target', event.target.files[0]);
-
     const preview = document.getElementsByClassName('item-new-photo-img')[0];
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -99,26 +97,26 @@ class ItemNew extends Component {
     this.setState({
       imageUploadData: file,
       imageUploadUrl: file
-        ? `${reader.result}` // Does not appear to have any effect.
+        ? `${reader.result}`
         : 'https://i.imgur.com/34axnfY.png' // Restore placeholder image.
     });
   }
 
   addNewCard() {
-    const data = {};
-
-    data.title = this.state.titleInput;
-    data.price = this.state.priceInput;
-    data.manufacturer = this.state.manufacturerInput;
-    data.model = this.state.modelInput;
-    data.dimensions = this.state.dimensionsInput;
-    data.details = this.state.detailsInput;
-    data.image_data = this.state.imageUploadData;
-    data.image_url = this.state.imageUploadUrl;
-    data.category_id = this.state.categoryInput;
-    data.condition_id = this.state.conditionInput;
-    data.item_status_id = 1;
-    data.seller_id = TEMP_SELLER_ID;
+    const data = {
+      title: this.state.titleInput,
+      price: this.state.priceInput,
+      manufacturer: this.state.manufacturerInput,
+      model: this.state.modelInput,
+      dimensions: this.state.dimensionsInput,
+      details: this.state.detailsInput,
+      image_data: this.state.imageUploadData,
+      image_url: this.state.imageUploadUrl,
+      category_id: this.state.categoryInput,
+      condition_id: this.state.conditionInput,
+      item_status_id: 1,
+      seller_id: TEMP_SELLER_ID
+    };
 
     this.props.addCard(data);
   }
