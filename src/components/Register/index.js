@@ -8,11 +8,12 @@ class Register extends Component {
 
     this.state = {
       // tracks username and password locally
-      username: 'username',
-      email: 'email',
-      password: 'password',
+      username: '',
+      email: '',
+      password: '',
       passwordError: '',
       usernameError: '',
+      emailError: ''
     };
 
     this.inputChange = this.inputChange.bind(this);
@@ -35,21 +36,27 @@ class Register extends Component {
       default:
         break;
     }
+    if (event.target.name === 'email' && !this.state.email.includes('@') && this.state.email) {
+      let emailError = 'Must Be A Valid Email';
+      this.setState({ emailError: emailError });
+    } else if (event.target.name === 'email' && this.state.email.length === 0) {
+      this.setState({ emailError: '' });
+    }
   }
 
   validation(event) {
     if (event.target.name === 'username' && !this.state.username) {
-      let usernameError = 'Username Is Required To Register'
+      let usernameError = 'Username Is Required To Register';
       this.setState({
         usernameError: usernameError
-      })
+      });
     }
 
     if (event.target.name === 'password' && !this.state.password) {
-      let passwordError = 'Password Is Required To Register'
+      let passwordError = 'Password Is Required To Register';
       this.setState({
         passwordError: passwordError
-      })
+      });
     }
   }
   // Send http request with registration data to backend
@@ -63,8 +70,9 @@ class Register extends Component {
 
     this.props.registerUser(newUser, this.props.history);
   }
-
   render() {
+    const { email, password, username } = this.state;
+    let isEnabled = username.length > 0 && password.length > 0;
     return (
       <div>
         {/* { this.renderRedirect() } */}
@@ -84,7 +92,9 @@ class Register extends Component {
             placeholder="email (optional)"
             onChange={this.inputChange}
             onBlur={this.validation}
+            value={this.state.email}
           />
+          {this.state.emailError.length > 0 && <div className="error">{this.state.emailError}</div>}
           <input
             type="text"
             name="password"
@@ -93,7 +103,7 @@ class Register extends Component {
             onBlur={this.validation}
           />
           <div className="error">{this.state.passwordError}</div>
-          <button className="btn" onClick={this.register} disabled={!this.state.password || !this.state.username}>
+          <button className="btn" onClick={this.register} disabled={!isEnabled}>
             Submit
           </button>
         </div>

@@ -12,7 +12,7 @@ class Login extends Component {
       username: 'username',
       password: 'password',
       passwordError: '',
-      usernameError:'',
+      usernameError: ''
     };
 
     this.inputChange = this.inputChange.bind(this);
@@ -42,26 +42,25 @@ class Login extends Component {
     this.props.loginUser(user, this.props.history);
     this.setState({
       username: '',
-      password: '',
+      password: ''
     });
   }
 
-  validation(event){
-    if(event.target.name === 'username' && !this.state.username){
-       let usernameError = 'Username Is Required'
+  validation(event) {
+    if (event.target.name === 'username' && !this.state.username) {
+      let usernameError = 'Username Is Required';
       this.setState({
-        usernameError:usernameError
-      })
+        usernameError: usernameError
+      });
     }
 
     if (event.target.name === 'password' && !this.state.password) {
-       let passwordError = 'Password Is Required'
+      let passwordError = 'Password Is Required';
       this.setState({
         passwordError: passwordError
-      })
+      });
     }
   }
-
 
   render() {
     return (
@@ -72,7 +71,7 @@ class Login extends Component {
           name="username"
           placeholder={this.state.username}
           onChange={this.inputChange}
-          onBlur = {this.validation}
+          onBlur={this.validation}
         />
         <div className="username-error">{this.state.usernameError}</div>
         <input
