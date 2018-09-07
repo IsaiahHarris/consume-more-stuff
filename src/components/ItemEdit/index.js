@@ -13,8 +13,6 @@ import {
   loadCard
 } from '../../actions';
 
-const TEMP_SELLER_ID = 1;
-
 class ItemEdit extends React.Component {
   constructor(props) {
     super(props);
@@ -145,7 +143,7 @@ class ItemEdit extends React.Component {
       category_id: this.state.categoryInput,
       condition_id: this.state.conditionInput,
       item_status_id: 1,
-      seller_id: TEMP_SELLER_ID
+      seller_id: this.props.user.id
     };
 
     this.props.editCard(data);
@@ -351,7 +349,8 @@ const mapStateToProps = state => {
   return {
     categories: state.categoriesList,
     conditions: state.conditionsList,
-    card: state.cardsList
+    card: state.cardsList,
+    user: state.usersList
   };
 };
 
