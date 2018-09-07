@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 
 import './MainContainer.css';
 import Sidebar from '../Sidebar';
@@ -14,39 +14,71 @@ import CardsByCategory from '../CardsByCategory';
 import Settings from '../Settings';
 import UserHomepage from '../UserHomepage';
 
+const ProtectedRoute = ({ component: Component, authed, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      authed ? (
+        <Component {...props} />
+      ) : (
+        <Redirect
+          to={{ pathname: '/login', state: { from: props.location } }}
+        />
+      )
+    }
+  />
+);
+
 class MainContainer extends Component {
   constructor(props) {
     super(props);
-    this.loggedIn = false;
-    this.checkLoggedIn = this.checkLoggedIn.bind(this);
+
+    this.state = {
+      loggedIn: false
+    };
   }
 
-  checkLoggedIn() {
-    if (this.props.user.length > 0) {
-      this.loggedIn = true;
+  componentDidMount() {
+    if (this.props.user) {
+      this.setState({
+        loggedIn: true
+      });
     } else {
-      this.loggedIn = false;
+      this.setState({
+        loggedIn: false
+      });
     }
   }
-
   render() {
-    this.checkLoggedIn();
-    return <div className="MainContainer">
+    console.log('this.state.loggedIn', this.state.loggedIn);
+    return (
+      <div className="MainContainer">
         <Sidebar />
         <Switch>
           {/* NOTE: Change "Body" to something more descriptive, e.g., Home Page */}
-
           <Route exact path="/" component={Body} />
-          <Route exact path="/items/new" component={ItemNew} />
+          <ProtectedRoute
+            authed={this.state.loggedIn}
+            exact
+            path="/items/new"
+            component={ItemNew}
+          />
           <Route exact path="/items/:id/edit" component={ItemEdit} />
           <Route exact path="/items/:id" component={ItemDetail} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
-          <Route exact path="/items/category/:categoryId" render={props => <CardsByCategory key={props.match.params.categoryId} {...props} />} />
+          <Route
+            exact
+            path="/items/category/:categoryId"
+            render={props => (
+              <CardsByCategory key={props.match.params.categoryId} {...props} />
+            )}
+          />
           <Route exact path="/inventory" component={UserHomepage} />
           <Route exact path="/user/settings" component={Settings} />
         </Switch>
-      </div>;
+      </div>
+    );
   }
 }
 

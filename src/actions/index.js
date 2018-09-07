@@ -195,7 +195,6 @@ export const loadItemStatuses = () => {
 
 // -----------------------------=[   AUTH   ]=----------------------------- //
 
-
 export const loginUser = (user, history) => {
   return dispatch => {
     return axios.post('/api/login', user)
