@@ -205,7 +205,6 @@ export const loginUser = (user, history) => {
           type: LOGIN,
           user: response.data
         });
-        history.push('/inventory');
       })
       .catch(err => {
         dispatch({

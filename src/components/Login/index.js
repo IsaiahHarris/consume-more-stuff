@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { loginUser } from '../../actions';
+import {Redirect} from 'react-router-dom';
 
 import './Login.css';
 
@@ -12,7 +13,8 @@ class Login extends Component {
       username: '',
       password: '',
       passwordError: '',
-      usernameError: ''
+      usernameError: '',
+      redirectToReferrer: false
     };
 
     this.inputChange = this.inputChange.bind(this);
@@ -44,7 +46,8 @@ class Login extends Component {
       username: '',
       password: '',
       passwordError: '',
-      usernameError: ''
+      usernameError: '',
+      redirectToReferrer: true
     });
   }
 
@@ -65,12 +68,22 @@ class Login extends Component {
   }
 
   render() {
+    const { from } = this.props.location.state || { from: { pathname: '/' } };
+    const { password, username, redirectToReferrer } = this.state;
 
-    const { password, username } = this.state;
+    if(redirectToReferrer){
+      return (
+        <Redirect to={from} />
+      )
+    }
+
+    
     let isEnabled = username.length > 0 && password.length > 0;
     return (
       <div className="login-container">
-        {this.props.loginError.error && <div className="error-message-login">Wrong Username Or Password</div>}
+        {this.props.loginError.error && (
+          <div className="error-message-login">Wrong Username Or Password</div>
+        )}
         <h1>Login Page</h1>
         <input
           type="text"
@@ -86,8 +99,8 @@ class Login extends Component {
           ''
         )}
         <input
-          type='password'
-          name='password'
+          type="password"
+          name="password"
           placeholder={this.state.password}
           onChange={this.inputChange}
           onBlur={this.validation}
@@ -120,7 +133,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   return {
-    loginError: state.usersList,
+    loginError: state.usersList
   };
 };
 
