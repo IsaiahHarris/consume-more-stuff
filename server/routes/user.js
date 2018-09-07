@@ -33,6 +33,26 @@ router.put('/settings', (req, res) => {
         });
     });
 });
+
+// This routes fetches all the items of one user
+router.get('/:user_id/items', (req, res) => {
+  const userId = req.params.user_id;
+  console.log('userId', userId);
+
+  return Item.query(qb => {
+    qb.where({ seller_id: userId }).andWhere({ deleted_at: null });
+  })
+    .fetchAll({
+      withRelated: ['seller', 'category', 'condition', 'itemStatus']
+    })
+    .then(items => {
+      return res.json(items);
+    })
+    .catch(err => {
+      return res.json({ error: err.message });
+    });
+})
+
 // This route fetches "published" items
 router.get('/published', (req, res) => {
   return Item.query(qb => {
