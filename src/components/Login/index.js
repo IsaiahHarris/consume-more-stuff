@@ -81,7 +81,7 @@ class Login extends Component {
           value={this.state.username}
         />
         {!isEnabled && this.state.usernameError ? (
-          <div className="username-error">{this.state.usernameError}</div>
+          <div className="error-message-login">{this.state.usernameError}</div>
         ) : (
           ''
         )}
@@ -94,7 +94,7 @@ class Login extends Component {
           value={this.state.password}
         />
         {!isEnabled && this.state.passwordError ? (
-          <div className="password-error">{this.state.passwordError}</div>
+          <div className="error-message-login">{this.state.passwordError}</div>
         ) : (
           ''
         )}
