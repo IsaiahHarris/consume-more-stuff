@@ -1,22 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loadCardsByUser, loadItemStatuses } from '../../actions';
+import { loadCardsByUser, loadItemStatuses, checkUser } from '../../actions';
 import CardsList from '../CardsList';
 
 class UserHomepage extends Component {
+
   componentDidMount() {
-    this.props.loadCardsByUser(this.props.user.id);
+    this.props.loadCardsByUser();
   }
 
   render() {
+    // this.componentDidMount(this.props.user.id)
+    const cards = this.props.userCards ? this.props.userCards : null;
+    console.log('cards', cards);
     const publishedCards = filterByItemStatus(
-      this.props.userCards,
-      1, // published
+      cards,
+      1 // published
     );
     const soldCards = filterByItemStatus(
-      this.props.userCards,
-      2, // sold
+      cards,
+      2 // sold
     );
+
+    console.log('publishedCards', publishedCards);
 
     return (
       <div className="UserHomepage">
@@ -35,26 +41,25 @@ class UserHomepage extends Component {
 }
 
 function filterByItemStatus(cards, itemStatusId) {
-  const newCards = cards.filter(card => {
+  return cards.filter(card => {
     return Number(card.item_status_id) === Number(itemStatusId);
   });
-
-  return newCards;
 }
 
 const mapStateToProps = state => {
+  console.log('state', state);
   return {
     user: state.usersList,
     userCards: state.userCardsList,
-    itemStatuses: state.itemStatusesList,
+    itemStatuses: state.itemStatusesList
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadCardsByUser: userId => {
-      dispatch(loadCardsByUser(userId));
-    },
+    loadCardsByUser: () => {
+      dispatch(loadCardsByUser());
+    }
   };
 };
 

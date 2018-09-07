@@ -35,8 +35,8 @@ router.put('/settings', (req, res) => {
 });
 
 // This routes fetches all the items of one user
-router.get('/:user_id/items', (req, res) => {
-  const userId = req.params.user_id;
+router.get('/inventory', (req, res) => {
+  const userId = req.user.id;
   console.log('userId', userId);
 
   return Item.query(qb => {

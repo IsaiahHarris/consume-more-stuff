@@ -7,7 +7,6 @@ const initialState = {};
 const usersList = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN:
-    console.log('action', action);
       return {
         username: action.user.username,
         id: action.user.id
