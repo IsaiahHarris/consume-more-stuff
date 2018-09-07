@@ -80,7 +80,18 @@ class MainContainer extends Component {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route
-            exact
+            exact 
+            path="/user/settings"
+            render={() => (
+              this.loggedIn ? (
+                <Settings />
+              ) : (
+                <Redirect to="/" />
+                )
+            )}
+          />
+          <Route
+            exact 
             path="/items/category/:categoryId"
             render={props => (
               <CardsByCategory key={props.match.params.categoryId} {...props} />

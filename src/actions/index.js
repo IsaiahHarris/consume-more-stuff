@@ -7,6 +7,7 @@ export const DELETE_CARD = 'DELETE_CARD';
 export const LOAD_CARD = 'LOAD_CARD';
 export const LOAD_CARDS = 'LOAD_CARDS';
 export const LOAD_CARDS_BY_CATEGORY = 'LOAD_CARDS_BY_CATEGORY';
+export const LOAD_CARDS_BY_USER = 'LOAD_CARDS_BY_USER'
 export const LOAD_CARDS_BY_PUBLISHED = 'LOAD_CARDS_BY_PUBLISHED';
 export const LOAD_CARDS_BY_SOLD = 'LOAD_CARDS_BY_SOLD';
 
@@ -137,23 +138,12 @@ export const loadCardsByCategory = category => {
   };
 };
 
-export const loadCardsBySold = () => {
+export const loadCardsByUser = userId => {
   return dispatch => {
-    return axios.get(`/api/user/sold`).then(response => {
+    return axios.get(`/api/user/${userId}/items`).then(response => {
       dispatch({
-        type: LOAD_CARDS_BY_SOLD,
-        soldCards: response.data
-      });
-    });
-  };
-};
-
-export const loadCardsByPublished = () => {
-  return dispatch => {
-    return axios.get(`/api/user/published`).then(response => {
-      dispatch({
-        type: LOAD_CARDS_BY_PUBLISHED,
-        publishCards: response.data
+        type: LOAD_CARDS_BY_USER,
+        cardsByUser: response.data
       });
     });
   };
