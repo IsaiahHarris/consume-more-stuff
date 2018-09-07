@@ -11,6 +11,7 @@ export const EDIT_CARD = 'EDIT_CARD';
 export const DELETE_CARD = 'DELETE_CARD';
 export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const LOAD_CARDS_BY_CATEGORY = 'LOAD_CARDS_BY_CATEGORY';
+export const EDIT_PASSWORD = 'EDIT_PASSWORD';
 export const LOAD_CARDS_BY_PUBLISHED = 'LOAD_CARDS_BY_PUBLISHED';
 export const LOAD_CARDS_BY_SOLD = 'LOAD_CARDS_BY_SOLD';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
@@ -57,21 +58,22 @@ export const addCard = data => {
   };
 
   return dispatch => {
-    return axios.post('/api/items', formData, config)
-    .then(response => {
-      dispatch({
-        type: ADD_CARD,
-        card: response.data
-      });
-      window.location.href = `/items/${response.data.id}`;
-    })
-    .catch(err=>{
-      dispatch({
-        type: LOGIN_ERROR,
-        loginError: 'true'
+    return axios
+      .post('/api/items', formData, config)
+      .then(response => {
+        dispatch({
+          type: ADD_CARD,
+          card: response.data
+        });
+        window.location.href = `/items/${response.data.id}`;
       })
-      window.location.href = `/items/new`;
-    })
+      .catch(err => {
+        dispatch({
+          type: LOGIN_ERROR,
+          loginError: 'true'
+        });
+        window.location.href = `/items/new`;
+      });
   };
 };
 
@@ -97,7 +99,8 @@ export const editCard = data => {
   };
 
   return dispatch => {
-    return axios.put(`/api/items/${data.id}`, formData, config)
+    return axios
+      .put(`/api/items/${data.id}`, formData, config)
       .then(response => {
         dispatch({
           type: EDIT_CARD,
@@ -158,9 +161,9 @@ export const loginUser = (user, history) => {
     return axios
       .post('/api/login', user)
       .then(response => {
+        console.log('response.data', response.data);
         window.localStorage.setItem('user', response.data.username);
-        window.localStorage.setItem('userId', response.data.userId);
-
+        window.localStorage.setItem('userId', response.data.id);
         dispatch({
           type: LOGIN,
           user: response.data
@@ -168,13 +171,12 @@ export const loginUser = (user, history) => {
         console.log('response.data', response.data);
         history.push('/inventory');
       })
-      .catch((err) =>{
+      .catch(err => {
         dispatch({
-          type:LOGIN_ERROR,
+          type: LOGIN_ERROR,
           loginError: 'true'
-        })
-      })
-        
+        });
+      });
   };
 };
 
@@ -205,12 +207,29 @@ export const registerUser = (user, history) => {
         console.log('User registered! ', response);
         history.push('/login');
       })
-      .catch(err=>{
+      .catch(err => {
         dispatch({
           type: LOGIN_ERROR,
           loginError: 'true'
-        })
+        });
       });
+  };
+};
+
+export const editPassword = password => {
+  return dispatch => {
+    return axios
+      .put(`/api/user/settings`, password)
+      .then(response => {
+        dispatch({
+          type: EDIT_PASSWORD,
+          editPassword: response.data
+        });
+      })
+      .then(()=>{
+        return axios
+        .get(`/api/logout`)
+      })
   };
 };
 
@@ -219,8 +238,11 @@ export const checkUser = () => {
     if (localStorage.user) {
       dispatch({
         type: LOGIN,
-        user: { userId: localStorage.userId, username: localStorage.user }
-      })
+        user: {
+          username: localStorage.user,
+          id: localStorage.userId
+        }
+      });
     }
   }
 }

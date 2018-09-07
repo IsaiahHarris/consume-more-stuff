@@ -1,38 +1,67 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcrypt');
+const saltRounds = 12;
+const User = require('../db/models/User');
 const Item = require('../db/models/Item');
 
-// These routes fetchs cards for the UserHomePage
-// Add in a route to just get user_id if needed
-
-// This route fetches "published" items
-router.get('/published', (req, res) => {
-  const userId = req.params.user_id;
-
-  return Item
-    .where({'item_status_id': 1 })
-    .fetchAll({ withRelated: ['seller', 'category', 'condition', 'itemStatus'] })
+router.put('/settings', (req, res) => {
+  let id = req.user.id;
+  let { oldPass, newPass } = req.body;
+  return User.where({ id })
+    .fetchAll()
+    .then(user => {
+      bcrypt
+        .compare(oldPass, user.models[0].attributes.password)
+        .then(result => {
+          if (result) {
+            bcrypt.genSalt(saltRounds, (err, salt) => {
+              bcrypt.hash(newPass, salt, (err, hashedPassword) => {
+                if (err) {
+                  return res.status(500);
+                }
+                return User.where({ id })
+                  .save({ password: hashedPassword }, { patch: true })
+                  .then(user => {
+                    res.json({ message: 'success' });
+                  });
+              });
+            });
+          } else {
+            res.json({ message: 'wrong existing password' });
+          }
+        });
+    });
+});
+  // This route fetches "published" items
+  router.get('/published', (req, res) => {
+      console.log('published route');
+    return Item.where({ item_status_id: 1 })
+      .fetchAll({
+        withRelated: ['seller', 'category', 'condition', 'itemStatus']
+      })
       .then(items => {
         return res.json(items);
       })
       .catch(err => {
-        return res.json({ 'error': err.message })
+        return res.json({ error: err.message });
       });
-})
+  });
 
-// This route returns "sold" items
-router.get('/sold', (req, res) => {
-  const userId = req.params.user_id;
+  // This route returns "sold" items
+  router.get('/sold', (req, res) => {
 
-  return Item
-  .where({ 'item_status_id': 2 })
-  .fetchAll({ withRelated: ['seller', 'category', 'condition', 'itemStatus'] })
-    .then(items => {
-      return res.json(items);
-    })
-    .catch(err => {
-      return res.json({ 'error': err.message })
-    });
-})
+    return Item.where({ item_status_id: 2 })
+      .fetchAll({
+        withRelated: ['seller', 'category', 'condition', 'itemStatus']
+      })
+      .then(items => {
+        return res.json(items);
+      })
+      .catch(err => {
+        return res.json({ error: err.message });
+      });
+  });
+
 
 module.exports = router;
