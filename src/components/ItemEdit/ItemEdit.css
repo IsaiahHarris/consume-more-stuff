@@ -5,14 +5,14 @@
   padding: 30px 0;
 }
 
-.item-edit-photo-img {
+.item-edit-side-img {
   height: 200px;
   width: 200px;
   margin: 30px 0;
   border: 1px solid #000;
 }
 
-.item-edit-photo{
+.item-edit-side {
   display: flex;
   align-items:center ;
   flex-direction: column;
@@ -92,11 +92,11 @@
   height: 100px;
 }
 
-.title-error{
+.title-error,
+.item-status-error {
  animation: fadeIn 1s;
  color:red;
 }
-
 
 @keyframes fadeIn{
   from{
