@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import {
+  Route,
+  Switch,
+  withRouter,
+  BrowserRouter as Router,
+  Redirect
+} from 'react-router-dom';
 
 import './MainContainer.css';
 import Sidebar from '../Sidebar';
@@ -13,6 +19,21 @@ import ItemEdit from '../ItemEdit';
 import CardsByCategory from '../CardsByCategory';
 import Settings from '../Settings';
 import UserHomepage from '../UserHomepage';
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      props.loggedIn === true ? (
+        <div>
+          <Component {...props} />
+        </div>
+      ) : (
+        <Redirect to="/login" />
+      )
+    }
+  />
+);
 
 class MainContainer extends Component {
   constructor(props) {
@@ -31,22 +52,35 @@ class MainContainer extends Component {
 
   render() {
     this.checkLoggedIn();
-    return <div className="MainContainer">
+    return (
+      <div className="MainContainer">
         <Sidebar />
         <Switch>
           {/* NOTE: Change "Body" to something more descriptive, e.g., Home Page */}
 
           <Route exact path="/" component={Body} />
-          <Route exact path="/items/new" component={ItemNew} />
+          <PrivateRoute
+            exact
+            path="/items/new"
+            component={ItemNew}
+            loggedIn={this.loggedIn}
+          />
           <Route exact path="/items/:id/edit" component={ItemEdit} />
           <Route exact path="/items/:id" component={ItemDetail} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
-          <Route exact path="/items/category/:categoryId" render={props => <CardsByCategory key={props.match.params.categoryId} {...props} />} />
+          <Route
+            exact
+            path="/items/category/:categoryId"
+            render={props => (
+              <CardsByCategory key={props.match.params.categoryId} {...props} />
+            )}
+          />
           <Route exact path="/inventory" component={UserHomepage} />
           <Route exact path="/user/settings" component={Settings} />
         </Switch>
-      </div>;
+      </div>
+    );
   }
 }
 
