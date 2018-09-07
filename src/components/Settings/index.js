@@ -36,7 +36,7 @@ class Settings extends React.Component {
     this.setState({
       oldPassInput: '',
       newPassInput: '',
-      message:'password changed!'
+      message:'password changed!, please login again'
     })
   }
 

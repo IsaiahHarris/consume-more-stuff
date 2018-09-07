@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT, EDIT_PASSWORD } from '../actions';
+import { LOGIN, LOGOUT, EDIT_PASSWORD, LOGIN_ERROR} from '../actions';
 
 
 const initialState = {};
@@ -13,13 +13,9 @@ const usersList = (state = initialState, action) => {
     case LOGOUT:
       return {};
     case EDIT_PASSWORD:
-      console.log('state', state);
-      console.log('action', action);
-      // state.map(password => {
-      //     state.splice(state.indexOf(password), 1)
-      //     state.push(action.editPassword);
-      // })
       return [...state]
+    case LOGIN_ERROR:
+      return {error: action.loginError};
     default:
       return state;
   }

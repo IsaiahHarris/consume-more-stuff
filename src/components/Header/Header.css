@@ -12,7 +12,7 @@
   height: 50px;
   min-width: 50px;
 }
-.welcome-user{
+.welcome-user {
   font-size: 15px;
   white-space: nowrap;
 }
@@ -20,14 +20,14 @@
 .button-container {
   display: flex;
   justify-content: flex-end;
-  align-items:center;
-  padding-bottom:15px;
-  width:260px;
+  align-items: center;
+  padding-bottom: 15px;
+  width: 260px;
 }
 
-.header-button{
+.header-button {
   height: 30px;
-  padding:5px;
+  padding: 5px;
 }
 
 @media (min-width: 768px) {

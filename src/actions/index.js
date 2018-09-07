@@ -11,6 +11,7 @@ export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const EDIT_CARD = 'EDIT_CARD';
 export const LOAD_CARDS_BY_CATEGORY = 'LOAD_CARDS_BY_CATEGORY';
 export const EDIT_PASSWORD = 'EDIT_PASSWORD';
+export const LOGIN_ERROR = 'LOGIN_ERROR';
 
 export const loadConditions = () => {
   return dispatch => {
@@ -54,13 +55,56 @@ export const addCard = data => {
   };
 
   return dispatch => {
-    return axios.post('/api/items', formData, config).then(response => {
-      dispatch({
-        type: ADD_CARD,
-        card: response.data
+    return axios
+      .post('/api/items', formData, config)
+      .then(response => {
+        dispatch({
+          type: ADD_CARD,
+          card: response.data
+        });
+        window.location.href = `/items/${response.data.id}`;
+      })
+      .catch(err => {
+        dispatch({
+          type: LOGIN_ERROR,
+          loginError: 'true'
+        });
+        window.location.href = `/items/new`;
       });
-      window.location.href = `/items/${response.data.id}`;
-    });
+  };
+};
+
+export const editCard = data => {
+  const imageData = data['image_data'];
+
+  // Delete 'image_data' as it will be transformed into form data below:
+  delete data['image_data'];
+
+  // Create form data object:
+  const formData = new FormData();
+  formData.append('file', imageData);
+  for (let key in data) {
+    formData.append(key, data[key]);
+  }
+
+  console.log('FORM DATA', formData);
+
+  const config = {
+    headers: {
+      'content-type': 'multipart/form-data'
+    }
+  };
+
+  return dispatch => {
+    return axios
+      .put(`/api/items/${data.id}`, formData, config)
+      .then(response => {
+        dispatch({
+          type: EDIT_CARD,
+          editCard: response.data
+        });
+        window.location.href = `/items/${data.id}`;
+      });
   };
 };
 
@@ -112,7 +156,12 @@ export const loginUser = (user, history) => {
         console.log('response.data', response.data);
         history.push('/');
       })
-      .catch(err => console.log('Login Error! ', err.response));
+      .catch(err => {
+        dispatch({
+          type: LOGIN_ERROR,
+          loginError: 'true'
+        });
+      });
   };
 };
 
@@ -140,33 +189,31 @@ export const registerUser = (user, history) => {
         console.log('User registered! ', response);
         history.push('/login');
       })
-      .catch(err => console.log('Registration error! ', err.response));
-  };
-};
-
-export const editCard = card => {
-  return dispatch => {
-    return axios.put(`/api/items/${card.id}`, card).then(response => {
-      dispatch({
-        type: EDIT_CARD,
-        editCard: response.data
+      .catch(err => {
+        dispatch({
+          type: LOGIN_ERROR,
+          loginError: 'true'
+        });
       });
-      window.location.href = `/items/${card.id}`;
-    });
   };
 };
 
-export const editPassword = password =>{
-  return dispatch =>{
-    return axios.put(`/api/user/settings`, password)
-    .then(response=>{
-      dispatch({
-        type: EDIT_PASSWORD,
-        editPassword: response.data
+export const editPassword = password => {
+  return dispatch => {
+    return axios
+      .put(`/api/user/settings`, password)
+      .then(response => {
+        dispatch({
+          type: EDIT_PASSWORD,
+          editPassword: response.data
+        });
       })
-    })
-  }
-}
+      .then(()=>{
+        return axios
+        .get(`/api/logout`)
+      })
+  };
+};
 
 export const checkUser = () => {
   return dispatch => {

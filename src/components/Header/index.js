@@ -7,9 +7,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 class Header extends React.Component {
-
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   render() {
@@ -17,20 +16,25 @@ class Header extends React.Component {
       <div className="header-container">
         <img src="https://i.imgur.com/34axnfY.png" className="logo" alt="" />
         <SearchBar classNameLabel="wrap" />
-        {!this.props.user.username && <Link to='/login'>Login</Link>}
-        {this.props.user.username &&
-          <div className="welcome-user">Welcome, {this.props.user.username}</div>
-        }
-        {this.props.user.username && < Logout />}
-      </div >
-    )
+        {!this.props.user.username && <Link to="/login">Login</Link>}
+        {this.props.user.username && (
+          <div className="welcome-user">
+            Welcome, {this.props.user.username}
+          </div>
+        )}
+        {this.props.user.username && <Logout />}
+      </div>
+    );
   }
 }
 
 const mapStateToProps = state => {
   return {
     user: state.usersList
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps, null)(Header)
+export default connect(
+  mapStateToProps,
+  null
+)(Header);
