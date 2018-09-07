@@ -25,11 +25,11 @@ class UserHomepage extends Component {
       <h1>User Home</h1>
          <div className="cards-published">
           <h3>Published</h3>
-          <CardsList cards={publishCards}/>
+          <CardsList userCards={publishCards}/>
         </div>
         <div className="cards-sold">
           <h3>Sold</h3>
-          <CardsList cards={soldCards}/>
+          <CardsList userCards={soldCards}/>
         </div>
       </div>
     )
