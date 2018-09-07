@@ -68,8 +68,7 @@ const CardsList = props => {
         }
       </div>
     )
-  } else if (props.userCards) { // Display for auth homepage
-    console.log('cardList: ', props.userCards);
+  } else if (props.userCards) { // Display for auth homepage/inventory
     return (
       <div className="cards-list-container">
         {

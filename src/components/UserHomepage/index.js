@@ -15,8 +15,6 @@ class UserHomepage extends Component {
   }
 
   render() {
-    console.log('this.props.user auth-home: ', this.props.user);
-    console.log('soldCards: ', this.props.soldCards);
     const publishCards = filterByUserId(this.props.publishCards, this.props.user.userId);
     const soldCards = filterByUserId(this.props.soldCards, this.props.user.userId);
 
@@ -38,12 +36,10 @@ class UserHomepage extends Component {
 
 function filterByUserId(cards, userId) {
   const newCards = cards.filter(card => {
-    console.log(card.seller_id);
     return (Number(card.seller_id) === Number(userId));
   })
 
-  console.log('filterByCards : ', newCards);
-  return newCards
+  return newCards;
 }
 
 const mapStateToProps = state => {

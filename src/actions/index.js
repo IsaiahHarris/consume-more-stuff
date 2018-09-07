@@ -97,7 +97,7 @@ export const loginUser = (user, history) => {
           user: response.data
         })
         console.log('response.data', response.data);
-        history.push('/')
+        history.push('/inventory');
       })
       .catch(err => console.log('Login Error! ', err.response));
   }
