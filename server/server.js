@@ -93,8 +93,13 @@ app.get('*', (req, res) => {
 
 // Catch-All Error Handler:
 app.use(function(err, req, res, next) {
-  console.log(err.message);
-  res.status(500).send('Something broke on the server side');
+  console.error(err.stack);
+
+  if (err) {
+    res.status(500).json({ error: err });
+  }
+
+  next();
 });
 
 app.listen(PORT, () => {
