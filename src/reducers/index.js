@@ -1,14 +1,19 @@
 import { combineReducers } from 'redux';
+
+import usersList from './usersList';
 import cardsList from './cardsList';
 import conditionsList from './conditionsList';
 import categoriesList from './categoriesList';
-import usersList from './usersList';
 import itemStatusesList from './itemStatusesList';
+import soldList from './userItems/soldList';
+import publishList from './userItems/publishList';
 
 export default combineReducers({
-  categoriesList,
+  usersList,
   cardsList,
   conditionsList,
-  usersList,
-  itemStatusesList
+  categoriesList,
+  itemStatusesList,
+  soldList,
+  publishList
 });

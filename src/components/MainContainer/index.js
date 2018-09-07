@@ -11,6 +11,8 @@ import Login from '../Login';
 import Register from '../Register';
 import ItemEdit from '../ItemEdit';
 import CardsByCategory from '../CardsByCategory';
+import Settings from '../Settings';
+import UserHomepage from '../UserHomepage';
 
 class MainContainer extends Component {
   constructor(props) {
@@ -40,6 +42,19 @@ class MainContainer extends Component {
           <Route exact path="/items/new" component={ItemNew} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
+          <Route
+            exact
+            path="/items/category/:categoryId"
+            render={props => (
+              <CardsByCategory key={props.match.params.categoryId} {...props} />
+            )}
+          />
+          <Route exact path="/inventory" component={UserHomepage} />
+          <Route exact path="/items/:id/edit" component={ItemEdit} />
+          <Route exact path="/items/new" component={ItemNew} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/user/settings" component={Settings} />
           <Route
             exact
             path="/items/category/:categoryId"

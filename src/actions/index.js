@@ -7,6 +7,8 @@ export const DELETE_CARD = 'DELETE_CARD';
 export const LOAD_CARD = 'LOAD_CARD';
 export const LOAD_CARDS = 'LOAD_CARDS';
 export const LOAD_CARDS_BY_CATEGORY = 'LOAD_CARDS_BY_CATEGORY';
+export const LOAD_CARDS_BY_PUBLISHED = 'LOAD_CARDS_BY_PUBLISHED';
+export const LOAD_CARDS_BY_SOLD = 'LOAD_CARDS_BY_SOLD';
 
 export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
@@ -16,6 +18,7 @@ export const REGISTER = 'REGISTER';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
+export const EDIT_PASSWORD = 'EDIT_PASSWORD';
 
 // -------------------------=[   CARDS (ITEMS)   ]=------------------------- //
 
@@ -133,6 +136,28 @@ export const loadCardsByCategory = category => {
   };
 };
 
+export const loadCardsBySold = () => {
+  return dispatch => {
+    return axios.get(`/api/user/sold`).then(response => {
+      dispatch({
+        type: LOAD_CARDS_BY_SOLD,
+        soldCards: response.data
+      });
+    });
+  };
+};
+
+export const loadCardsByPublished = () => {
+  return dispatch => {
+    return axios.get(`/api/user/published`).then(response => {
+      dispatch({
+        type: LOAD_CARDS_BY_PUBLISHED,
+        publishCards: response.data
+      });
+    });
+  };
+};
+
 // ---------------------------=[   META-DATA   ]=--------------------------- //
 
 export const loadConditions = () => {
@@ -190,13 +215,17 @@ export const loginUser = (user, history) => {
   return dispatch => {
     return axios.post('/api/login', user)
       .then(response => {
+        console.log('response.data', response.data);
+
         window.localStorage.setItem('user', response.data.username);
+        window.localStorage.setItem('userId', response.data.id);
         dispatch({
           type: LOGIN,
           user: response.data
         });
         console.log('response.data', response.data);
-        history.push('/');
+
+        history.push('/inventory');
       })
       .catch(err => {
         dispatch({
@@ -212,12 +241,31 @@ export const logoutUser = () => {
     return axios.get('/api/logout')
       .then(response => {
         console.log('Logout success!', response);
+
         dispatch({
           type: LOGOUT
         });
+
         window.localStorage.removeItem('user');
+        window.localStorage.removeItem('userId');
+        window.location.href = '/';
       })
       .catch(err => console.log('Logout Failed! ', err.response));
+  };
+};
+
+export const editPassword = password => {
+  return dispatch => {
+    return axios.put(`/api/user/settings`, password)
+      .then(response => {
+        dispatch({
+          type: EDIT_PASSWORD,
+          editPassword: response.data
+        });
+      })
+      .then(() => {
+        return axios.get(`/api/logout`);
+      });
   };
 };
 
@@ -226,7 +274,10 @@ export const checkUser = () => {
     if (localStorage.user) {
       dispatch({
         type: LOGIN,
-        user: { username: localStorage.user }
+        user: {
+          username: localStorage.user,
+          id: localStorage.userId
+        }
       });
     }
   };
