@@ -204,7 +204,7 @@ class ItemNew extends Component {
         </div>
 
         <div className="item-new-details">
-          {this.props.error.error && (
+          {this.props.user.error && (
             <div>Please Try Again With Required Fields</div>
           )}
           <div className="header-button" />
