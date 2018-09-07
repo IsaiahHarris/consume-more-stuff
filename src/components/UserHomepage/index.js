@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loadCardsByPublished, loadCardsBySold } from '../../actions';
+import { loadCardsByPublished, loadCardsBySold, loadCardsByUser } from '../../actions';
 import CardsList from '../CardsList';
 
 class UserHomepage extends Component {
   componentDidMount() {
     console.log('UserHomepage user: ', this.props.user);
-    this.props.loadCardsByPublished();
-    this.props.loadCardsBySold();
+    this.props.loadCardsByUser(this.props.user.id);
+    // this.props.loadCardsByPublished();
+    // this.props.loadCardsBySold();
   }
 
   render() {
@@ -16,6 +17,8 @@ class UserHomepage extends Component {
       this.props.user.id
     );
     const soldCards = filterByUserId(this.props.soldCards, this.props.user.id);
+
+    console.log('UserHomepage userCards:', this.props.userCards);
 
     return (
       <div className="UserHomepage">
@@ -43,6 +46,7 @@ function filterByUserId(cards, userId) {
 
 const mapStateToProps = state => {
   return {
+    userCards: state.userCardsList,
     soldCards: state.soldList,
     publishCards: state.publishList,
     user: state.usersList
@@ -51,12 +55,15 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadCardsByPublished: userId => {
-      dispatch(loadCardsByPublished(userId));
+    loadCardsByUser: userId => {
+      dispatch(loadCardsByUser(userId));
     },
-    loadCardsBySold: userId => {
-      dispatch(loadCardsBySold(userId));
-    }
+    // loadCardsByPublished: userId => {
+    //   dispatch(loadCardsByPublished(userId));
+    // },
+    // loadCardsBySold: userId => {
+    //   dispatch(loadCardsBySold(userId));
+    // }
   };
 };
 
