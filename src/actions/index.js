@@ -44,7 +44,7 @@ export const addCard = (data) => {
           type: ADD_CARD,
           card: response.data
         })
-        window.location.href = `/items/${response.data.id}`
+        window.location.href = `/items/${response.data.id}`;
       })
   }
 }
@@ -111,8 +111,10 @@ export const logoutUser = () => {
         dispatch({
           type: LOGOUT
         })
-        window.localStorage.removeItem('user')
-
+        window.localStorage.removeItem('user');
+        window.localStorage.removeItem('userId');
+        console.log('logout: ');
+        window.location.href = '/';
       })
       .catch(err => console.log('Logout Failed! ', err.response));
   }
