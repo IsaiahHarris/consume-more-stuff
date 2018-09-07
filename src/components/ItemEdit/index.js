@@ -192,7 +192,7 @@ class ItemEdit extends React.Component {
     const { itemStatusInput } = this.state;
 
     // Only enable submission of data containing valid title and item status:
-    const isEnabled = titleInput.length > 0 && itemStatusInput.length > 0;
+    const isEnabled = titleInput.length > 0 && Number(itemStatusInput) > 0;
 
     if (this.props.card[0]) {
       const styles = {
