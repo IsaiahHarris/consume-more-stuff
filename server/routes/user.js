@@ -53,36 +53,4 @@ router.get('/:user_id/items', (req, res) => {
     });
 })
 
-// This route fetches "published" items
-router.get('/published', (req, res) => {
-  return Item.query(qb => {
-    qb.where({ item_status_id: 1 }).andWhere({ deleted_at: null });
-  })
-    .fetchAll({
-      withRelated: ['seller', 'category', 'condition', 'itemStatus']
-    })
-    .then(items => {
-      return res.json(items);
-    })
-    .catch(err => {
-      return res.json({ error: err.message });
-    });
-});
-
-// This route returns "sold" items
-router.get('/sold', (req, res) => {
-  return Item.query(qb => {
-    qb.where({ item_status_id: 2 }).andWhere({ deleted_at: null });
-  })
-    .fetchAll({
-      withRelated: ['seller', 'category', 'condition', 'itemStatus']
-    })
-    .then(items => {
-      return res.json(items);
-    })
-    .catch(err => {
-      return res.json({ error: err.message });
-    });
-});
-
 module.exports = router;

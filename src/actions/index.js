@@ -140,32 +140,9 @@ export const loadCardsByCategory = category => {
 export const loadCardsByUser = userId => {
   return dispatch => {
     return axios.get(`/api/user/${userId}/items`).then(response => {
-      console.log('ACTION: ', response.data);
       dispatch({
         type: LOAD_CARDS_BY_USER,
         cardsByUser: response.data
-      });
-    });
-  };
-};
-
-export const loadCardsBySold = () => {
-  return dispatch => {
-    return axios.get(`/api/user/sold`).then(response => {
-      dispatch({
-        type: LOAD_CARDS_BY_SOLD,
-        soldCards: response.data
-      });
-    });
-  };
-};
-
-export const loadCardsByPublished = () => {
-  return dispatch => {
-    return axios.get(`/api/user/published`).then(response => {
-      dispatch({
-        type: LOAD_CARDS_BY_PUBLISHED,
-        publishCards: response.data
       });
     });
   };
