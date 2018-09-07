@@ -17,10 +17,6 @@ function switchCardVariable(card, location) {
 }
 
 class ItemDetail extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     this.props.loadCard(this.props.match.params.id);
   }
