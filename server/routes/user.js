@@ -37,7 +37,6 @@ router.put('/settings', (req, res) => {
 // Fetch all items of one user:
 router.get('/inventory', (req, res) => {
   const userId = req.user.id;
-  console.log('userId', userId);
 
   return Item.query(qb => {
     qb.where({ seller_id: userId }).andWhere({ deleted_at: null });
