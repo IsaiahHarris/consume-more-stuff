@@ -2,28 +2,24 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import './UserHomepage.css';
-import { loadCardsByPublished, loadCardsBySold } from '../../actions';
+import { loadCardsByUser } from '../../actions';
 import CardsList from '../CardsList';
 
 class UserHomepage extends Component {
   componentDidMount() {
-    this.props.loadCardsByPublished();
-    this.props.loadCardsBySold();
+    this.props.loadCardsByUser(this.props.user.id);
   }
 
   render() {
-    const publishCards = filterByUserId(
-      this.props.publishCards,
-      this.props.user.id
-    );
-    const soldCards = filterByUserId(this.props.soldCards, this.props.user.id);
+    const publishedCards = filterByItemStatus(this.props.userCards, 1);
+    const soldCards = filterByItemStatus(this.props.userCards, 2);
 
     return (
       <div className="UserHomepage">
         <h1>User Home</h1>
         <div className="cards-published">
           <h3>Published</h3>
-          <CardsList userCards={publishCards} />
+          <CardsList userCards={publishedCards} />
         </div>
         <div className="cards-sold">
           <h3>Sold</h3>
@@ -34,9 +30,9 @@ class UserHomepage extends Component {
   }
 }
 
-function filterByUserId(cards, userId) {
+function filterByItemStatus(cards, itemStatusId) {
   const newCards = cards.filter(card => {
-    return Number(card.seller_id) === Number(userId);
+    return Number(card.item_status_id) === Number(itemStatusId);
   });
 
   return newCards;
@@ -44,19 +40,16 @@ function filterByUserId(cards, userId) {
 
 const mapStateToProps = state => {
   return {
-    soldCards: state.soldList,
-    publishCards: state.publishList,
-    user: state.usersList
+    user: state.usersList,
+    userCards: state.userCardsList,
+    itemStatuses: state.itemStatusesList
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadCardsByPublished: userId => {
-      dispatch(loadCardsByPublished(userId));
-    },
-    loadCardsBySold: userId => {
-      dispatch(loadCardsBySold(userId));
+    loadCardsByUser: userId => {
+      dispatch(loadCardsByUser(userId));
     }
   };
 };
