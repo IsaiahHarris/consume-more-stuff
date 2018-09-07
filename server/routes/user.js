@@ -33,26 +33,14 @@ router.put('/settings', (req, res) => {
         });
     });
 });
-// This route fetches "published" items
-router.get('/published', (req, res) => {
-  return Item.query(qb => {
-    qb.where({ item_status_id: 1 }).andWhere({ deleted_at: null });
-  })
-    .fetchAll({
-      withRelated: ['seller', 'category', 'condition', 'itemStatus']
-    })
-    .then(items => {
-      return res.json(items);
-    })
-    .catch(err => {
-      return res.json({ error: err.message });
-    });
-});
 
-// This route returns "sold" items
-router.get('/sold', (req, res) => {
+// This routes fetches all the items of one user
+router.get('/:user_id/items', (req, res) => {
+  const userId = req.params.user_id;
+  console.log('userId', userId);
+
   return Item.query(qb => {
-    qb.where({ item_status_id: 2 }).andWhere({ deleted_at: null });
+    qb.where({ seller_id: userId }).andWhere({ deleted_at: null });
   })
     .fetchAll({
       withRelated: ['seller', 'category', 'condition', 'itemStatus']
@@ -63,6 +51,6 @@ router.get('/sold', (req, res) => {
     .catch(err => {
       return res.json({ error: err.message });
     });
-});
+})
 
 module.exports = router;

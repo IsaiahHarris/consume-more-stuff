@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 
 import './MainContainer.css';
 import Sidebar from '../Sidebar';
@@ -22,10 +22,12 @@ class MainContainer extends Component {
   }
 
   checkLoggedIn() {
-    if (this.props.user.length > 0) {
+    if (this.props.user.username) {
       this.loggedIn = true;
+      console.log('logged in is true');
     } else {
       this.loggedIn = false;
+      console.log('logged in is false')
     }
   }
 
@@ -49,14 +51,34 @@ class MainContainer extends Component {
               <CardsByCategory key={props.match.params.categoryId} {...props} />
             )}
           />
-          <Route exact path="/inventory" component={UserHomepage} />
+          <Route
+            exact 
+            path="/inventory"
+            render={() => (
+              this.loggedIn ? (
+                <UserHomepage />
+              ) : (
+                <Redirect to="/" />
+                )
+            )}
+          />
           <Route exact path="/items/:id/edit" component={ItemEdit} />
           <Route exact path="/items/new" component={ItemNew} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
-          <Route exact path="/user/settings" component={Settings} />
           <Route
-            exact
+            exact 
+            path="/user/settings"
+            render={() => (
+              this.loggedIn ? (
+                <Settings />
+              ) : (
+                <Redirect to="/" />
+                )
+            )}
+          />
+          <Route
+            exact 
             path="/items/category/:categoryId"
             render={props => (
               <CardsByCategory key={props.match.params.categoryId} {...props} />
