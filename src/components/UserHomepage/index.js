@@ -5,12 +5,12 @@ import CardsList from '../CardsList';
 
 class UserHomepage extends Component {
   componentDidMount() {
+    console.log('UserHomepage user: ', this.props.user);
     this.props.loadCardsByPublished();
     this.props.loadCardsBySold();
   }
 
   render() {
-    console.log('this.props.user', this.props.user.id);
     const publishCards = filterByUserId(
       this.props.publishCards,
       this.props.user.id
