@@ -12,7 +12,7 @@ const CardsList = props => {
   // }
   // render() {
 
-  if (props.cardsByCategory) {
+  if (props.cardsByCategory) { // Display for categories page
     return (
       <div className="cards-list-container">
         {
@@ -40,11 +40,39 @@ const CardsList = props => {
         }
       </div>
     )
-  } else if (props.cards) {
+  } else if (props.cards) { // Display for unauth homepage
     return (
       <div className="cards-list-container">
         {
           props.cards.slice(0, 4).map((card, i) => {
+            const conditionName = card && card.condition ? card.condition.name : null
+            const sellerName = card && card.seller ? card.seller.username : null
+            const categoryName = card && card.category ? card.category.name : null
+            const itemStatusName = card && card.itemStatus ? card.itemStatus.name : null
+            return <Card
+              key={i}
+              title={card.title}
+              photo={card.image_url}
+              price={card.price}
+              condition={conditionName}
+              manufacturer={card.manufacturer}
+              dimensions={card.dimensions}
+              details={card.details}
+              seller={sellerName}
+              category={categoryName}
+              status={itemStatusName}
+              id={card.id}
+              card={card}
+            />
+          })
+        }
+      </div>
+    )
+  } else if (props.userCards) { // Display for auth homepage/inventory
+    return (
+      <div className="cards-list-container">
+        {
+          props.userCards.map((card, i) => {
             const conditionName = card && card.condition ? card.condition.name : null
             const sellerName = card && card.seller ? card.seller.username : null
             const categoryName = card && card.category ? card.category.name : null

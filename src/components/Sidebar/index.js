@@ -36,11 +36,13 @@ class Sidebar extends Component {
         {this.props.user.username && (
           <div className="Sidebar-auth-display">
             <div className="Sidebar-auth-display-options">Messages</div>
-
             <Link to={'/user/settings'}>
               <div className="Sidebar-auth-display-options">Settings</div>
             </Link>
-            <Link to={'/items/new'}>
+            <Link to={"/inventory"}>
+              <span>Inventory</span>
+            </Link>
+            <Link to={"/items/new"}>
               <Button label="ADD" />
             </Link>
           </div>

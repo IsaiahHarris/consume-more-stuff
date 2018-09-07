@@ -7,10 +7,13 @@ export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const REGISTER = 'REGISTER';
 export const ADD_CARD = 'ADD_CARD';
-export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const EDIT_CARD = 'EDIT_CARD';
+export const DELETE_CARD = 'DELETE_CARD';
+export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const LOAD_CARDS_BY_CATEGORY = 'LOAD_CARDS_BY_CATEGORY';
 export const EDIT_PASSWORD = 'EDIT_PASSWORD';
+export const LOAD_CARDS_BY_PUBLISHED = 'LOAD_CARDS_BY_PUBLISHED';
+export const LOAD_CARDS_BY_SOLD = 'LOAD_CARDS_BY_SOLD';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 
 export const loadConditions = () => {
@@ -108,6 +111,18 @@ export const editCard = data => {
   };
 };
 
+export const deleteCard = cardId => {
+  return dispatch => {
+    return axios.delete(`/api/items/${cardId}`).then(response => {
+      dispatch({
+        type: DELETE_CARD,
+        deletedCard: response.data
+      });
+      window.location.href = '/';
+    });
+  };
+};
+
 export const loadCategories = () => {
   return dispatch => {
     return axios.get('/api/categories').then(response => {
@@ -146,15 +161,15 @@ export const loginUser = (user, history) => {
     return axios
       .post('/api/login', user)
       .then(response => {
-        console.log('response', response);
+        console.log('response.data', response.data);
         window.localStorage.setItem('user', response.data.username);
-        window.localStorage.setItem('userid', response.data.id);
+        window.localStorage.setItem('userId', response.data.id);
         dispatch({
           type: LOGIN,
           user: response.data
         });
         console.log('response.data', response.data);
-        history.push('/');
+        history.push('/inventory');
       })
       .catch(err => {
         dispatch({
@@ -171,11 +186,14 @@ export const logoutUser = () => {
       .get('/api/logout')
       .then(response => {
         console.log('Logout success!', response);
+        
         dispatch({
           type: LOGOUT
-        });
+        })
+
         window.localStorage.removeItem('user');
-        window.localStorage.removeItem('userid');
+        window.localStorage.removeItem('userId');
+        window.location.href = '/';
       })
       .catch(err => console.log('Logout Failed! ', err.response));
   };
@@ -222,9 +240,33 @@ export const checkUser = () => {
         type: LOGIN,
         user: {
           username: localStorage.user,
-          id: localStorage.userid
+          id: localStorage.userId
         }
       });
     }
-  };
-};
+  }
+}
+
+export const loadCardsBySold = () => {
+  return dispatch => {
+    return axios.get(`/api/user/sold`)
+      .then(response => {
+        dispatch({
+          type: LOAD_CARDS_BY_SOLD,
+          soldCards: response.data
+        })
+      })
+  }
+}
+
+export const loadCardsByPublished = () => {
+  return dispatch => {
+    return axios.get(`/api/user/published`)
+      .then(response => {
+        dispatch({
+          type: LOAD_CARDS_BY_PUBLISHED,
+          publishCards: response.data
+        })
+      })
+  }
+}

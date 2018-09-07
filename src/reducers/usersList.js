@@ -3,9 +3,11 @@ import { LOGIN, LOGOUT, EDIT_PASSWORD, LOGIN_ERROR} from '../actions';
 
 const initialState = {};
 
+// Change usersList to users in 6 different files
 const usersList = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN:
+    console.log('action', action);
       return {
         username: action.user.username,
         id: action.user.id
