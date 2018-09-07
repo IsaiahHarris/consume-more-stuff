@@ -195,21 +195,6 @@ export const loadItemStatuses = () => {
 
 // -----------------------------=[   AUTH   ]=----------------------------- //
 
-export const registerUser = (user, history) => {
-  return dispatch => {
-    return axios.post('/api/register', user)
-      .then(response => {
-        console.log('User registered! ', response);
-        history.push('/login');
-      })
-      .catch(err => {
-        dispatch({
-          type: LOGIN_ERROR,
-          loginError: 'true'
-        });
-      });
-  };
-};
 
 export const loginUser = (user, history) => {
   return dispatch => {
