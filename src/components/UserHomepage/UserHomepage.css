@@ -3,8 +3,15 @@
   padding: 15px auto;
 }
 
+.UserHomepage h1 {
+  margin:  0;
+  padding: 0.67em;
+}
+
 @media (min-width: 768px) {
-  .UserHomepage {
+  .UserHomepage h1,
+  .cards-published,
+  .cards-sold {
     border-left: 1px solid #000;
   }
 }
