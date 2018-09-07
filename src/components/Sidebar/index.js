@@ -35,14 +35,13 @@ class Sidebar extends Component {
       <div className="Sidebar">
         {this.props.user.username && (
           <div className="Sidebar-auth-display">
-            <div className="Sidebar-auth-display-options">Messages</div>
             <Link to={'/user/settings'}>
               <div className="Sidebar-auth-display-options">Settings</div>
             </Link>
-            <Link to={"/inventory"}>
+            <Link to={'/inventory'}>
               <span>Inventory</span>
             </Link>
-            <Link to={"/items/new"}>
+            <Link to={'/items/new'}>
               <Button label="ADD" />
             </Link>
           </div>
@@ -72,12 +71,11 @@ class Sidebar extends Component {
         </div>
 
         {/* Display for Mobile View: */}
-        <div
-          className="Sidebar-main-mobile"
-          onClick={this.toggleMobileCategoriesList}
-        >
-          <span>Home</span>
-          <span>Categories</span>
+        <div className="Sidebar-main-mobile">
+          <Link to={'/'}>
+            <span>Home</span>
+          </Link>{' '}
+          <span onClick={this.toggleMobileCategoriesList}>Categories</span>
         </div>
         <div
           className="Sidebar-main-mobile-details hidden"

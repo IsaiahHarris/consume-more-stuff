@@ -1,27 +1,22 @@
 import React from 'react';
-import Card from '../Card'
-import './CardsList.css'
+import Card from '../Card';
+import './CardsList.css';
 
 const CardsList = props => {
-
-  // constructor(props) {
-  //   super(props)
-  // }
-  // componentDidMount() {
-  //   this.props.loadCards();
-  // }
-  // render() {
-
-  if (props.cardsByCategory) { // Display for categories page
+  if (props.cardsByCategory) {
+    // Display for categories page:
     return (
       <div className="cards-list-container">
-        {
-          props.cardsByCategory.map((card, i) => {
-            const conditionName = card && card.condition ? card.condition.name : null
-            const sellerName = card && card.seller ? card.seller.username : null
-            const categoryName = card && card.category ? card.category.name : null
-            const itemStatusName = card && card.itemStatus ? card.itemStatus.name : null
-            return <Card
+        {props.cardsByCategory.map((card, i) => {
+          const conditionName =
+            card && card.condition ? card.condition.name : null;
+          const sellerName = card && card.seller ? card.seller.username : null;
+          const categoryName =
+            card && card.category ? card.category.name : null;
+          const itemStatusName =
+            card && card.itemStatus ? card.itemStatus.name : null;
+          return (
+            <Card
               key={i}
               title={card.title}
               photo={card.image_url}
@@ -36,20 +31,24 @@ const CardsList = props => {
               id={card.id}
               card={card}
             />
-          })
-        }
+          );
+        })}
       </div>
-    )
-  } else if (props.cards) { // Display for unauth homepage
+    );
+  } else if (props.cards) {
+    // Display for unauthorized user home page:
     return (
       <div className="cards-list-container">
-        {
-          props.cards.slice(0, 4).map((card, i) => {
-            const conditionName = card && card.condition ? card.condition.name : null
-            const sellerName = card && card.seller ? card.seller.username : null
-            const categoryName = card && card.category ? card.category.name : null
-            const itemStatusName = card && card.itemStatus ? card.itemStatus.name : null
-            return <Card
+        {props.cards.slice(0, 4).map((card, i) => {
+          const conditionName =
+            card && card.condition ? card.condition.name : null;
+          const sellerName = card && card.seller ? card.seller.username : null;
+          const categoryName =
+            card && card.category ? card.category.name : null;
+          const itemStatusName =
+            card && card.itemStatus ? card.itemStatus.name : null;
+          return (
+            <Card
               key={i}
               title={card.title}
               photo={card.image_url}
@@ -64,20 +63,24 @@ const CardsList = props => {
               id={card.id}
               card={card}
             />
-          })
-        }
+          );
+        })}
       </div>
-    )
-  } else if (props.userCards) { // Display for auth homepage/inventory
+    );
+  } else if (props.userCards) {
+    // Display for authortized user home page/inventory:
     return (
       <div className="cards-list-container">
-        {
-          props.userCards.map((card, i) => {
-            const conditionName = card && card.condition ? card.condition.name : null
-            const sellerName = card && card.seller ? card.seller.username : null
-            const categoryName = card && card.category ? card.category.name : null
-            const itemStatusName = card && card.itemStatus ? card.itemStatus.name : null
-            return <Card
+        {props.userCards.map((card, i) => {
+          const conditionName =
+            card && card.condition ? card.condition.name : null;
+          const sellerName = card && card.seller ? card.seller.username : null;
+          const categoryName =
+            card && card.category ? card.category.name : null;
+          const itemStatusName =
+            card && card.itemStatus ? card.itemStatus.name : null;
+          return (
+            <Card
               key={i}
               title={card.title}
               photo={card.image_url}
@@ -92,27 +95,11 @@ const CardsList = props => {
               id={card.id}
               card={card}
             />
-          })
-        }
+          );
+        })}
       </div>
-    )
+    );
   }
-}
-// }
+};
 
-// const mapStateToProps = state => {
-//   return {
-//     cards: state.cardsList
-//   }
-// }
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     loadCards: () => {
-//       dispatch(loadCards())
-//     }
-//   }
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(CardsList);
-export default CardsList
+export default CardsList;

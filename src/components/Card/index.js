@@ -50,6 +50,13 @@ class Card extends React.Component {
   }
 }
 
+// function truncateText(str, maxLength) {
+//   // Source (Stack Overflow): https://goo.gl/BDKhqs
+//   return str.length <= maxLength
+//     ? str
+//     : str.substr(0, str.lastIndexOf(' ', maxLength)) + ' \u2026';
+// }
+
 const mapDispatchToProps = dispatch => {
   return {
     loadCard: card => {

@@ -1,11 +1,11 @@
 .cards-list-container {
   display: flex;
   flex-wrap: wrap;
-  width: 1024px;
 }
 
 @media (min-width: 768px) {
   .cards-list-container {
     flex-wrap: wrap;
+    width: 1024px;
   }
 }

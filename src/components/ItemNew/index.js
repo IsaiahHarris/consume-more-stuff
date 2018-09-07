@@ -83,14 +83,16 @@ class ItemNew extends Component {
       case 'category':
         this.setState({
           categoryInput: event.target.value,
-          categoryError: event.target.value.length > 0 ? '' : this.state.categoryError
+          categoryError:
+            event.target.value.length > 0 ? '' : this.state.categoryError
         });
         break;
       case 'condition':
-      this.setState({
-        conditionInput: event.target.value,
-        conditionError: event.target.value.length > 0 ? '' : this.state.conditionError
-      });
+        this.setState({
+          conditionInput: event.target.value,
+          conditionError:
+            event.target.value.length > 0 ? '' : this.state.conditionError
+        });
         break;
       case 'fileUpload':
         this.handleImageUpload(event);
@@ -204,9 +206,6 @@ class ItemNew extends Component {
     return (
       <div className="item-new-container">
         <div className="item-new-photo">
-          <Link to={'/'}>
-            <Button label="Back" />
-          </Link>
           <div style={styles} className="item-new-photo-img" />
 
           <div id="item-new-photo-upload">
@@ -223,7 +222,6 @@ class ItemNew extends Component {
           {this.props.user.error && (
             <div>Please Try Again With Required Fields</div>
           )}
-          <div className="header-button" />
           <div className="item-new-details-input">
             <label htmlFor="title">Title: </label>
             <input
@@ -345,12 +343,18 @@ class ItemNew extends Component {
               onChange={this.handleInputChange}
             />
           </div>
-          <AddNewButton
-            className="item-new-submit-button"
-            label="SUBMIT"
-            disable={!isEnabled}
-            clickHandler={this.addNewCard}
-          />
+
+          <div className="item-new-buttons">
+            <AddNewButton
+              className="item-new-submit-button"
+              label="SUBMIT"
+              disable={!isEnabled}
+              clickHandler={this.addNewCard}
+            />
+            <Link to={'/'}>
+              <Button label="Back" />
+            </Link>
+          </div>
         </div>
       </div>
     );

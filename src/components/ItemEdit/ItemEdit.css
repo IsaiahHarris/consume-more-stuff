@@ -14,7 +14,7 @@
 
 .item-edit-side {
   display: flex;
-  align-items:center ;
+  align-items: center;
   flex-direction: column;
 }
 
@@ -85,24 +85,29 @@
   width: 100%;
 }
 
-.button-container{
+.item-edit-buttons {
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
+  align-items: center;
   height: 100px;
+  padding: 15px;
 }
 
 .title-error,
 .item-status-error {
- animation: fadeIn 1s;
- color:red;
+  animation: fadeIn 1s;
+  color: red;
 }
 
-@keyframes fadeIn{
-  from{
+a {
+  width: fit-content;
+}
+
+@keyframes fadeIn {
+  from {
     opacity: 0;
   }
-  to{
+  to {
     opacity: 1;
   }
 }

@@ -8,10 +8,17 @@
   border-bottom: 1px solid #000;
 }
 
+.header-auth-options * {
+  font-size: 1.5rem;
+  margin-right: 15px;
+}
+
 .logo {
   height: 50px;
   min-width: 50px;
+  margin-left: 15px;
 }
+
 .welcome-user {
   font-size: 15px;
   white-space: nowrap;

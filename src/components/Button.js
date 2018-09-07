@@ -2,10 +2,10 @@ import React from 'react';
 
 let styles = {
   cursor: 'pointer',
-  fontSize: '18px',
-  padding: '5px',
-  width: '100px',
-  border: '1px solid black'
+  fontSize: '1.5rem',
+  padding: '15px',
+  border: 0,
+  backgroundColor: 'transparent'
 };
 
 const Button = props => {
