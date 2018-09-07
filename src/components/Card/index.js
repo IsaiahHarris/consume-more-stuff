@@ -1,20 +1,17 @@
 import React from 'react';
-import './Card.css';
-import { loadCard } from '../../actions';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-class Card extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
+import './Card.css';
+import { loadCard } from '../../actions';
+
+class Card extends React.Component {
   // componentDidMount() {
   //   this.props.loadCard(2)
   //   console.log('this.props.after', this.props);
   // }
 
   render() {
-
     const styles = {
       backgroundImage: 'url(' + this.props.photo + ')',
       backgroundSize: 'contain',
@@ -31,7 +28,8 @@ class Card extends React.Component {
           <div style={styles} className="photo" />
           <Link
             to={{
-              pathname: `/items/${this.props.id}`, state: {
+              pathname: `/items/${this.props.id}`,
+              state: {
                 title: this.props.title,
                 photo: this.props.photo,
                 price: this.props.price,
@@ -41,14 +39,12 @@ class Card extends React.Component {
                 details: this.props.details,
                 seller: this.props.seller,
                 category: this.props.category,
-                status: this.props.status,
+                status: this.props.status
               }
             }}
             id={this.props.id}
           >
-            <div className="card-title">
-              {this.props.title}
-            </div>
+            <div className="card-title">{this.props.title}</div>
             {/* {truncateText(this.props.title, 32) */}
             {/* } */}
           </Link>
@@ -76,8 +72,12 @@ class Card extends React.Component {
 const mapDispatchToProps = dispatch => {
   return {
     loadCard: card => {
-      dispatch(loadCard(card))
+      dispatch(loadCard(card));
     }
-  }
-}
-export default connect(null, mapDispatchToProps)(Card);
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Card);
