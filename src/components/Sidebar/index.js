@@ -37,6 +37,9 @@ class Sidebar extends Component {
           <div className="Sidebar-auth-display">
             <div className="Sidebar-auth-display-options">Messages</div>
             <div className="Sidebar-auth-display-options">Settings</div>
+            <Link to={"/inventory"}>
+              <span>Inventory</span>
+            </Link>
             <Link to={"/items/new"}>
               <Button label="ADD" />
             </Link>
