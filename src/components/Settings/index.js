@@ -70,7 +70,7 @@ class Settings extends React.Component {
         <div className="settings-container">
           <div className="header">
             {this.props.user.username}
-            's profile
+            's Settings
           </div>
           <div className="password-setting-container">
             <div className="password-container">
