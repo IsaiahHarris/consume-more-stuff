@@ -15,7 +15,7 @@ class Settings extends React.Component {
 
     this.editThisPassword = this.editThisPassword.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
-
+    this.validation = this.validation.bind(this);
   }
 
   handleInputChange(event) {
@@ -39,45 +39,77 @@ class Settings extends React.Component {
     this.setState({
       oldPassInput: '',
       newPassInput: '',
-      message: 'password changed!, please login again'
+      message: 'password changed!, please login again',
+      oldPassError: '',
+      newPassError: ''
     });
   }
 
+  validation(event) {
+    if (event.target.name === 'oldPass' && !this.state.oldPassInput) {
+      let oldPassError = 'Field Is Required';
+      this.setState({
+        oldPassError: oldPassError
+      });
+    }
+
+    if (event.target.name === 'newPass' && !this.state.newPassInput) {
+      let newPassError = 'Field Is Required';
+      this.setState({
+        newPassError: newPassError
+      });
+    }
+  }
+
   render() {
+    const { oldPassInput, newPassInput } = this.state;
+    let isEnabled = oldPassInput.length > 0 && newPassInput.length > 0;
+
     return (
       <div className="main-settings-container">
-      <div className="settings-container">
-      
-        <div className="header">
-          {this.props.user.username}
-          's profile
-        </div>
-        <div className="password-setting-container">
-          <div className="password-container">
-            <label htmlFor="oldPass">Current Password: </label>
-            <input
-              type="password"
-              name="oldPass"
-              id="oldPass"
-              value={this.state.oldPassInput}
-              onChange={this.handleInputChange}
-              className="settings-input"
-            />
+        <div className="settings-container">
+          <div className="header">
+            {this.props.user.username}
+            's profile
           </div>
-          <div className="password-container">
-            <label htmlFor="newPass">New Password: </label>
-            <input
-              type="password"
-              name="newPass"
-              id="newPass"
-              value={this.state.newPassInput}
-              onChange={this.handleInputChange}
-              className="settings-input"
-            />
+          <div className="password-setting-container">
+            <div className="password-container">
+              <label htmlFor="oldPass">Current Password: </label>
+              <input
+                type="password"
+                name="oldPass"
+                id="oldPass"
+                value={this.state.oldPassInput}
+                onChange={this.handleInputChange}
+                className="settings-input"
+                onBlur={this.validation}
+              />
+              {!isEnabled && this.state.oldPassError ? (
+                <div className="settings-error">{this.state.oldPassError}</div>
+              ) : (
+                ''
+              )}
+            </div>
+            <div className="password-container">
+              <label htmlFor="newPass">New Password: </label>
+              <input
+                type="password"
+                name="newPass"
+                id="newPass"
+                value={this.state.newPassInput}
+                onChange={this.handleInputChange}
+                className="settings-input"
+                onBlur={this.validation}
+              />
+              {!isEnabled && this.state.newPassError ? (
+                <div className="settings-error">{this.state.newPassError}</div>
+              ) : (
+                ''
+              )}
+            </div>
           </div>
-        </div>
-        <button onClick={this.editThisPassword}> Change Password </button>
-        {this.state.message}
+          <button disabled={!isEnabled} onClick={this.editThisPassword}> Change Password </button>
+          {this.state.message}
         </div>
       </div>
     );
