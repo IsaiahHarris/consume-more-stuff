@@ -15,32 +15,41 @@ class Login extends Component {
       usernameError: ''
     };
 
-    this.inputChange = this.inputChange.bind(this);
-    this.loginHandler = this.loginHandler.bind(this);
-    this.validation = this.validation.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
+    this.validateInputs = this.validateInputs.bind(this);
   }
 
-  inputChange(event) {
+  handleInputChange(event) {
     // tracks login form input
     switch (event.target.name) {
       case 'username':
-        this.setState({ username: event.target.value });
+        this.setState({
+          username: event.target.value,
+          usernameError: !this.state.username ? '' : this.state.usernameError
+        });
         break;
       case 'password':
-        this.setState({ password: event.target.value });
+        this.setState({
+          password: event.target.value,
+          passwordError: !this.state.password ? '' : this.state.passwordError
+        });
         break;
       default:
         break;
     }
   }
 
-  loginHandler() {
+  handleLogin() {
     const user = {
       username: this.state.username,
       password: this.state.password
     };
+
     console.log('this.state', this.state);
+
     this.props.loginUser(user, this.props.history);
+
     this.setState({
       username: '',
       password: '',
@@ -49,7 +58,7 @@ class Login extends Component {
     });
   }
 
-  validation(event) {
+  validateInputs(event) {
     if (event.target.name === 'username' && !this.state.username) {
       let usernameError = 'Username Is Required';
       this.setState({
@@ -66,19 +75,23 @@ class Login extends Component {
   }
 
   render() {
-
-    const { password, username } = this.state;
+    const { username, password } = this.state;
     let isEnabled = username.length > 0 && password.length > 0;
+
     return (
       <div className="login-container">
-        {this.props.loginError.error && <div className="error-message-login">Wrong Username Or Password</div>}
+        {this.props.loginError.error && (
+          <div className="error-message-login">Invalid Credentials</div>
+        )}
+
         <h1>Login Page</h1>
+
         <input
           type="text"
           name="username"
           placeholder={this.state.username}
-          onChange={this.inputChange}
-          onBlur={this.validation}
+          onChange={this.handleInputChange}
+          onBlur={this.validateInputs}
           value={this.state.username}
         />
         {!isEnabled && this.state.usernameError ? (
@@ -86,12 +99,13 @@ class Login extends Component {
         ) : (
           ''
         )}
+
         <input
-          type='password'
-          name='password'
+          type="password"
+          name="password"
           placeholder={this.state.password}
-          onChange={this.inputChange}
-          onBlur={this.validation}
+          onChange={this.handleInputChange}
+          onBlur={this.validateInputs}
           value={this.state.password}
         />
         {!isEnabled && this.state.passwordError ? (
@@ -99,9 +113,10 @@ class Login extends Component {
         ) : (
           ''
         )}
+
         <button
           className="btn"
-          onClick={this.loginHandler}
+          onClick={this.handleLogin}
           disabled={!isEnabled}
         >
           Login
@@ -121,7 +136,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   return {
-    loginError: state.usersList,
+    loginError: state.usersList
   };
 };
 
