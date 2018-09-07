@@ -7,29 +7,22 @@ class UserHomepage extends Component {
   componentDidMount() {
     console.log('UserHomepage user: ', this.props.user);
     this.props.loadCardsByUser(this.props.user.id);
-    // this.props.loadCardsByPublished();
-    // this.props.loadCardsBySold();
   }
 
   render() {
-    const publishCards = filterByUserId(
-      this.props.publishCards,
-      this.props.user.id
-    );
-    const soldCards = filterByUserId(this.props.soldCards, this.props.user.id);
-
     console.log('UserHomepage userCards:', this.props.userCards);
+    const cards = this.props.userCards;
 
     return (
       <div className="UserHomepage">
         <h1>User Home</h1>
         <div className="cards-published">
           <h3>Published</h3>
-          <CardsList userCards={publishCards} />
+          <CardsList userCards={cards} />
         </div>
         <div className="cards-sold">
           <h3>Sold</h3>
-          <CardsList userCards={soldCards} />
+          {/* <CardsList userCards={soldCards} /> */}
         </div>
       </div>
     );
@@ -46,10 +39,8 @@ function filterByUserId(cards, userId) {
 
 const mapStateToProps = state => {
   return {
+    user: state.usersList,
     userCards: state.userCardsList,
-    soldCards: state.soldList,
-    publishCards: state.publishList,
-    user: state.usersList
   };
 };
 
@@ -58,12 +49,6 @@ const mapDispatchToProps = dispatch => {
     loadCardsByUser: userId => {
       dispatch(loadCardsByUser(userId));
     },
-    // loadCardsByPublished: userId => {
-    //   dispatch(loadCardsByPublished(userId));
-    // },
-    // loadCardsBySold: userId => {
-    //   dispatch(loadCardsBySold(userId));
-    // }
   };
 };
 
