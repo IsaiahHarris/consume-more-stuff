@@ -54,7 +54,7 @@ class Register extends Component {
 
   validateInputs(event) {
     if (event.target.name === 'username' && !this.state.username) {
-      let usernameError = 'Username Is Required To Register';
+      let usernameError = 'Username Required';
       this.setState({
         usernameError: usernameError
       });
@@ -64,12 +64,12 @@ class Register extends Component {
       event.target.name === 'email' &&
       (!this.state.email || !this.state.email.includes('@'))
     ) {
-      let emailError = 'Valid Email Is Required To Register';
+      let emailError = 'Valid Email Address Required';
       this.setState({ emailError: emailError });
     }
 
     if (event.target.name === 'password' && !this.state.password) {
-      let passwordError = 'Password Is Required To Register';
+      let passwordError = 'Password Required';
       this.setState({
         passwordError: passwordError
       });
