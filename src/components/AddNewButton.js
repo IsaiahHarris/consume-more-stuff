@@ -13,7 +13,9 @@ const AddCardButton = props => {
     <button
       style={styles}
       onClick={props.clickHandler}
+      disabled ={props.disable}
     >{props.label || 'Click Me'}
+      
     </button>
   )
 }

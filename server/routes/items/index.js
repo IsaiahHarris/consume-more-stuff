@@ -1,115 +1,134 @@
-// Main imports
+
 const express = require('express');
 const router = express.Router();
+
 const Item = require('../../db/models/Item');
-const itemId = require('./ItemById');
-// Models I need to import for withRelatd to work
+const itemById = require('./itemById');
+const { uploadToS3 } = require('./../../../util');
+
+// Required for withRelated to work:
 const User = require('../../db/models/User');
 const Category = require('../../db/models/Category');
 const Condition = require('../../db/models/Condition');
 const ItemStatus = require('../../db/models/ItemStatus');
 
-// items root route
+// Items Root Route:
 router.route('/')
-  .get((req, res) => { // Fetches all the items for homepage
-    console.log('req.user', req.user);
-    return Item.query(function (qb) {
-      qb.orderBy('created_at', 'DESC')
+  .get((req, res) => {
+    // Fetches all items for the home page:
+    return Item.query(function(qb) {
+      qb.orderBy('created_at', 'DESC');
     })
       .where({ deleted_at: null })
-      .fetchAll({ withRelated: ['seller', 'category', 'condition', 'itemStatus'] })
+      .fetchAll({
+        withRelated: ['seller', 'category', 'condition', 'itemStatus']
+      })
       .then(items => {
         return res.json(items);
       })
       .catch(err => {
-        return res.json({ 'error': err.message })
+        return res.json({ error: err.message });
       });
   })
-  .post((req, res) => { // Posts one new item
-    console.log('req.user', req.user);
-    //--Primary Keys--// 
-    const title = req.body.title.trim();
-
-    const price = req.body.price ? req.body.price.trim() : req.body.price;
-    const manufacturer = req.body.manufacturer ? req.body.manufacturer.trim() : req.body.manufacturer;
-    const model = req.body.model ? req.body.model.trim() : req.body.model;
-    const dimensions = req.body.dimensions ? req.body.dimensions.trim() : req.body.dimensions;
-    const details = req.body.details ? req.body.details.trim() : req.body.details;
-    const image_url = req.body.image_url ? req.body.image_url.trim() : req.body.image_url;
-    //--Foreign Keys--//
-    const seller_id = parseInt(req.body.seller_id);
-    const category_id = parseInt(req.body.category_id);
-    const item_status_id = parseInt(req.body.item_status_id);
-    const condition_id = parseInt(req.body.condition_id);
-
-    // No empty strings for db
+  .post((req, res) => {
     const itemInput = {
-      title: title ? title : null,
-      price: price ? price : null,
-      manufacturer: manufacturer ? manufacturer : null,
-      model: model ? model : null,
-      dimensions: dimensions ? dimensions : null,
-      details: details ? details : null,
-      image_url: image_url ? image_url : null,
-      seller_id,
-      category_id,
-      item_status_id,
-      condition_id,
+      title: req.body.title.trim(),
+      price: req.body.price ? req.body.price.trim() : null,
+      manufacturer: req.body.manufacturer ? req.body.manufacturer.trim() : null,
+      model: req.body.model ? req.body.model.trim() : null,
+      dimensions: req.body.dimensions ? req.body.dimensions.trim() : null,
+      details: req.body.details ? req.body.details.trim() : null,
+      image_url: req.body.image_url ? req.body.image_url.trim() : null,
+      seller_id: Number(req.body.seller_id),
+      category_id: Number(req.body.category_id),
+      item_status_id: Number(req.body.item_status_id),
+      condition_id: Number(req.body.condition_id)
+    };
+
+    // Used to store item model entered into DB:
+    let newItem;
+
+    // Variables to be used if the new item includes an image:
+    let itemId;
+    let imageData;
+
+    if (req.files.file) {
+      imageData = req.files.file;
     }
 
-    // Save item to db with bookshelf
     return new Item()
       .save(itemInput)
       .then(response => {
-        return response.refresh({ withRelated: ['seller', 'category', 'condition', 'itemStatus'] })
+        newItem = response;
+
+        if (imageData) {
+          // Set itemId to ensure file is saved to unique AWS folder:
+          itemId = response.attributes.id;
+          return uploadToS3(itemId, imageData);
+        } else {
+          return null;
+        }
+      })
+      .then(response => {
+        if (response) {
+          const imageUrl = response.Location;
+          return newItem.save({ image_url: imageUrl }, { patch: true });
+        } else {
+          return newItem;
+        }
+      })
+      .then(response => {
+        return response.refresh({
+          withRelated: ['seller', 'category', 'condition', 'itemStatus']
+        });
       })
       .then(item => {
         return res.json(item);
       })
       .catch(err => {
-        return res.json({ 'error': err.message })
+        return res.json({ error: err.message });
       });
-  })
+  });
 
-// Items search route, let George know if you need search route from category
+// Items Search Route, let George know if you need search route from category
 router.route('/search/:term')
-  .get((req, res) => { // Fetches all items in home based on a search term
+  .get((req, res) => {
+    // Fetches all items in home based on a search term:
     const term = `%${req.params.term}%`;
 
-    return Item
-      .query(qb => {
-        qb.whereRaw(`LOWER(title) LIKE ?`, [term])
-          .andWhere({ deleted_at: null });
-      })
+    return Item.query(qb => {
+      qb.whereRaw(`LOWER(title) LIKE ?`, [term]).andWhere({ deleted_at: null });
+    })
       .fetchAll()
       .then(items => {
         return res.json(items);
       })
       .catch(err => {
-        return res.json({ 'error': err.message })
+        return res.json({ error: err.message });
       });
-  })
+  });
 
-// Items category route
+// Items Category Route:
 router.route('/category/:categoryId')
-  .get((req, res) => { // Fetch all items for different categories
+  .get((req, res) => {
+    // Fetch all items for different categories:
     const category_id = req.params.categoryId;
-    console.log('category running: ', category_id);
-    return Item
-      .query(qb => {
-        qb.where({ category_id })
-          .andWhere({ deleted_at: null });
+    console.log('Category Running:', category_id);
+    return Item.query(qb => {
+      qb.where({ category_id }).andWhere({ deleted_at: null });
+    })
+      .fetchAll({
+        withRelated: ['seller', 'category', 'condition', 'itemStatus']
       })
-      .fetchAll({ withRelated: ['seller', 'category', 'condition', 'itemStatus'] })
       .then(items => {
         return res.json(items);
       })
       .catch(err => {
-        return res.json({ 'error': err.message })
+        return res.json({ error: err.message });
       });
-  })
+  });
 
-//-- Specfic Item Routes at ItemById.js --//
-router.use('/', itemId);
+// Specfic Item Routes located at ItemById.js
+router.use('/', itemById);
 
 module.exports = router;

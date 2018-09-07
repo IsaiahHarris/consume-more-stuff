@@ -36,9 +36,17 @@ class MainContainer extends Component {
         <Switch>
           {/* NOTE: Change "Body" to something more descriptive, e.g., Home Page */}
 
+          <Route exact path="/" component={Body} />
+          <Route exact path="/items/:id/edit" component={ItemEdit} />
+          <Route exact path="/items/new" component={ItemNew} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
           <Route
-            exact path="/"
-            component={Body}
+            exact
+            path="/items/category/:categoryId"
+            render={props => (
+              <CardsByCategory key={props.match.params.categoryId} {...props} />
+            )}
           />
           <Route
             exact path="/inventory"
@@ -78,8 +86,8 @@ class MainContainer extends Component {
 const mapStateToProps = state => {
   return {
     user: state.usersList
-  }
-}
+  };
+};
 
 export default withRouter(connect(mapStateToProps)(MainContainer));
 // export default connect(mapStateToProps, null)(MainContainer);
