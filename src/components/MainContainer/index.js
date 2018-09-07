@@ -31,41 +31,22 @@ class MainContainer extends Component {
 
   render() {
     this.checkLoggedIn();
-    return (
-      <div className="MainContainer">
+    return <div className="MainContainer">
         <Sidebar />
         <Switch>
           {/* NOTE: Change "Body" to something more descriptive, e.g., Home Page */}
 
           <Route exact path="/" component={Body} />
-          <Route exact path="/items/:id/edit" component={ItemEdit} />
           <Route exact path="/items/new" component={ItemNew} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
-          <Route
-            exact
-            path="/items/category/:categoryId"
-            render={props => (
-              <CardsByCategory key={props.match.params.categoryId} {...props} />
-            )}
-          />
-          <Route exact path="/inventory" component={UserHomepage} />
           <Route exact path="/items/:id/edit" component={ItemEdit} />
-          <Route exact path="/items/new" component={ItemNew} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/user/settings" component={Settings} />
-          <Route
-            exact
-            path="/items/category/:categoryId"
-            render={props => (
-              <CardsByCategory key={props.match.params.categoryId} {...props} />
-            )}
-          />
           <Route exact path="/items/:id" component={ItemDetail} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/items/category/:categoryId" render={props => <CardsByCategory key={props.match.params.categoryId} {...props} />} />
+          <Route exact path="/inventory" component={UserHomepage} />
+          <Route exact path="/user/settings" component={Settings} />
         </Switch>
-      </div>
-    );
+      </div>;
   }
 }
 

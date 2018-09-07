@@ -35,7 +35,6 @@ router.put('/settings', (req, res) => {
 });
   // This route fetches "published" items
   router.get('/published', (req, res) => {
-      console.log('published route');
     return Item.where({ item_status_id: 1 })
       .fetchAll({
         withRelated: ['seller', 'category', 'condition', 'itemStatus']

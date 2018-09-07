@@ -8,11 +8,6 @@ class Card extends React.Component {
     super(props);
   }
 
-  // componentDidMount() {
-  //   this.props.loadCard(2)
-  //   console.log('this.props.after', this.props);
-  // }
-
   render() {
 
     const styles = {
@@ -49,8 +44,6 @@ class Card extends React.Component {
             <div className="card-title">
               {this.props.title}
             </div>
-            {/* {truncateText(this.props.title, 32) */}
-            {/* } */}
           </Link>
           <div className="price">{this.props.price}</div>
         </div>
@@ -58,20 +51,6 @@ class Card extends React.Component {
     );
   }
 }
-
-// function truncateText(str, maxLength) {
-//   // Source (Stack Overflow): https://goo.gl/BDKhqs
-//   return str.length <= maxLength
-//     ? str
-//     : str.substr(0, str.lastIndexOf(' ', maxLength)) + ' \u2026';
-// }
-
-// const mapStateToProps = state => {
-//   console.log('state', state);
-//   return {
-//     card: state.cardsList,
-//   }
-// }
 
 const mapDispatchToProps = dispatch => {
   return {

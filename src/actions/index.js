@@ -90,8 +90,6 @@ export const editCard = data => {
     formData.append(key, data[key]);
   }
 
-  console.log('FORM DATA', formData);
-
   const config = {
     headers: {
       'content-type': 'multipart/form-data'
@@ -161,14 +159,12 @@ export const loginUser = (user, history) => {
     return axios
       .post('/api/login', user)
       .then(response => {
-        console.log('response.data', response.data);
         window.localStorage.setItem('user', response.data.username);
         window.localStorage.setItem('userId', response.data.id);
         dispatch({
           type: LOGIN,
           user: response.data
         });
-        console.log('response.data', response.data);
         history.push('/inventory');
       })
       .catch(err => {
@@ -185,7 +181,6 @@ export const logoutUser = () => {
     return axios
       .get('/api/logout')
       .then(response => {
-        console.log('Logout success!', response);
         
         dispatch({
           type: LOGOUT
@@ -204,7 +199,6 @@ export const registerUser = (user, history) => {
     return axios
       .post('/api/register', user)
       .then(response => {
-        console.log('User registered! ', response);
         history.push('/login');
       })
       .catch(err => {

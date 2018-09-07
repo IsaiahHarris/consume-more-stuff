@@ -41,6 +41,10 @@ class ItemDetail extends React.Component {
         backgroundImage: 'url( ' + photo + ')'
       };
       const conditionName = card && card.condition ? card.condition.name : null;
+
+      const sellerId = card && card.seller_id ? card.seller_id : null;
+      const userId = parseInt(this.props.user.id);
+
       return (
         <div className="item-container">
           <div className="card-title-detail">
@@ -82,13 +86,22 @@ class ItemDetail extends React.Component {
 
           <div className="item-buttons">
             <Button label="Reply" />
-            <Link to={`/items/${this.props.match.params.id}/edit`}>
-              <Button label="Edit" />
-            </Link>
-            <Button
-              label="Delete"
-              clickHandler={() => {this.props.deleteCard(this.props.match.params.id)}}
-            />
+
+            {userId === sellerId && (
+              <Link to={`/items/${this.props.match.params.id}/edit`}>
+                <Button label="Edit" />
+              </Link>
+            )}
+
+            {userId === sellerId && (
+              <Button
+                label="Delete"
+                clickHandler={() => {
+                  this.props.deleteCard(this.props.match.params.id);
+                }}
+              />
+            )}
+
             <Link to={'/'}>
               <Button label="Back" />
             </Link>
@@ -101,7 +114,8 @@ class ItemDetail extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    card: state.cardsList
+    card: state.cardsList,
+    user: state.usersList
   };
 };
 
