@@ -1,42 +1,26 @@
 import axios from 'axios';
 
-export const LOAD_CARDS = 'LOAD_CARDS';
-export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
-export const LOAD_CARD = 'LOAD_CARD';
-export const LOGIN = 'LOGIN';
-export const LOGOUT = 'LOGOUT';
-export const REGISTER = 'REGISTER';
 export const ADD_CARD = 'ADD_CARD';
 export const EDIT_CARD = 'EDIT_CARD';
 export const DELETE_CARD = 'DELETE_CARD';
-export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
+
+export const LOAD_CARD = 'LOAD_CARD';
+export const LOAD_CARDS = 'LOAD_CARDS';
 export const LOAD_CARDS_BY_CATEGORY = 'LOAD_CARDS_BY_CATEGORY';
-export const EDIT_PASSWORD = 'EDIT_PASSWORD';
 export const LOAD_CARDS_BY_PUBLISHED = 'LOAD_CARDS_BY_PUBLISHED';
 export const LOAD_CARDS_BY_SOLD = 'LOAD_CARDS_BY_SOLD';
+
+export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
+export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
+export const LOAD_ITEM_STATUSES = 'LOAD_ITEM_STATUSES';
+
+export const REGISTER = 'REGISTER';
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
+export const EDIT_PASSWORD = 'EDIT_PASSWORD';
 
-export const loadConditions = () => {
-  return dispatch => {
-    return axios.get('/api/conditions').then(response => {
-      dispatch({
-        type: LOAD_CONDITIONS,
-        conditions: response.data
-      });
-    });
-  };
-};
-
-export const loadCards = () => {
-  return dispatch => {
-    return axios.get('/api/items').then(response => {
-      dispatch({
-        type: LOAD_CARDS,
-        cards: response.data
-      });
-    });
-  };
-};
+// -------------------------=[   CARDS (ITEMS)   ]=------------------------- //
 
 export const addCard = data => {
   const imageData = data['image_data'];
@@ -58,8 +42,7 @@ export const addCard = data => {
   };
 
   return dispatch => {
-    return axios
-      .post('/api/items', formData, config)
+    return axios.post('/api/items', formData, config)
       .then(response => {
         dispatch({
           type: ADD_CARD,
@@ -90,8 +73,6 @@ export const editCard = data => {
     formData.append(key, data[key]);
   }
 
-  console.log('FORM DATA', formData);
-
   const config = {
     headers: {
       'content-type': 'multipart/form-data'
@@ -99,8 +80,7 @@ export const editCard = data => {
   };
 
   return dispatch => {
-    return axios
-      .put(`/api/items/${data.id}`, formData, config)
+    return axios.put(`/api/items/${data.id}`, formData, config)
       .then(response => {
         dispatch({
           type: EDIT_CARD,
@@ -123,12 +103,23 @@ export const deleteCard = cardId => {
   };
 };
 
-export const loadCategories = () => {
+export const loadCard = card => {
   return dispatch => {
-    return axios.get('/api/categories').then(response => {
+    return axios.get(`/api/items/${card}`).then(response => {
       dispatch({
-        type: LOAD_CATEGORIES,
-        categories: response.data
+        type: LOAD_CARD,
+        card: response.data
+      });
+    });
+  };
+};
+
+export const loadCards = () => {
+  return dispatch => {
+    return axios.get('/api/items').then(response => {
+      dispatch({
+        type: LOAD_CARDS,
+        cards: response.data
       });
     });
   };
@@ -145,64 +136,68 @@ export const loadCardsByCategory = category => {
   };
 };
 
-export const loadCard = card => {
+export const loadCardsBySold = () => {
   return dispatch => {
-    return axios.get(`/api/items/${card}`).then(response => {
+    return axios.get(`/api/user/sold`).then(response => {
       dispatch({
-        type: LOAD_CARD,
-        card: response.data
+        type: LOAD_CARDS_BY_SOLD,
+        soldCards: response.data
       });
     });
   };
 };
 
-export const loginUser = (user, history) => {
+export const loadCardsByPublished = () => {
   return dispatch => {
-    return axios
-      .post('/api/login', user)
-      .then(response => {
-        console.log('response.data', response.data);
-        window.localStorage.setItem('user', response.data.username);
-        window.localStorage.setItem('userId', response.data.id);
-        dispatch({
-          type: LOGIN,
-          user: response.data
-        });
-        console.log('response.data', response.data);
-        history.push('/inventory');
-      })
-      .catch(err => {
-        dispatch({
-          type: LOGIN_ERROR,
-          loginError: 'true'
-        });
+    return axios.get(`/api/user/published`).then(response => {
+      dispatch({
+        type: LOAD_CARDS_BY_PUBLISHED,
+        publishCards: response.data
       });
+    });
   };
 };
 
-export const logoutUser = () => {
+// ---------------------------=[   META-DATA   ]=--------------------------- //
+
+export const loadConditions = () => {
   return dispatch => {
-    return axios
-      .get('/api/logout')
-      .then(response => {
-        console.log('Logout success!', response);
-        
-        dispatch({
-          type: LOGOUT
-        })
-
-        window.localStorage.removeItem('user');
-        window.localStorage.removeItem('userId');
-        window.location.href = '/';
-      })
-      .catch(err => console.log('Logout Failed! ', err.response));
+    return axios.get('/api/conditions').then(response => {
+      dispatch({
+        type: LOAD_CONDITIONS,
+        conditions: response.data
+      });
+    });
   };
 };
+
+export const loadCategories = () => {
+  return dispatch => {
+    return axios.get('/api/categories').then(response => {
+      dispatch({
+        type: LOAD_CATEGORIES,
+        categories: response.data
+      });
+    });
+  };
+};
+
+export const loadItemStatuses = () => {
+  return dispatch => {
+    return axios.get('/api/itemStatuses').then(response => {
+      dispatch({
+        type: LOAD_ITEM_STATUSES,
+        itemStatuses: response.data
+      });
+    });
+  };
+};
+
+// -----------------------------=[   AUTH   ]=----------------------------- //
 
 export const registerUser = (user, history) => {
   return dispatch => {
-    return axios
-      .post('/api/register', user)
+    return axios.post('/api/register', user)
       .then(response => {
         console.log('User registered! ', response);
         history.push('/login');
@@ -216,20 +211,61 @@ export const registerUser = (user, history) => {
   };
 };
 
+export const loginUser = (user, history) => {
+  return dispatch => {
+    return axios.post('/api/login', user)
+      .then(response => {
+        console.log('response.data', response.data);
+
+        window.localStorage.setItem('user', response.data.username);
+        window.localStorage.setItem('userId', response.data.id);
+        dispatch({
+          type: LOGIN,
+          user: response.data
+        });
+        console.log('response.data', response.data);
+
+        history.push('/inventory');
+      })
+      .catch(err => {
+        dispatch({
+          type: LOGIN_ERROR,
+          loginError: 'true'
+        });
+      });
+  };
+};
+
+export const logoutUser = () => {
+  return dispatch => {
+    return axios.get('/api/logout')
+      .then(response => {
+        console.log('Logout success!', response);
+
+        dispatch({
+          type: LOGOUT
+        });
+
+        window.localStorage.removeItem('user');
+        window.localStorage.removeItem('userId');
+        window.location.href = '/';
+      })
+      .catch(err => console.log('Logout Failed! ', err.response));
+  };
+};
+
 export const editPassword = password => {
   return dispatch => {
-    return axios
-      .put(`/api/user/settings`, password)
+    return axios.put(`/api/user/settings`, password)
       .then(response => {
         dispatch({
           type: EDIT_PASSWORD,
           editPassword: response.data
         });
       })
-      .then(()=>{
-        return axios
-        .get(`/api/logout`)
-      })
+      .then(() => {
+        return axios.get(`/api/logout`);
+      });
   };
 };
 
@@ -244,29 +280,5 @@ export const checkUser = () => {
         }
       });
     }
-  }
-}
-
-export const loadCardsBySold = () => {
-  return dispatch => {
-    return axios.get(`/api/user/sold`)
-      .then(response => {
-        dispatch({
-          type: LOAD_CARDS_BY_SOLD,
-          soldCards: response.data
-        })
-      })
-  }
-}
-
-export const loadCardsByPublished = () => {
-  return dispatch => {
-    return axios.get(`/api/user/published`)
-      .then(response => {
-        dispatch({
-          type: LOAD_CARDS_BY_PUBLISHED,
-          publishCards: response.data
-        })
-      })
-  }
-}
+  };
+};
