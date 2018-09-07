@@ -92,6 +92,10 @@
   height: 100px;
 }
 
+button:disabled {
+  background-color: #9fdf9f !important;
+}
+
 @media (min-width: 768px) {
   .item-new-container {
     display: flex;

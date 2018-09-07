@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import './ItemNew.css';
+import Button from '../Button';
+import AddNewButton from '../AddNewButton';
 import {
   addCard,
   loadCategories,
   loadConditions,
   checkUser
 } from '../../actions';
-import './ItemNew.css';
-import Button from '../Button';
-import AddNewButton from '../AddNewButton';
-import { Link } from 'react-router-dom';
 
 class ItemNew extends Component {
   constructor(props) {
@@ -34,10 +35,10 @@ class ItemNew extends Component {
       conditionError: ''
     };
 
+    this.addNewCard = this.addNewCard.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
-    this.addNewCard = this.addNewCard.bind(this);
-    this.validation = this.validation.bind(this);
+    this.validateInputs = this.validateInputs.bind(this);
   }
 
   componentDidMount() {
@@ -49,7 +50,11 @@ class ItemNew extends Component {
   handleInputChange(event) {
     switch (event.target.id) {
       case 'title':
-        this.setState({ titleInput: event.target.value });
+        // Remove error message if user has entered a valid title:
+        this.setState({
+          titleInput: event.target.value,
+          titleError: event.target.value.length > 0 ? '' : this.state.titleError
+        });
         break;
       case 'price':
         this.setState({ priceInput: event.target.value });
@@ -76,10 +81,16 @@ class ItemNew extends Component {
         this.setState({ itemStatusInput: event.target.value });
         break;
       case 'category':
-        this.setState({ categoryInput: event.target.value });
+        this.setState({
+          categoryInput: event.target.value,
+          categoryError: event.target.value.length > 0 ? '' : this.state.categoryError
+        });
         break;
       case 'condition':
-        this.setState({ conditionInput: event.target.value });
+      this.setState({
+        conditionInput: event.target.value,
+        conditionError: event.target.value.length > 0 ? '' : this.state.conditionError
+      });
         break;
       case 'fileUpload':
         this.handleImageUpload(event);
@@ -115,20 +126,23 @@ class ItemNew extends Component {
   }
 
   addNewCard() {
-    const data = {};
-    data.title = this.state.titleInput;
-    data.price = this.state.priceInput;
-    data.manufacturer = this.state.manufacturerInput;
-    data.model = this.state.modelInput;
-    data.dimensions = this.state.dimensionsInput;
-    data.details = this.state.detailsInput;
-    data.image_data = this.state.imageUploadData;
-    data.image_url = this.state.imageUploadUrl;
-    data.category_id = this.state.categoryInput;
-    data.condition_id = this.state.conditionInput;
-    data.item_status_id = 1;
-    data.seller_id = this.props.user.id;
+    const data = {
+      title: this.state.titleInput,
+      price: this.state.priceInput,
+      manufacturer: this.state.manufacturerInput,
+      model: this.state.modelInput,
+      dimensions: this.state.dimensionsInput,
+      details: this.state.detailsInput,
+      image_data: this.state.imageUploadData,
+      image_url: this.state.imageUploadUrl,
+      category_id: this.state.categoryInput,
+      condition_id: this.state.conditionInput,
+      seller_id: this.props.user.id,
+      item_status_id: 1
+    };
+
     this.props.addCard(data);
+
     this.setState({
       titleInput: '',
       priceInput: '',
@@ -149,7 +163,7 @@ class ItemNew extends Component {
     });
   }
 
-  validation(event) {
+  validateInputs(event) {
     if (event.target.name === 'title' && !this.state.titleInput) {
       let titleError = 'Title Is Required To Add An Item';
       this.setState({
@@ -174,10 +188,12 @@ class ItemNew extends Component {
 
   render() {
     const { titleInput, conditionInput, categoryInput } = this.state;
+
     let isEnabled =
       titleInput.length > 0 &&
       conditionInput.length > 0 &&
       categoryInput.length > 0;
+
     const styles = {
       backgroundImage: 'url("' + this.state.imageUploadUrl + '")',
       backgroundSize: 'contain',
@@ -217,7 +233,7 @@ class ItemNew extends Component {
               value={this.state.titleInput}
               onChange={this.handleInputChange}
               placeholder="Title (required)"
-              onBlur={this.validation}
+              onBlur={this.validateInputs}
             />
             {!isEnabled && this.state.titleError ? (
               <div className="title-error">{this.state.titleError}</div>
@@ -233,11 +249,15 @@ class ItemNew extends Component {
               id="category"
               value={this.state.categoryInput}
               onChange={this.handleInputChange}
-              onBlur={this.validation}
+              onBlur={this.validateInputs}
             >
               <option value="">--Category (required)--</option>
-              {this.props.categories.map(category => {
-                return <option value={category.id}>{category.name}</option>;
+              {this.props.categories.map((category, index) => {
+                return (
+                  <option key={index} value={category.id}>
+                    {category.name}
+                  </option>
+                );
               })}
             </select>
             {!isEnabled && this.state.categoryError ? (
@@ -254,11 +274,15 @@ class ItemNew extends Component {
               id="condition"
               value={this.state.conditionInput}
               onChange={this.handleInputChange}
-              onBlur={this.validation}
+              onBlur={this.validateInputs}
             >
               <option value="">--Condition (required)--</option>
-              {this.props.conditions.map(condition => {
-                return <option value={condition.id}>{condition.name}</option>;
+              {this.props.conditions.map((condition, index) => {
+                return (
+                  <option key={index} value={condition.id}>
+                    {condition.name}
+                  </option>
+                );
               })}
             </select>
             {!isEnabled && this.state.conditionError ? (
@@ -322,6 +346,7 @@ class ItemNew extends Component {
             />
           </div>
           <AddNewButton
+            className="item-new-submit-button"
             label="SUBMIT"
             disable={!isEnabled}
             clickHandler={this.addNewCard}

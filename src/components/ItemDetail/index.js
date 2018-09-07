@@ -17,10 +17,6 @@ function switchCardVariable(card, location) {
 }
 
 class ItemDetail extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     this.props.loadCard(this.props.match.params.id);
   }
@@ -87,7 +83,9 @@ class ItemDetail extends React.Component {
             </Link>
             <Button
               label="Delete"
-              clickHandler={() => {this.props.deleteCard(this.props.match.params.id)}}
+              clickHandler={() => {
+                this.props.deleteCard(this.props.match.params.id);
+              }}
             />
             <Link to={'/'}>
               <Button label="Back" />
