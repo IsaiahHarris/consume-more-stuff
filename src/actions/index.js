@@ -139,7 +139,7 @@ export const loadCardsByCategory = category => {
 
 export const loadCardsByUser = userId => {
   return dispatch => {
-    return axios.get(`/api/user/${userId}/items`).then(response => {
+    return axios.get(`/api/user/inventory`).then(response => {
       dispatch({
         type: LOAD_CARDS_BY_USER,
         cardsByUser: response.data
