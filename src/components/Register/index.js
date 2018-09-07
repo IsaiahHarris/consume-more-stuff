@@ -58,7 +58,7 @@ class Register extends Component {
       event.target.name === 'email' &&
       (!this.state.email.includes('@') && !this.state.email)
     ) {
-      let emailError = 'Email Is Required To Register';
+      let emailError = 'Valid Email Is Required To Register';
       this.setState({ emailError: emailError });
     }
   }
@@ -82,13 +82,11 @@ class Register extends Component {
     return (
       <div>
         <div className="register-container">
-          <div className="error-message-container">
             {this.props.error.error && (
-              <div className="error-message">
+              <div className="error">
                 User already exists under that email or username
               </div>
             )}
-          </div>
 
           <h1>Register</h1>
           <input
