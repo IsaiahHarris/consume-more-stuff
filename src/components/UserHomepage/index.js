@@ -10,7 +10,6 @@ class UserHomepage extends Component {
   }
 
   render() {
-    console.log('this.props.user', this.props.user.id);
     const publishCards = filterByUserId(
       this.props.publishCards,
       this.props.user.id

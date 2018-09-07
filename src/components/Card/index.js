@@ -6,11 +6,6 @@ import './Card.css';
 import { loadCard } from '../../actions';
 
 class Card extends React.Component {
-  // componentDidMount() {
-  //   this.props.loadCard(2)
-  //   console.log('this.props.after', this.props);
-  // }
-
   render() {
     const styles = {
       backgroundImage: 'url(' + this.props.photo + ')',
@@ -54,20 +49,6 @@ class Card extends React.Component {
     );
   }
 }
-
-// function truncateText(str, maxLength) {
-//   // Source (Stack Overflow): https://goo.gl/BDKhqs
-//   return str.length <= maxLength
-//     ? str
-//     : str.substr(0, str.lastIndexOf(' ', maxLength)) + ' \u2026';
-// }
-
-// const mapStateToProps = state => {
-//   console.log('state', state);
-//   return {
-//     card: state.cardsList,
-//   }
-// }
 
 const mapDispatchToProps = dispatch => {
   return {
