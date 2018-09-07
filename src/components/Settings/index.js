@@ -69,8 +69,7 @@ class Settings extends React.Component {
       <div className="main-settings-container">
         <div className="settings-container">
           <div className="header">
-            {this.props.user.username}
-            's Settings
+            {this.props.user.username}'s Settings
           </div>
           <div className="password-setting-container">
             <div className="password-container">
@@ -108,7 +107,10 @@ class Settings extends React.Component {
               )}
             </div>
           </div>
-          <button disabled={!isEnabled} onClick={this.editThisPassword}> Change Password </button>
+          <button disabled={!isEnabled} onClick={this.editThisPassword}>
+            {' '}
+            Change Password{' '}
+          </button>
           {this.state.message}
         </div>
       </div>
