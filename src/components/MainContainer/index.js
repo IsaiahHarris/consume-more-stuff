@@ -22,7 +22,6 @@ class MainContainer extends Component {
   }
 
   checkLoggedIn() {
-    console.log('maincontainer user: ', this.props.user.username);
     if (this.props.user.username) {
       this.loggedIn = true;
       console.log('logged in is true');
