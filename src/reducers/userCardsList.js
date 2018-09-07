@@ -5,7 +5,7 @@ const initialState = [];
 const userCardsList = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_CARDS_BY_USER:
-      return [...action.cardsByUser];
+      return action.cardsByUser;
     default:
       return state;
   }
