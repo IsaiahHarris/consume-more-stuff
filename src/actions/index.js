@@ -19,6 +19,7 @@ export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const EDIT_PASSWORD = 'EDIT_PASSWORD';
+export const SAVE_REDIRECT = 'SAVE_REDIRECT';
 
 // -------------------------=[   CARDS (ITEMS)   ]=------------------------- //
 
@@ -195,7 +196,7 @@ export const loadItemStatuses = () => {
 
 // -----------------------------=[   AUTH   ]=----------------------------- //
 
-export const loginUser = (user, history, redirect) => {
+export const loginUser = (user, history) => {
   return dispatch => {
     return axios.post('/api/login', user)
       .then(response => {
@@ -205,6 +206,12 @@ export const loginUser = (user, history, redirect) => {
           type: LOGIN,
           user: response.data
         });
+      })
+      .then(()=>{
+        dispatch({
+          type: SAVE_REDIRECT,
+          referrer: true
+        })
       })
       .catch(err => {
         dispatch({

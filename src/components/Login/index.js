@@ -8,13 +8,12 @@ import './Login.css';
 class Login extends Component {
   constructor(props) {
     super(props);
-
+    console.log('props', props);
     this.state = {
       username: '',
       password: '',
       passwordError: '',
       usernameError: '',
-      redirectToReferrer: false
     };
 
     this.inputChange = this.inputChange.bind(this);
@@ -36,19 +35,19 @@ class Login extends Component {
     }
   }
 
-  loginHandler(redirect) {
-    console.log('redirect', redirect);
+  loginHandler() {
     const user = {
       username: this.state.username,
       password: this.state.password
     };
-    this.props.loginUser(user, this.props.history, redirect);
+
+    this.props.loginUser(user, this.props.history);
+
     this.setState({
       username: '',
       password: '',
       passwordError: '',
-      usernameError: '',
-      redirectToReferrer: true
+      usernameError: ''
     });
   }
 
@@ -69,17 +68,18 @@ class Login extends Component {
   }
 
   render() {
-    const { from } = this.props.location.state || { from: { pathname: '/' } };
-    const { password, username, redirectToReferrer } = this.state;
-
-    if(redirectToReferrer){
+    const from =  this.props.location.state ? this.props.location.state.from.pathname : '/';
+    const { password, username} = this.state;
+    const authen = this.props.loginError.referrer ? this.props.loginError.referrer : null
+    console.log('authen', authen);
+    if(authen === true){
       return (
         <Redirect to={from} />
       )
     }
-
     
     let isEnabled = username.length > 0 && password.length > 0;
+
     return (
       <div className="login-container">
         {this.props.loginError.error && (
@@ -115,8 +115,7 @@ class Login extends Component {
         <button
           className="btn"
           onClick={() => {
-             console.log('this.state.redirectToReferrer',this.state.redirectToReferrer );
-            this.loginHandler(this.state.redirectToReferrer);
+            this.loginHandler();
           }}
           disabled={!isEnabled}
         >

@@ -17,6 +17,10 @@
   white-space: nowrap;
 }
 
+.welcome-container{
+  display: flex;
+  align-items: center
+}
 .button-container {
   display: flex;
   justify-content: flex-end;

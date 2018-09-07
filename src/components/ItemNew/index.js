@@ -44,7 +44,6 @@ class ItemNew extends Component {
   componentDidMount() {
     this.props.loadCategories();
     this.props.loadConditions();
-    this.props.checkUser();
   }
 
   handleInputChange(event) {

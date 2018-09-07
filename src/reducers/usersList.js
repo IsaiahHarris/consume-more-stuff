@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT, EDIT_PASSWORD, LOGIN_ERROR} from '../actions';
+import { LOGIN, LOGOUT, EDIT_PASSWORD, LOGIN_ERROR, SAVE_REDIRECT} from '../actions';
 
 
 const initialState = {};
@@ -16,7 +16,9 @@ const usersList = (state = initialState, action) => {
     case EDIT_PASSWORD:
       return [...state]
     case LOGIN_ERROR:
-      return {error: action.loginError};
+      return {...state, error: action.loginError};
+    case SAVE_REDIRECT:
+      return {...state, referrer: action.referrer}
     default:
       return state;
   }

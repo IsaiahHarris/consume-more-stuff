@@ -11,7 +11,8 @@ import {
   loadCard,
   loadCategories,
   loadConditions,
-  loadItemStatuses
+  loadItemStatuses,
+  checkUser
 } from '../../actions';
 
 class ItemEdit extends React.Component {
@@ -388,7 +389,10 @@ const mapDispatchToProps = dispatch => {
     },
     loadItemStatuses: () => {
       dispatch(loadItemStatuses());
-    }
+    },
+    checkUser: () => {
+      dispatch(checkUser());
+    },
   };
 };
 

@@ -9,6 +9,7 @@ import { withRouter } from 'react-router-dom';
 import { checkUser } from '../../actions';
 
 class App extends Component {
+  
   componentDidMount() {
     this.props.checkUser()
   }

@@ -14,20 +14,23 @@ import CardsByCategory from '../CardsByCategory';
 import Settings from '../Settings';
 import UserHomepage from '../UserHomepage';
 
-const ProtectedRoute = ({ component: Component, authed, ...rest }) => (
-  <Route
-    {...rest}
-    render={props =>
-      authed ? (
-        <Component {...props} />
-      ) : (
-        <Redirect
-          to={{ pathname: '/login', state: { from: props.location } }}
-        />
-      )
-    }
-  />
-);
+const ProtectedRoute = ({ component: Component, authed, ...rest }) => {
+
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        authed ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{ pathname: '/login', state: { from: props.location } }}
+          />
+        )
+      }
+    />
+  );
+};
 
 class MainContainer extends Component {
   constructor(props) {
@@ -48,9 +51,13 @@ class MainContainer extends Component {
         loggedIn: false
       });
     }
+
+
   }
+
   render() {
-    console.log('this.state.loggedIn', this.state.loggedIn);
+    let authenticated = localStorage.user ?  localStorage.user.length > 0 : this.props.user.username;
+
     return (
       <div className="MainContainer">
         <Sidebar />
@@ -58,12 +65,17 @@ class MainContainer extends Component {
           {/* NOTE: Change "Body" to something more descriptive, e.g., Home Page */}
           <Route exact path="/" component={Body} />
           <ProtectedRoute
-            authed={this.state.loggedIn}
+            authed={authenticated}
             exact
             path="/items/new"
             component={ItemNew}
           />
-          <ProtectedRoute exact path="/items/:id/edit" component={ItemEdit} authed={this.state.loggedIn} />
+          <ProtectedRoute
+            exact
+            path="/items/:id/edit"
+            component={ItemEdit}
+            authed={authenticated}
+          />
           <Route exact path="/items/:id" component={ItemDetail} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
@@ -74,8 +86,18 @@ class MainContainer extends Component {
               <CardsByCategory key={props.match.params.categoryId} {...props} />
             )}
           />
-          <ProtectedRoute exact path="/inventory" component={UserHomepage} authed={this.state.loggedIn}/>
-          <ProtectedRoute exact path="/user/settings" component={Settings} authed={this.state.loggedIn}/>
+          <ProtectedRoute
+            exact
+            path="/inventory"
+            component={UserHomepage}
+            authed={authenticated}
+          />
+          <ProtectedRoute
+            exact
+            path="/user/settings"
+            component={Settings}
+            authed={authenticated}
+          />
         </Switch>
       </div>
     );
