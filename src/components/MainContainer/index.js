@@ -63,7 +63,7 @@ class MainContainer extends Component {
             path="/items/new"
             component={ItemNew}
           />
-          <Route exact path="/items/:id/edit" component={ItemEdit} />
+          <ProtectedRoute exact path="/items/:id/edit" component={ItemEdit} authed={this.state.loggedIn} />
           <Route exact path="/items/:id" component={ItemDetail} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
@@ -74,8 +74,8 @@ class MainContainer extends Component {
               <CardsByCategory key={props.match.params.categoryId} {...props} />
             )}
           />
-          <Route exact path="/inventory" component={UserHomepage} />
-          <Route exact path="/user/settings" component={Settings} />
+          <ProtectedRoute exact path="/inventory" component={UserHomepage} authed={this.state.loggedIn}/>
+          <ProtectedRoute exact path="/user/settings" component={Settings} authed={this.state.loggedIn}/>
         </Switch>
       </div>
     );

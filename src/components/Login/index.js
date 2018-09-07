@@ -36,12 +36,13 @@ class Login extends Component {
     }
   }
 
-  loginHandler() {
+  loginHandler(redirect) {
+    console.log('redirect', redirect);
     const user = {
       username: this.state.username,
       password: this.state.password
     };
-    this.props.loginUser(user, this.props.history);
+    this.props.loginUser(user, this.props.history, redirect);
     this.setState({
       username: '',
       password: '',
@@ -113,7 +114,10 @@ class Login extends Component {
         )}
         <button
           className="btn"
-          onClick={this.loginHandler}
+          onClick={() => {
+             console.log('this.state.redirectToReferrer',this.state.redirectToReferrer );
+            this.loginHandler(this.state.redirectToReferrer);
+          }}
           disabled={!isEnabled}
         >
           Login
