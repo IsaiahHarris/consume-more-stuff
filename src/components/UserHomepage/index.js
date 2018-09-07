@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loadCardsByUser, loadItemStatuses, checkUser } from '../../actions';
+
+import './UserHomepage.css';
 import CardsList from '../CardsList';
+import { loadCardsByUser, loadItemStatuses, checkUser } from '../../actions';
 
 class UserHomepage extends Component {
-
   componentDidMount() {
     this.props.loadCardsByUser();
   }
@@ -12,15 +13,8 @@ class UserHomepage extends Component {
   render() {
     // this.componentDidMount(this.props.user.id)
     const cards = this.props.userCards ? this.props.userCards : null;
-    console.log('cards', cards);
-    const publishedCards = filterByItemStatus(
-      cards,
-      1 // published
-    );
-    const soldCards = filterByItemStatus(
-      cards,
-      2 // sold
-    );
+    const publishedCards = filterByItemStatus(cards, 1);
+    const soldCards = filterByItemStatus(cards, 2);
 
     console.log('publishedCards', publishedCards);
 

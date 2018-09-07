@@ -1,37 +1,42 @@
-.settings-input{
-  border:1px solid black;
-}
-
-.main-settings-container{
+.main-settings-container {
+  display: -ms-flexbox;
   display: flex;
-  flex-direction:column;
-  width:100%;
+  flex-direction: column;
+  width: 100%;
   align-items: center;
   height: 100vh;
-  border-left: 1px solid black;
+  border-left: 0;
 }
 
-.settings-container{
+.settings-container {
+  display: -ms-flexbox;
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   height: 50vh;
   align-content: center;
   justify-content: space-evenly;
 }
 
-
-
-.settings-error{
- animation: fadeIn 1s;
- color:red;
+.settings-input {
+  border: 1px solid black;
 }
 
+.settings-error {
+  animation: fadeIn 1s;
+  color: red;
+}
 
-@keyframes fadeIn{
-  from{
+@keyframes fadeIn {
+  from {
     opacity: 0;
   }
-  to{
+  to {
     opacity: 1;
+  }
+}
+
+@media (min-width: 768px) {
+  .main-settings-container {
+    border-left: 1px solid black;
   }
 }

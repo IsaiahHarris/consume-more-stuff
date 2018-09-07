@@ -245,8 +245,6 @@ class ItemEdit extends React.Component {
           </div>
 
           <div className="item-edit-details">
-            <div className="header-button" />
-
             <div className="item-edit-details-input">
               <label htmlFor="title">Title: </label>
               <input
@@ -355,14 +353,17 @@ class ItemEdit extends React.Component {
                 onChange={this.handleInputChange}
               />
             </div>
-            <EditCardButton
-              label="SUBMIT"
-              clickHandler={this.editThisCard}
-              disable={!isEnabled}
-            />
-            <Link to={`/items/${this.props.match.params.id}`}>
-              <Button label="Back" />
-            </Link>
+
+            <div className="item-edit-buttons">
+              <EditCardButton
+                label="SUBMIT"
+                clickHandler={this.editThisCard}
+                disable={!isEnabled}
+              />
+              <Link to={`/items/${this.props.match.params.id}`}>
+                <Button label="Back" />
+              </Link>
+            </div>
           </div>
         </div>
       );

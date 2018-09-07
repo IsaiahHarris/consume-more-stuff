@@ -1,23 +1,32 @@
-.header {
+.login-container-outer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: calc(90vh - 31px);
+  margin: 0 auto;
+  border-left: 0;
+}
+
+.login-container .header {
   text-align: center;
 }
 
-h1 {
+.login-container h1 {
   padding: 15px;
 }
 
-.login-container, .register-container {
-  width: 100%;
+.login-container {
+  width: fit-content;
+  height: fit-content;
   max-width: 400px;
   background-color: whitesmoke;
   border-radius: 10px;
   box-shadow: 10px 10px 2px 2px #999999;
-  margin: auto;
+  margin: 15px;
   padding: 15px;
-
 }
 
-input {
+.login-container input {
   width: 80%;
   padding: 15px;
   border-radius: 10px;
@@ -30,7 +39,7 @@ input {
   margin: 15px 0;
   padding: 15px;
   border: 0px;
-  background: #114B5F;
+  background: #114b5f;
   color: white;
   font-size: 16px;
   border-radius: 10px;
@@ -41,17 +50,23 @@ input {
 .btn:disabled {
   background-color: grey;
 }
-.error-message-login{
- animation: fadeIn 1s;
- color:red;
+
+.error-message-login {
+  animation: fadeIn 1s;
+  color: red;
 }
 
-
-@keyframes fadeIn{
-  from{
+@keyframes fadeIn {
+  from {
     opacity: 0;
   }
-  to{
+  to {
     opacity: 1;
+  }
+}
+
+@media (min-width: 768px) {
+  .login-container-outer {
+    border-left: 1px solid #000;
   }
 }

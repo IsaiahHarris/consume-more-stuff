@@ -97,7 +97,7 @@ class Register extends Component {
       password.length > 0;
 
     return (
-      <div>
+      <div className="register-container-outer">
         <div className="register-container">
           {this.props.error.error && (
             <div className="error">

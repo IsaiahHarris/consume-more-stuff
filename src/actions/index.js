@@ -188,8 +188,7 @@ export const loadItemStatuses = () => {
 export const registerUser = (user, history) => {
   return dispatch => {
     return axios.post('/api/register', user)
-      .then(response => {
-        console.log('User registered! ', response);
+      .then(() => {
         history.push('/login');
       })
       .catch(err => {
@@ -205,15 +204,13 @@ export const loginUser = (user, history) => {
   return dispatch => {
     return axios.post('/api/login', user)
       .then(response => {
-        console.log('response.data', response.data);
-
         window.localStorage.setItem('user', response.data.username);
         window.localStorage.setItem('userId', response.data.id);
+
         dispatch({
           type: LOGIN,
           user: response.data
         });
-        console.log('response.data', response.data);
 
         history.push('/inventory');
       })
@@ -229,15 +226,14 @@ export const loginUser = (user, history) => {
 export const logoutUser = () => {
   return dispatch => {
     return axios.get('/api/logout')
-      .then(response => {
-        console.log('Logout success!', response);
-
+      .then(() => {
         dispatch({
           type: LOGOUT
         });
 
         window.localStorage.removeItem('user');
         window.localStorage.removeItem('userId');
+
         window.location.href = '/';
       })
       .catch(err => console.log('Logout Failed! ', err.response));

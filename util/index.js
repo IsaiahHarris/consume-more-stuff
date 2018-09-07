@@ -23,7 +23,8 @@ module.exports = {
             console.log(err);
             return reject(err);
           }
-          console.log('Success:', data);
+
+          // Return successful response object from AWS:
           return resolve(data);
         });
       });

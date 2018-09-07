@@ -1,3 +1,7 @@
+.cards-by-category {
+  display: flex;
+}
+
 .cards-by-category .cards-list-container  {
   display: flex;
   flex-wrap: wrap;

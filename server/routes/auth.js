@@ -6,18 +6,19 @@ const User = require('../db/models/User');
 const saltedRounds = 12;
 
 router.post('/register', (req, res) => {
-  console.log('Register Route Backend: ', req.body);
   let { username, email } = req.body;
   const user_status_id = 1;
+
   bcrypt.genSalt(saltedRounds, (err, salt) => {
     if (err) {
       return res.status(500);
     }
+
     bcrypt.hash(req.body.password, salt, (err, hashedPassword) => {
       if (err) {
         return res.status(500);
       }
-      // needs username(unique), password, and email(unique) to register
+      // Needs username (unique), password, and email (unique) to register:
       return new User({
         username: username.toLowerCase(),
         password: hashedPassword,
@@ -36,10 +37,10 @@ router.post('/register', (req, res) => {
   });
 });
 
-// Log in with username and password
+// Log in with username and password:
 router.post('/login', (req, res, next) => {
+  // If user is logged in, then instruct the user to log out first:
   if (req.user) {
-    // if user is logged in tell them to log out first
     res
       .status(400)
       .json({ message: `${req.user.username} is already logged in` });

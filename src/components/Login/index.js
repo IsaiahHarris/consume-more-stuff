@@ -46,8 +46,6 @@ class Login extends Component {
       password: this.state.password
     };
 
-    console.log('this.state', this.state);
-
     this.props.loginUser(user, this.props.history);
 
     this.setState({
@@ -79,48 +77,54 @@ class Login extends Component {
     let isEnabled = username.length > 0 && password.length > 0;
 
     return (
-      <div className="login-container">
-        {this.props.loginError.error && (
-          <div className="error-message-login">Invalid Credentials</div>
-        )}
+      <div className="login-container-outer">
+        <div className="login-container">
+          {this.props.loginError.error && (
+            <div className="error-message-login">Invalid Credentials</div>
+          )}
 
-        <h1>Login Page</h1>
+          <h1>Login Page</h1>
 
-        <input
-          type="text"
-          name="username"
-          placeholder={this.state.username}
-          onChange={this.handleInputChange}
-          onBlur={this.validateInputs}
-          value={this.state.username}
-        />
-        {!isEnabled && this.state.usernameError ? (
-          <div className="error-message-login">{this.state.usernameError}</div>
-        ) : (
-          ''
-        )}
+          <input
+            type="text"
+            name="username"
+            placeholder={this.state.username}
+            onChange={this.handleInputChange}
+            onBlur={this.validateInputs}
+            value={this.state.username}
+          />
+          {!isEnabled && this.state.usernameError ? (
+            <div className="error-message-login">
+              {this.state.usernameError}
+            </div>
+          ) : (
+            ''
+          )}
 
-        <input
-          type="password"
-          name="password"
-          placeholder={this.state.password}
-          onChange={this.handleInputChange}
-          onBlur={this.validateInputs}
-          value={this.state.password}
-        />
-        {!isEnabled && this.state.passwordError ? (
-          <div className="error-message-login">{this.state.passwordError}</div>
-        ) : (
-          ''
-        )}
+          <input
+            type="password"
+            name="password"
+            placeholder={this.state.password}
+            onChange={this.handleInputChange}
+            onBlur={this.validateInputs}
+            value={this.state.password}
+          />
+          {!isEnabled && this.state.passwordError ? (
+            <div className="error-message-login">
+              {this.state.passwordError}
+            </div>
+          ) : (
+            ''
+          )}
 
-        <button
-          className="btn"
-          onClick={this.handleLogin}
-          disabled={!isEnabled}
-        >
-          Login
-        </button>
+          <button
+            className="btn"
+            onClick={this.handleLogin}
+            disabled={!isEnabled}
+          >
+            Login
+          </button>
+        </div>
       </div>
     );
   }

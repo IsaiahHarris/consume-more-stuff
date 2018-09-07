@@ -1,0 +1,17 @@
+.UserHomepage {
+  height: calc(90vh - 31px);
+  padding: 15px auto;
+}
+
+.UserHomepage h1 {
+  margin:  0;
+  padding: 0.67em;
+}
+
+@media (min-width: 768px) {
+  .UserHomepage h1,
+  .cards-published,
+  .cards-sold {
+    border-left: 1px solid #000;
+  }
+}

@@ -35,9 +35,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser((user, done) => {
-  console.log('Serialized User', user);
-  console.log('Serialize Done', done);
-
   return done(null, {
     id: user.id,
     username: user.username
@@ -45,11 +42,9 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((user, done) => {
-  console.log('Deserializing User: ', user);
   new User({ id: user.id })
     .fetch()
     .then(user => {
-      console.log('user', user);
       user = user.toJSON();
       return done(null, {
         // You can get more data from DB:
@@ -68,14 +63,10 @@ passport.use(
     return new User({ username: username })
       .fetch()
       .then(user => {
-        console.log(user);
         if (!user) {
-          console.log('User null not working?');
           return done({ message: 'Wrong Username' });
         } else {
-          console.log('Else not working?');
           user = user.toJSON();
-          console.log(password, user.pasword);
           bcrypt.compare(password, user.password).then(samePassword => {
             if (samePassword) {
               return done(null, user);
@@ -102,8 +93,13 @@ app.get('*', (req, res) => {
 
 // Catch-All Error Handler:
 app.use(function(err, req, res, next) {
-  console.log(err.message);
-  res.status(500).send('Something broke on the server side');
+  console.error(err.stack);
+
+  if (err) {
+    res.status(500).json({ error: err });
+  }
+
+  next();
 });
 
 app.listen(PORT, () => {
