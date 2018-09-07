@@ -8,11 +8,14 @@ class Settings extends React.Component {
 
     this.state = {
       oldPassInput: '',
-      newPassInput: ''
+      newPassInput: '',
+      oldPassError: '',
+      newPassError: ''
     };
 
     this.editThisPassword = this.editThisPassword.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+
   }
 
   handleInputChange(event) {
