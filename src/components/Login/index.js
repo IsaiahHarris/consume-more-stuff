@@ -66,6 +66,7 @@ class Login extends Component {
   }
 
   render() {
+
     const { password, username } = this.state;
     let isEnabled = username.length > 0 && password.length > 0;
     return (
@@ -86,8 +87,8 @@ class Login extends Component {
           ''
         )}
         <input
-          type="text"
-          name="password"
+          type='password'
+          name='password'
           placeholder={this.state.password}
           onChange={this.inputChange}
           onBlur={this.validation}
@@ -120,7 +121,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   return {
-    loginError: state.usersList
+    loginError: state.usersList,
   };
 };
 

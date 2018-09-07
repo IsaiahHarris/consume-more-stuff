@@ -7,9 +7,13 @@ export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const REGISTER = 'REGISTER';
 export const ADD_CARD = 'ADD_CARD';
-export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const EDIT_CARD = 'EDIT_CARD';
+export const DELETE_CARD = 'DELETE_CARD';
+export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
 export const LOAD_CARDS_BY_CATEGORY = 'LOAD_CARDS_BY_CATEGORY';
+export const EDIT_PASSWORD = 'EDIT_PASSWORD';
+export const LOAD_CARDS_BY_PUBLISHED = 'LOAD_CARDS_BY_PUBLISHED';
+export const LOAD_CARDS_BY_SOLD = 'LOAD_CARDS_BY_SOLD';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 
 export const loadConditions = () => {
@@ -54,21 +58,22 @@ export const addCard = data => {
   };
 
   return dispatch => {
-    return axios.post('/api/items', formData, config)
-    .then(response => {
-      dispatch({
-        type: ADD_CARD,
-        card: response.data
-      });
-      window.location.href = `/items/${response.data.id}`;
-    })
-    .catch(err=>{
-      dispatch({
-        type: LOGIN_ERROR,
-        loginError: 'true'
+    return axios
+      .post('/api/items', formData, config)
+      .then(response => {
+        dispatch({
+          type: ADD_CARD,
+          card: response.data
+        });
+        window.location.href = `/items/${response.data.id}`;
       })
-      window.location.href = `/items/new`;
-    })
+      .catch(err => {
+        dispatch({
+          type: LOGIN_ERROR,
+          loginError: 'true'
+        });
+        window.location.href = `/items/new`;
+      });
   };
 };
 
@@ -94,12 +99,26 @@ export const editCard = data => {
   };
 
   return dispatch => {
-    return axios.put(`/api/items/${data.id}`, formData, config).then(response => {
-      dispatch({
-        type: EDIT_CARD,
-        editCard: response.data
+    return axios
+      .put(`/api/items/${data.id}`, formData, config)
+      .then(response => {
+        dispatch({
+          type: EDIT_CARD,
+          editCard: response.data
+        });
+        window.location.href = `/items/${data.id}`;
       });
-      window.location.href = `/items/${data.id}`;
+  };
+};
+
+export const deleteCard = cardId => {
+  return dispatch => {
+    return axios.delete(`/api/items/${cardId}`).then(response => {
+      dispatch({
+        type: DELETE_CARD,
+        deletedCard: response.data
+      });
+      window.location.href = '/';
     });
   };
 };
@@ -142,21 +161,22 @@ export const loginUser = (user, history) => {
     return axios
       .post('/api/login', user)
       .then(response => {
+        console.log('response.data', response.data);
         window.localStorage.setItem('user', response.data.username);
+        window.localStorage.setItem('userId', response.data.id);
         dispatch({
           type: LOGIN,
           user: response.data
         });
         console.log('response.data', response.data);
-        history.push('/');
+        history.push('/inventory');
       })
-      .catch((err) =>{
+      .catch(err => {
         dispatch({
-          type:LOGIN_ERROR,
+          type: LOGIN_ERROR,
           loginError: 'true'
-        })
-      })
-        
+        });
+      });
   };
 };
 
@@ -166,10 +186,14 @@ export const logoutUser = () => {
       .get('/api/logout')
       .then(response => {
         console.log('Logout success!', response);
+        
         dispatch({
           type: LOGOUT
-        });
+        })
+
         window.localStorage.removeItem('user');
+        window.localStorage.removeItem('userId');
+        window.location.href = '/';
       })
       .catch(err => console.log('Logout Failed! ', err.response));
   };
@@ -183,12 +207,29 @@ export const registerUser = (user, history) => {
         console.log('User registered! ', response);
         history.push('/login');
       })
-      .catch(err=>{
+      .catch(err => {
         dispatch({
           type: LOGIN_ERROR,
           loginError: 'true'
-        })
+        });
       });
+  };
+};
+
+export const editPassword = password => {
+  return dispatch => {
+    return axios
+      .put(`/api/user/settings`, password)
+      .then(response => {
+        dispatch({
+          type: EDIT_PASSWORD,
+          editPassword: response.data
+        });
+      })
+      .then(()=>{
+        return axios
+        .get(`/api/logout`)
+      })
   };
 };
 
@@ -197,8 +238,35 @@ export const checkUser = () => {
     if (localStorage.user) {
       dispatch({
         type: LOGIN,
-        user: { username: localStorage.user }
+        user: {
+          username: localStorage.user,
+          id: localStorage.userId
+        }
       });
     }
-  };
-};
+  }
+}
+
+export const loadCardsBySold = () => {
+  return dispatch => {
+    return axios.get(`/api/user/sold`)
+      .then(response => {
+        dispatch({
+          type: LOAD_CARDS_BY_SOLD,
+          soldCards: response.data
+        })
+      })
+  }
+}
+
+export const loadCardsByPublished = () => {
+  return dispatch => {
+    return axios.get(`/api/user/published`)
+      .then(response => {
+        dispatch({
+          type: LOAD_CARDS_BY_PUBLISHED,
+          publishCards: response.data
+        })
+      })
+  }
+}

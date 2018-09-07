@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addCard, loadCategories, loadConditions } from '../../actions';
+import {
+  addCard,
+  loadCategories,
+  loadConditions,
+  checkUser
+} from '../../actions';
 import './ItemNew.css';
 import Button from '../Button';
 import AddNewButton from '../AddNewButton';
 import { Link } from 'react-router-dom';
-
-const TEMP_SELLER_ID = 1;
 
 class ItemNew extends Component {
   constructor(props) {
@@ -40,6 +43,7 @@ class ItemNew extends Component {
   componentDidMount() {
     this.props.loadCategories();
     this.props.loadConditions();
+    this.props.checkUser();
   }
 
   handleInputChange(event) {
@@ -111,21 +115,19 @@ class ItemNew extends Component {
   }
 
   addNewCard() {
-    const data = {
-      title: this.state.titleInput,
-      price: this.state.priceInput,
-      manufacturer: this.state.manufacturerInput,
-      model: this.state.modelInput,
-      dimensions: this.state.dimensionsInput,
-      details: this.state.detailsInput,
-      image_data: this.state.imageUploadData,
-      image_url: this.state.imageUploadUrl,
-      category_id: this.state.categoryInput,
-      condition_id: this.state.conditionInput,
-      item_status_id: 1,
-      seller_id: TEMP_SELLER_ID
-    };
-
+    const data = {};
+    data.title = this.state.titleInput;
+    data.price = this.state.priceInput;
+    data.manufacturer = this.state.manufacturerInput;
+    data.model = this.state.modelInput;
+    data.dimensions = this.state.dimensionsInput;
+    data.details = this.state.detailsInput;
+    data.image_data = this.state.imageUploadData;
+    data.image_url = this.state.imageUploadUrl;
+    data.category_id = this.state.categoryInput;
+    data.condition_id = this.state.conditionInput;
+    data.item_status_id = 1;
+    data.seller_id = this.props.user.id;
     this.props.addCard(data);
     this.setState({
       titleInput: '',
@@ -202,7 +204,7 @@ class ItemNew extends Component {
         </div>
 
         <div className="item-new-details">
-          {this.props.error.error && (
+          {this.props.user.error && (
             <div>Please Try Again With Required Fields</div>
           )}
           <div className="header-button" />
@@ -340,6 +342,9 @@ const mapDispatchToProps = dispatch => {
     },
     loadConditions: () => {
       dispatch(loadConditions());
+    },
+    checkUser: () => {
+      dispatch(checkUser());
     }
   };
 };
@@ -349,7 +354,7 @@ const mapStateToProps = state => {
     categories: state.categoriesList,
     conditions: state.conditionsList,
     card: state.cardsList,
-    error: state.usersList
+    user: state.usersList
   };
 };
 
