@@ -8,9 +8,10 @@ import Button from '../Button';
 import EditCardButton from '../EditCardButton';
 import {
   editCard,
+  loadCard,
   loadCategories,
   loadConditions,
-  loadCard
+  loadItemStatuses
 } from '../../actions';
 
 const TEMP_SELLER_ID = 1;
@@ -35,17 +36,19 @@ class ItemEdit extends React.Component {
       conditionInput: '',
       titleError: '',
       categoryError: '',
-      conditionError: ''
+      conditionError: '',
+      itemStatusError: ''
     };
 
     this.editThisCard = this.editThisCard.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.validation = this.validation.bind(this);
+    this.validateInputs = this.validateInputs.bind(this);
   }
 
   componentDidMount() {
     this.props.loadCategories();
     this.props.loadConditions();
+    this.props.loadItemStatuses();
     this.props.loadCard(this.props.match.params.id);
 
     // Allows data inputs to initially be populated with database information:
@@ -74,7 +77,11 @@ class ItemEdit extends React.Component {
   handleInputChange(event) {
     switch (event.target.id) {
       case 'title':
-        this.setState({ titleInput: event.target.value });
+        // Remove error message if user has entered a valid title:
+        this.setState({
+          titleInput: event.target.value,
+          titleError: event.target.value.length > 0 ? '' : this.state.titleError
+        });
         break;
       case 'price':
         this.setState({ priceInput: event.target.value });
@@ -95,7 +102,12 @@ class ItemEdit extends React.Component {
         this.setState({ sellerInput: event.target.value });
         break;
       case 'itemStatus':
-        this.setState({ itemStatusInput: event.target.value });
+        // Remove error message if user has selected an item status:
+        this.setState({
+          itemStatusInput: event.target.value,
+          itemStatusError:
+            event.target.value.length > 0 ? '' : this.state.itemStatusError
+        });
         break;
       case 'category':
         this.setState({ categoryInput: event.target.value });
@@ -112,17 +124,13 @@ class ItemEdit extends React.Component {
   }
 
   handleImageUpload(event) {
-    const preview = document.getElementsByClassName('item-edit-photo-img')[0];
+    const preview = document.getElementsByClassName('item-edit-side-img')[0];
     const file = event.target.files[0];
     const reader = new FileReader();
 
-    reader.addEventListener(
-      'load',
-      () => {
-        preview.style.backgroundImage = 'url("' + reader.result + '")';
-      },
-      false
-    );
+    reader.addEventListener('load', () => {
+      preview.style.backgroundImage = 'url("' + reader.result + '")';
+    }, false);
 
     if (file) {
       reader.readAsDataURL(file);
@@ -144,40 +152,49 @@ class ItemEdit extends React.Component {
       image_data: this.state.imageUploadData,
       category_id: this.state.categoryInput,
       condition_id: this.state.conditionInput,
-      item_status_id: 1,
+      item_status_id: this.state.itemStatusInput,
       seller_id: TEMP_SELLER_ID
     };
 
     this.props.editCard(data);
   }
 
-  validation(event) {
+  validateInputs(event) {
     if (event.target.name === 'title' && !this.state.titleInput) {
-      let titleError = 'Title Is Required For An Item';
+      const titleError = 'Title Required';
       this.setState({
         titleError: titleError
       });
     }
 
     if (event.target.name === 'category' && !this.state.categoryInput) {
-      let categoryError = 'Category Is Required For An Item';
+      const categoryError = 'Category Required';
       this.setState({
         categoryError: categoryError
       });
     }
 
     if (event.target.name === 'condition' && !this.state.conditionInput) {
-      let conditionError = 'Condition Is Required To Add An Item';
+      const conditionError = 'Condition Required';
       this.setState({
         conditionError: conditionError
+      });
+    }
+
+    if (event.target.name === 'itemStatus' && !this.state.itemStatusInput) {
+      const itemStatusError = 'Status Required';
+      this.setState({
+        itemStatusError: itemStatusError
       });
     }
   }
 
   render() {
     const { titleInput } = this.state;
-    let isEnabled =
-      titleInput.length > 0;
+    const { itemStatusInput } = this.state;
+
+    // Only enable submission of data containing valid title and item status:
+    const isEnabled = titleInput.length > 0 && itemStatusInput.length > 0;
 
     if (this.props.card[0]) {
       const styles = {
@@ -189,19 +206,43 @@ class ItemEdit extends React.Component {
 
       return (
         <div className="item-edit-container">
-          <div className="item-edit-photo">
-            <Link to={`/items/${this.props.match.params.id}`}>
-              <Button label="Back" />
-            </Link>
-            <div style={styles} className="item-edit-photo-img" />
+          <div className="item-edit-side">
+            <div style={styles} className="item-edit-side-img" />
 
-            <div id="item-edit-photo-upload">
+            <div id="item-edit-side-upload">
               <input
                 type="file"
                 name="fileUpload"
                 id="fileUpload"
                 onChange={this.handleInputChange}
               />
+            </div>
+
+            <div className="item-edit-side-status">
+              <label htmlFor="itemStatus">Status: </label>
+              <select
+                name="itemStatus"
+                id="itemStatus"
+                value={this.state.itemStatusInput}
+                onChange={this.handleInputChange}
+                onBlur={this.validateInputs}
+              >
+                <option value="">--Status--</option>
+                {this.props.itemStatuses.map((status, i) => {
+                  return (
+                    <option key={i} value={status.id}>
+                      {status.name}
+                    </option>
+                  );
+                })}
+              </select>
+              {!isEnabled && this.state.itemStatusError ? (
+                <div className="item-status-error">
+                  {this.state.itemStatusError}
+                </div>
+              ) : (
+                ''
+              )}
             </div>
           </div>
 
@@ -216,13 +257,13 @@ class ItemEdit extends React.Component {
                 id="title"
                 value={this.state.titleInput}
                 onChange={this.handleInputChange}
-                onBlur={this.validation}
+                onBlur={this.validateInputs}
               />
               {!isEnabled && this.state.titleError ? (
                 <div className="title-error">{this.state.titleError}</div>
               ) : (
-                  ''
-                )}
+                ''
+              )}
             </div>
 
             <div className="item-edit-details-input">
@@ -321,6 +362,9 @@ class ItemEdit extends React.Component {
               clickHandler={this.editThisCard}
               disable={!isEnabled}
             />
+            <Link to={`/items/${this.props.match.params.id}`}>
+              <Button label="Back" />
+            </Link>
           </div>
         </div>
       );
@@ -335,23 +379,27 @@ const mapDispatchToProps = dispatch => {
     editCard: card => {
       dispatch(editCard(card));
     },
+    loadCard: card => {
+      dispatch(loadCard(card));
+    },
     loadCategories: () => {
       dispatch(loadCategories());
     },
     loadConditions: () => {
       dispatch(loadConditions());
     },
-    loadCard: card => {
-      dispatch(loadCard(card));
+    loadItemStatuses: () => {
+      dispatch(loadItemStatuses());
     }
   };
 };
 
 const mapStateToProps = state => {
   return {
+    card: state.cardsList,
     categories: state.categoriesList,
     conditions: state.conditionsList,
-    card: state.cardsList
+    itemStatuses: state.itemStatusesList
   };
 };
 
