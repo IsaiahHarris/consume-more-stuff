@@ -1,39 +1,23 @@
 import axios from 'axios';
 
-export const LOAD_CARDS = 'LOAD_CARDS';
-export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
-export const LOAD_CARD = 'LOAD_CARD';
-export const LOGIN = 'LOGIN';
-export const LOGOUT = 'LOGOUT';
-export const REGISTER = 'REGISTER';
 export const ADD_CARD = 'ADD_CARD';
 export const EDIT_CARD = 'EDIT_CARD';
 export const DELETE_CARD = 'DELETE_CARD';
-export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
+
+export const LOAD_CARD = 'LOAD_CARD';
+export const LOAD_CARDS = 'LOAD_CARDS';
 export const LOAD_CARDS_BY_CATEGORY = 'LOAD_CARDS_BY_CATEGORY';
+
+export const LOAD_CONDITIONS = 'LOAD_CONDITIONS';
+export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
+export const LOAD_ITEM_STATUSES = 'LOAD_ITEM_STATUSES';
+
+export const REGISTER = 'REGISTER';
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 
-export const loadConditions = () => {
-  return dispatch => {
-    return axios.get('/api/conditions').then(response => {
-      dispatch({
-        type: LOAD_CONDITIONS,
-        conditions: response.data
-      });
-    });
-  };
-};
-
-export const loadCards = () => {
-  return dispatch => {
-    return axios.get('/api/items').then(response => {
-      dispatch({
-        type: LOAD_CARDS,
-        cards: response.data
-      });
-    });
-  };
-};
+// -------------------------=[   CARDS (ITEMS)   ]=------------------------- //
 
 export const addCard = data => {
   const imageData = data['image_data'];
@@ -56,20 +40,20 @@ export const addCard = data => {
 
   return dispatch => {
     return axios.post('/api/items', formData, config)
-    .then(response => {
-      dispatch({
-        type: ADD_CARD,
-        card: response.data
-      });
-      window.location.href = `/items/${response.data.id}`;
-    })
-    .catch(err=>{
-      dispatch({
-        type: LOGIN_ERROR,
-        loginError: 'true'
+      .then(response => {
+        dispatch({
+          type: ADD_CARD,
+          card: response.data
+        });
+        window.location.href = `/items/${response.data.id}`;
       })
-      window.location.href = `/items/new`;
-    })
+      .catch(err => {
+        dispatch({
+          type: LOGIN_ERROR,
+          loginError: 'true'
+        });
+        window.location.href = `/items/new`;
+      });
   };
 };
 
@@ -85,8 +69,6 @@ export const editCard = data => {
   for (let key in data) {
     formData.append(key, data[key]);
   }
-
-  console.log('FORM DATA', formData);
 
   const config = {
     headers: {
@@ -118,12 +100,23 @@ export const deleteCard = cardId => {
   };
 };
 
-export const loadCategories = () => {
+export const loadCard = card => {
   return dispatch => {
-    return axios.get('/api/categories').then(response => {
+    return axios.get(`/api/items/${card}`).then(response => {
       dispatch({
-        type: LOAD_CATEGORIES,
-        categories: response.data
+        type: LOAD_CARD,
+        card: response.data
+      });
+    });
+  };
+};
+
+export const loadCards = () => {
+  return dispatch => {
+    return axios.get('/api/items').then(response => {
+      dispatch({
+        type: LOAD_CARDS,
+        cards: response.data
       });
     });
   };
@@ -140,21 +133,62 @@ export const loadCardsByCategory = category => {
   };
 };
 
-export const loadCard = card => {
+// ---------------------------=[   META-DATA   ]=--------------------------- //
+
+export const loadConditions = () => {
   return dispatch => {
-    return axios.get(`/api/items/${card}`).then(response => {
+    return axios.get('/api/conditions').then(response => {
       dispatch({
-        type: LOAD_CARD,
-        card: response.data
+        type: LOAD_CONDITIONS,
+        conditions: response.data
       });
     });
   };
 };
 
+export const loadCategories = () => {
+  return dispatch => {
+    return axios.get('/api/categories').then(response => {
+      dispatch({
+        type: LOAD_CATEGORIES,
+        categories: response.data
+      });
+    });
+  };
+};
+
+export const loadItemStatuses = () => {
+  return dispatch => {
+    return axios.get('/api/itemStatuses').then(response => {
+      dispatch({
+        type: LOAD_ITEM_STATUSES,
+        itemStatuses: response.data
+      });
+    });
+  };
+};
+
+// -----------------------------=[   AUTH   ]=----------------------------- //
+
+export const registerUser = (user, history) => {
+  return dispatch => {
+    return axios.post('/api/register', user)
+      .then(response => {
+        console.log('User registered! ', response);
+        history.push('/login');
+      })
+      .catch(err => {
+        dispatch({
+          type: LOGIN_ERROR,
+          loginError: 'true'
+        });
+      });
+  };
+};
+
 export const loginUser = (user, history) => {
   return dispatch => {
-    return axios
-      .post('/api/login', user)
+    return axios.post('/api/login', user)
       .then(response => {
         window.localStorage.setItem('user', response.data.username);
         dispatch({
@@ -164,20 +198,18 @@ export const loginUser = (user, history) => {
         console.log('response.data', response.data);
         history.push('/');
       })
-      .catch((err) =>{
+      .catch(err => {
         dispatch({
-          type:LOGIN_ERROR,
+          type: LOGIN_ERROR,
           loginError: 'true'
-        })
-      })
-        
+        });
+      });
   };
 };
 
 export const logoutUser = () => {
   return dispatch => {
-    return axios
-      .get('/api/logout')
+    return axios.get('/api/logout')
       .then(response => {
         console.log('Logout success!', response);
         dispatch({
@@ -186,23 +218,6 @@ export const logoutUser = () => {
         window.localStorage.removeItem('user');
       })
       .catch(err => console.log('Logout Failed! ', err.response));
-  };
-};
-
-export const registerUser = (user, history) => {
-  return dispatch => {
-    return axios
-      .post('/api/register', user)
-      .then(response => {
-        console.log('User registered! ', response);
-        history.push('/login');
-      })
-      .catch(err=>{
-        dispatch({
-          type: LOGIN_ERROR,
-          loginError: 'true'
-        })
-      });
   };
 };
 
