@@ -1,37 +1,42 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loadCardsByPublished, loadCardsBySold, loadCardsByUser } from '../../actions';
+import { loadCardsByUser, loadItemStatuses } from '../../actions';
 import CardsList from '../CardsList';
 
 class UserHomepage extends Component {
   componentDidMount() {
-    console.log('UserHomepage user: ', this.props.user);
     this.props.loadCardsByUser(this.props.user.id);
   }
 
   render() {
-    console.log('UserHomepage userCards:', this.props.userCards);
-    const cards = this.props.userCards;
+    const publishedCards = filterByItemStatus(
+      this.props.userCards,
+      1, // published
+    );
+    const soldCards = filterByItemStatus(
+      this.props.userCards,
+      2, // sold
+    );
 
     return (
       <div className="UserHomepage">
         <h1>User Home</h1>
         <div className="cards-published">
           <h3>Published</h3>
-          <CardsList userCards={cards} />
+          <CardsList userCards={publishedCards} />
         </div>
         <div className="cards-sold">
           <h3>Sold</h3>
-          {/* <CardsList userCards={soldCards} /> */}
+          <CardsList userCards={soldCards} />
         </div>
       </div>
     );
   }
 }
 
-function filterByUserId(cards, userId) {
+function filterByItemStatus(cards, itemStatusId) {
   const newCards = cards.filter(card => {
-    return Number(card.seller_id) === Number(userId);
+    return Number(card.item_status_id) === Number(itemStatusId);
   });
 
   return newCards;
@@ -41,6 +46,7 @@ const mapStateToProps = state => {
   return {
     user: state.usersList,
     userCards: state.userCardsList,
+    itemStatuses: state.itemStatusesList,
   };
 };
 
