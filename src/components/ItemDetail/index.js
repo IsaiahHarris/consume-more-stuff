@@ -17,22 +17,16 @@ function switchCardVariable(card, location) {
 }
 
 class ItemDetail extends React.Component {
-  
   componentDidMount() {
     this.props.loadCard(this.props.match.params.id);
   }
 
   render() {
-    console.log('this.props', this.props);
     let card = switchCardVariable(
       this.props.card[0],
       this.props.location.state
     );
 
-    const sellerId = card && card.seller_id ? parseInt(card.seller_id): null
-    const userId = this.props.user ? this.props.user.id : null
-      console.log('sellerId', sellerId);
-      console.log('this.props.user.id', userId);
     if (card === '404') {
       return '';
     } else if (!card) {
@@ -43,6 +37,10 @@ class ItemDetail extends React.Component {
         backgroundImage: 'url( ' + photo + ')'
       };
       const conditionName = card && card.condition ? card.condition.name : null;
+
+      const sellerId = card && card.seller_id ? card.seller_id : null;
+      const userId = parseInt(this.props.user.id);
+
       return (
         <div className="item-container">
           <div className="card-title-detail">
@@ -83,19 +81,21 @@ class ItemDetail extends React.Component {
           </div>
 
           <div className="item-buttons">
-            {(this.props.user.username === sellerId)&& 
-            <Link to={`/items/${this.props.match.params.id}/edit`}>
-              <Button label="Edit" />
-            </Link>
-            }
-            {(userId === parseInt(card.seller_id)) && 
-            <Button
-              label="Delete"
-              clickHandler={() => {
-                this.props.deleteCard(this.props.match.params.id);
-              }}
-            />
-            }
+            {userId === sellerId && (
+              <Link to={`/items/${this.props.match.params.id}/edit`}>
+                <Button label="Edit" />
+              </Link>
+            )}
+
+            {userId === sellerId && (
+              <Button
+                label="Delete"
+                clickHandler={() => {
+                  this.props.deleteCard(this.props.match.params.id);
+                }}
+              />
+            )}
+
             <Link to={'/'}>
               <Button label="Back" />
             </Link>
