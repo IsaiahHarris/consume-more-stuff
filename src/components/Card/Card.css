@@ -1,0 +1,74 @@
+/* html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+} */
+
+.main-card-container {
+  display: flex;
+  justify-content: space-evenly;
+  flex: 1 1 50%;
+  margin-top: 15px;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 66.66%;
+  min-width: 120px;
+  max-width: 210px;
+  padding: 5px;
+  border: 1px solid #000;
+  background-color: rgb(204, 204, 204);
+}
+
+.card-container a {
+  overflow: hidden;
+  height: 37px;
+  margin-bottom: 5px;
+}
+
+.photo {
+  margin-bottom: 5px;
+}
+
+.new,
+.good,
+.fair,
+.worn,
+.used {
+  text-align: left;
+  width: 100%;
+  margin-bottom: 5px;
+}
+.new {
+  color: green;
+}
+.good {
+  color: greenyellow;
+}
+.fair {
+  color: yellow;
+}
+.worn {
+  color: orange;
+}
+.used {
+  color: red;
+}
+
+.card-title{
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width:210px;
+}
+
+@media (min-width: 768px) {
+  .main-card-container {
+    margin-top: 25px;
+  }
+}

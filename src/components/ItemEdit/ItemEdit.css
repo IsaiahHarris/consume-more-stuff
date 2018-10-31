@@ -1,0 +1,124 @@
+.item-edit-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 0;
+}
+
+.item-edit-side-img {
+  height: 200px;
+  width: 200px;
+  margin: 30px 0;
+  border: 1px solid #000;
+}
+
+.item-edit-side {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.item-edit-details {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0;
+}
+
+.item-edit-details-input {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  width: 240px;
+}
+
+.item-edit-details-input label {
+  padding-bottom: 7.5px;
+}
+
+.item-edit-details-input input {
+  font-size: 14px;
+  padding: 5px;
+  border: 1px solid #000;
+}
+
+.item-edit-details-input textarea {
+  font-size: 14px;
+  height: 120px;
+  padding: 5px;
+  border: 1px solid #000;
+}
+
+.item-edit-details-input select {
+  /* Source (Stack Overflow): https://goo.gl/iAgHGL */
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -webkit-padding-end: 20px;
+  -moz-padding-end: 20px;
+  -webkit-padding-start: 2px;
+  -moz-padding-start: 2px;
+  background-color: #f4f4f4;
+  background-image: url(../../assets/select-arrow.png),
+    -webkit-linear-gradient(top, #e5e5e5, #f4f4f4);
+  background-image: url(../../assets/select-arrow.png),
+    -moz-linear-gradient(top, #e5e5e5, #f4f4f4);
+  background-image: url(../../assets/select-arrow.png),
+    -ms-linear-gradient(top, #e5e5e5, #f4f4f4);
+  background-image: url(../../assets/select-arrow.png),
+    -o-linear-gradient(top, #e5e5e5, #f4f4f4);
+  background-image: url(../../assets/select-arrow.png),
+    linear-gradient(to bottom, #e5e5e5, #f4f4f4);
+  background-position: right;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: 1px solid #000;
+  border-radius: 0;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  color: #555;
+  font-size: inherit;
+  margin: 0;
+  padding: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.item-edit-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+  padding: 15px;
+}
+
+.title-error,
+.item-status-error {
+  animation: fadeIn 1s;
+  color: red;
+}
+
+a {
+  width: fit-content;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 768px) {
+  .item-edit-container {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    width: 100%;
+    border-left: 1px solid #000;
+  }
+}

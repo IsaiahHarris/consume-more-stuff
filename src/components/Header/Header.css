@@ -1,0 +1,44 @@
+.header-container {
+  height: 10vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 200%;
+  padding: 20px;
+  border-bottom: 1px solid #000;
+}
+
+.header-auth-options * {
+  font-size: 1.5rem;
+  margin-right: 15px;
+}
+
+.logo {
+  height: 50px;
+  min-width: 50px;
+  margin-left: 15px;
+}
+
+.welcome-user {
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 15px;
+  width: 260px;
+}
+
+.header-button {
+  height: 30px;
+  padding: 5px;
+}
+
+@media (min-width: 768px) {
+  .wrap {
+    display: none;
+  }
+}

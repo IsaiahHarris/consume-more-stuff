@@ -1,0 +1,42 @@
+.main-settings-container {
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  height: 100vh;
+  border-left: 0;
+}
+
+.settings-container {
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: column;
+  height: 50vh;
+  align-content: center;
+  justify-content: space-evenly;
+}
+
+.settings-input {
+  border: 1px solid black;
+}
+
+.settings-error {
+  animation: fadeIn 1s;
+  color: red;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 768px) {
+  .main-settings-container {
+    border-left: 1px solid black;
+  }
+}

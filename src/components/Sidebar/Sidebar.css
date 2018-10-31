@@ -1,0 +1,135 @@
+.Sidebar {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #000;
+}
+
+.Sidebar-auth-display {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 15px;
+  padding: 16px 0;
+  border-bottom: 1px solid #000;
+}
+
+.Sidebar-auth-display-options {
+  font-weight: bold;
+}
+
+.Sidebar-main-mobile {
+  display: flex;
+  justify-content: space-evenly;
+  list-style-type: none;
+  padding: 15px 0;
+}
+
+.Sidebar-main-mobile span {
+  font-weight: bold;
+}
+
+.Sidebar-main-mobile-details {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.Sidebar-main-mobile-details-inner {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  background-color: #fff;
+}
+
+.Sidebar-main-mobile-details-inner-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 15px;
+}
+
+.Sidebar-main-mobile-details-inner-list-item {
+  padding: 7.5px 0;
+}
+.Sidebar-main-mobile-details-inner-list-item:first-of-type {
+  padding: 0 0 7.5px;
+}
+.Sidebar-main-mobile-details-inner-list-item:last-of-type {
+  padding: 7.5px 0 0;
+}
+
+.Sidebar-main-desktop {
+  display: none;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .Sidebar {
+    width: 20%;
+    height: 100%;
+    border-bottom: 0;
+  }
+
+  .Sidebar-auth-display {
+    flex-direction: column;
+    height: 150px;
+  }
+
+  .Sidebar-main-desktop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 0;
+  }
+
+  .Sidebar-main-desktop-home {
+    display: flex;
+  }
+
+  .Sidebar-main-desktop-home span {
+    font-weight: bold;
+  }
+
+  .Sidebar-main-desktop-list {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    margin: 30px 0;
+    padding: 0;
+  }
+
+  .Sidebar-main-desktop-list span {
+    font-weight: bold;
+    padding-bottom: 15px;
+  }
+
+  .Sidebar-main-desktop-list-item {
+    padding: 7.5px 0;
+  }
+  .Sidebar-main-desktop-list-item:first-of-type {
+    padding: 0 0 7.5px;
+  }
+  .Sidebar-main-desktop-list-item:last-of-type {
+    padding: 7.5px 0 0;
+  }
+
+  .Sidebar-main-mobile {
+    display: none;
+  }
+
+  .Sidebar-main-mobile-details {
+    display: none;
+  }
+}

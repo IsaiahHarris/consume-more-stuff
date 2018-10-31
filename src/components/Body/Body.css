@@ -1,0 +1,11 @@
+.Body {
+  width: 100%;
+  background-color: #f0f0f0;
+}
+
+@media (min-width: 768px) {
+  .Body {
+    width: 80%;
+    border-left: 1px solid black;
+  }
+}
