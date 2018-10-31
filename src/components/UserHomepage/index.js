@@ -11,7 +11,6 @@ class UserHomepage extends Component {
   }
 
   render() {
-    // this.componentDidMount(this.props.user.id)
     const cards = this.props.userCards ? this.props.userCards : null;
     const publishedCards = filterByItemStatus(cards, 1);
     const soldCards = filterByItemStatus(cards, 2);

@@ -40,8 +40,6 @@ class Card extends React.Component {
             id={this.props.id}
           >
             <div className="card-title">{this.props.title}</div>
-            {/* {truncateText(this.props.title, 32) */}
-            {/* } */}
           </Link>
           <div className="price">{this.props.price}</div>
         </div>
@@ -49,13 +47,6 @@ class Card extends React.Component {
     );
   }
 }
-
-// function truncateText(str, maxLength) {
-//   // Source (Stack Overflow): https://goo.gl/BDKhqs
-//   return str.length <= maxLength
-//     ? str
-//     : str.substr(0, str.lastIndexOf(' ', maxLength)) + ' \u2026';
-// }
 
 const mapDispatchToProps = dispatch => {
   return {
